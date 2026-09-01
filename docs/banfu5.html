@@ -2806,6 +2806,7 @@ function renderAll(){
   renderCards();
   if(VIEW.key === "admin"){ renderDraw(); renderCheck(); renderSizeTable(); renderCompare(); }
   if(VIEW.key === "vendor"){ renderSizeTable(); renderQuote(); }
+  renderSync();          /* 快照回來時 mode 才變 fire，狀態列要跟著重畫 */
 }
 function debounce(fn, ms){
   let t = null;
