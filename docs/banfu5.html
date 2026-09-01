@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>五年級班服共編</title>
-<meta name="description" content="各班選色（同色三班額滿、第三席抽籤）、上傳圖案、線上試衣間、尺寸數量統計，廠商據以線上報價">
+<meta name="description" content="各班選色（一色一班，撞色抽籤）、上傳圖案、線上試衣間、尺寸數量統計，廠商據以線上報價">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#faf8f4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,7 +119,7 @@ input[disabled],select[disabled],textarea[disabled]{opacity:.5}
 .sw[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
 .sw[disabled]{opacity:.42;cursor:not-allowed}
 .sw[disabled] b{text-decoration:line-through}
-.sw.full i::after{content:"額滿";position:absolute;inset:auto 0 0 0;font-size:10.5px;font-weight:700;
+.sw.full i::after{content:"已定案";position:absolute;inset:auto 0 0 0;font-size:10.5px;font-weight:700;
   background:rgba(30,28,25,.72);color:#fff;padding:1px 0;letter-spacing:.1em}
 
 /* ---------- 試衣間 ---------- */
@@ -409,7 +409,7 @@ footer{color:var(--faint);font-size:12.5px;text-align:center;line-height:1.8}
       </div>
       <div class="actions noprint">
         <button class="btn danger sm" id="btnUndoDraw">撤銷最近一次抽籤</button>
-        <span class="hint">撤銷後該色回到候補狀態，可重新抽。</span>
+        <span class="hint">撤銷後該色回到待抽籤狀態，可重新抽。</span>
       </div>
     </div>
   </section>
@@ -525,8 +525,8 @@ const CFG = {
   deadline: "115/10/15",
   contact: "學務處",
   classes: ["501","502","503","504","505","506","507","508","509","510","511"],
-  perColor: 3,        /* 同一顏色最多幾個班 */
-  freeSeats: 2,       /* 先選先得的席次，其餘席次一律抽籤 */
+  perColor: 1,        /* 一個顏色最後能留幾個班 */
+  freeSeats: 0,       /* 不必抽籤就確定的席次。0＝只要有兩個班以上想要同一色就抽籤 */
   sleeves: ["短袖","長袖"],
   necks: ["圓領","V 領","POLO 領"],
   trims: [
@@ -573,9 +573,9 @@ const CFG = {
 /* 檢視：?v=class（各班，預設）／?v=admin（承辦）／?v=vendor（廠商） */
 const VIEWS = {
   class:  {key:"class",  role:"各班填寫", cls:"r1",
-           lede:"點自己的班級，選一個還有名額的顏色，上傳圖案看試衣間效果，再填各尺寸件數。11 個班看到同一份，名額即時扣。"},
+           lede:"點自己的班級，登記一個顏色，上傳圖案看試衣間效果，再填各尺寸件數。一個顏色只留一個班，兩班以上想要就抽籤決定。"},
   admin:  {key:"admin",  role:"承辦檢視", cls:"r2",
-           lede:"全校選色與名額狀況、同色第三席抽籤、尺寸總表與廠商比價。除了主持抽籤，此檢視不會更動各班填的內容。"},
+           lede:"全校選色狀況、同色撞色抽籤、尺寸總表與廠商比價。除了主持抽籤，此檢視不會更動各班填的內容。"},
   vendor: {key:"vendor", role:"廠商 · 線上報價", cls:"r3",
            lede:"各班的顏色、款式、設計圖案與各尺寸件數都在這裡，可直接在線上填單價與版費，系統即時算出小計與總價。"}
 };
@@ -668,9 +668,13 @@ const trimName = hex => {
 
 /* ============================================================
    名額與抽籤
-   每色 perColor 席。依「送出選色的時間」排序，前 freeSeats 席先選先得，
-   之後的席次一律抽籤決定 —— 只有一班候補時抽籤結果就是該班。
-   抽輸的班記在 draws[].lose，對該色永久出局，必須改選，避免反覆抽同一色。
+   一個顏色最後只留 perColor 個班（預設 1）。只要有兩個班以上想要同一顏色，
+   就全部進抽籤 —— 包含最早送出的那一班，先送出沒有保障（這是使用者明確選的）。
+
+   只有一個班登記時不必抽，直接算他的，但那是「暫定」：
+   截止前別班還是可以登記同一個顏色，一登記兩邊就都變成待抽籤。
+   所以色票只有在「已經抽完、名額定案」時才會鎖住點不下去。
+   抽輸的班記在 draws[].lose，對該色永久出局，必須改選。
    ============================================================ */
 /** 曾經在這個顏色抽輸的班 */
 function losers(hex){
@@ -680,48 +684,59 @@ function losers(hex){
   });
   return out;
 }
+/** 一次抽籤抽中的班（舊格式一次只抽一席，這裡一起吃） */
+const drawWins = d => (d && (d.wins || (d.win ? [d.win] : []))) || [];
 /** 抽中這個顏色的班 */
 function winners(hex){
-  return (state.draws || []).filter(d => sameHex(d.hex, hex)).map(d => d.win).filter(Boolean);
+  return (state.draws || []).filter(d => sameHex(d.hex, hex))
+    .reduce((a, d) => a.concat(drawWins(d)), []);
 }
 /** 目前選了這個顏色的班，依選色時間排序（同時間以班級序） */
 function pickers(hex){
   return CFG.classes.filter(c => meta(c) && sameHex(meta(c).hex, hex))
     .sort((a, b) => String(meta(a).at || "").localeCompare(String(meta(b).at || "")) || a.localeCompare(b));
 }
-/** 這個顏色的席位盤點：seated 已入席、waiting 候補、out 抽輸需改選 */
+/** 這個顏色的席位盤點：seated 已入席（抽中或暫定）、waiting 待抽籤、out 抽輸需改選 */
 function seatsOf(hex){
   const lose = losers(hex), win = winners(hex);
   const all = pickers(hex);
   const out = all.filter(c => lose[c]);
   const live = all.filter(c => !lose[c]);
   const seated = [], waiting = [];
+  /* 只有一個班登記就不必抽 —— 規則是「兩個班以上想要才抽籤」。
+     但這個席位是暫定的：別班還可以來登記，一來兩邊就都回到待抽籤。
+     抽輸的班已經不在 live 裡，所以這裡看的是目前真正在爭的班。 */
+  const alone = live.length === 1 && !win.length;
   live.forEach(c => {
     if(seated.length < CFG.freeSeats){ seated.push(c); return; }
     if(win.indexOf(c) >= 0 && seated.length < CFG.perColor){ seated.push(c); return; }
+    if(alone){ seated.push(c); return; }
     waiting.push(c);
   });
   return {hex:normHex(hex), seated:seated, waiting:waiting, out:out,
+          reg:live.length,                    /* 目前登記這個顏色的班數 */
+          provisional:alone,                  /* 席位只是暫定，還沒抽過 */
           open:Math.max(0, CFG.perColor - seated.length), free:Math.max(0, CFG.freeSeats - seated.length)};
 }
-/** 一個班目前的狀態：none 未選／free 先選先得／won 抽中／wait 候補／out 需改選 */
+/** 這個顏色是不是已經定案了（定案才鎖住色票，暫定的還可以被別班挑戰） */
+const settled = s => s.open <= 0 && !s.provisional;
+/** 一個班目前的狀態：none 未選／free 暫定／won 抽中／wait 待抽籤／out 需改選 */
 function statusOf(cls){
   const m = meta(cls);
   if(!m || !m.hex) return "none";
   const s = seatsOf(m.hex);
   if(s.out.indexOf(cls) >= 0) return "out";
-  const i = s.seated.indexOf(cls);
-  if(i >= 0) return i < CFG.freeSeats ? "free" : "won";
-  return "wait";
+  if(s.seated.indexOf(cls) < 0) return "wait";
+  return winners(m.hex).indexOf(cls) >= 0 ? "won" : "free";
 }
 const STATUS = {
   none:{label:"未選色", cls:"", txt:"尚未選色"},
-  free:{label:"確定",   cls:"ok",   txt:"先選先得，名額確定"},
-  won: {label:"抽中",   cls:"won",  txt:"抽籤抽中第 " + CFG.perColor + " 席"},
-  wait:{label:"候補",   cls:"wait", txt:"候補中，等承辦主持抽籤"},
+  free:{label:"暫定",   cls:"wait", txt:"目前只有這一班登記，暫時算這一班的"},
+  won: {label:"確定",   cls:"won",  txt:"抽籤抽中，名額確定"},
+  wait:{label:"待抽籤", cls:"wait", txt:"已登記，等抽籤定案"},
   out: {label:"需改選", cls:"out",  txt:"抽籤未抽中，請改選其他顏色"}
 };
-/** 需要抽籤的顏色（有人候補、而且還有空席） */
+/** 需要抽籤的顏色（有班在等、而且還有空席） */
 function pendingDraws(){
   return CFG.palette.map(p => seatsOf(p.hex)).filter(s => s.waiting.length && s.open > 0)
     .map(s => Object.assign(s, {name:paletteName(s.hex)}));
@@ -1276,8 +1291,10 @@ function renderHeader(){
   document.title = CFG.title + "　" + VIEW.role;
   document.getElementById("stamp").textContent =
     "最後更新 " + (state.updated ? fmtStamp(new Date(state.updated)) : "—") + "　·　畫面產生於 " + fmtStamp(new Date());
+  /* 承辦單位只掛在承辦自己的檢視，班級端與廠商端不顯示 */
   document.getElementById("hdFoot").textContent =
-    "繳交期限 " + CFG.deadline + "　·　" + CFG.contact + "　·　共 " + CFG.classes.length + " 班";
+    "繳交期限 " + CFG.deadline + (VIEW.key === "admin" ? "　·　" + CFG.contact : "")
+    + "　·　共 " + CFG.classes.length + " 班";
 }
 function applyView(){
   document.querySelectorAll("[data-view]").forEach(sec => {
@@ -1377,10 +1394,10 @@ function renderSwatches(){
     const s = seatsOf(p.hex);
     const mine = me && (s.seated.indexOf(me) >= 0 || s.waiting.indexOf(me) >= 0);
     const barred = me && s.out.indexOf(me) >= 0;
-    const b = el("button", "sw" + (s.open === 0 ? " full" : ""));
+    const b = el("button", "sw" + (settled(s) ? " full" : ""));
     b.type = "button";
     b.setAttribute("aria-pressed", draft && sameHex(draft.hex, p.hex) ? "true" : "false");
-    b.disabled = !me || barred || (s.open === 0 && !mine);
+    b.disabled = !me || barred || (settled(s) && !mine);
     const i = el("i"); i.style.background = p.hex; b.append(i);
     b.append(el("b", null, p.name));
     const seats = el("span", "seats");
@@ -1393,14 +1410,14 @@ function renderSwatches(){
     b.append(seats);
     let note;
     if(barred) note = "你已抽過此色";
-    else if(s.open === 0) note = "已額滿";
-    else if(s.waiting.length) note = "抽籤中 · " + s.waiting.length + " 班候補";
-    else if(s.free > 0) note = "還有 " + s.free + " 席先選先得";
-    else note = "僅剩第 " + CFG.perColor + " 席，選了要抽籤";
+    else if(settled(s)) note = "已定案 · " + s.seated.join("、");
+    else if(!s.reg) note = "還沒有人登記";
+    else if(s.waiting.length) note = s.reg + " 班登記 · 抽 " + s.open + " 席";
+    else note = s.reg + " 班登記 · 再有人選就抽籤";
     b.append(el("u", null, note));
     b.title = p.name + " " + p.hex + "　" + note
-      + (s.seated.length ? "　已入席：" + s.seated.join("、") : "")
-      + (s.waiting.length ? "　候補：" + s.waiting.join("、") : "");
+      + (s.seated.length ? "　" + (s.provisional ? "暫定：" : "已定案：") + s.seated.join("、") : "")
+      + (s.waiting.length ? "　待抽籤：" + s.waiting.join("、") : "");
     b.addEventListener("click", () => {
       if(!draft) return;
       draft.hex = normHex(p.hex);
@@ -1408,13 +1425,14 @@ function renderSwatches(){
     });
     box.append(b);
   });
-  const used = CFG.palette.filter(p => seatsOf(p.hex).seated.length).length;
-  const full = CFG.palette.filter(p => seatsOf(p.hex).open === 0).length;
+  const used = CFG.palette.filter(p => seatsOf(p.hex).reg).length;
+  const done = CFG.palette.filter(p => settled(seatsOf(p.hex))).length;
   document.getElementById("colorTally").innerHTML =
-    "已有班級的顏色 <b>" + used + "</b> 色　·　額滿 <b>" + full + "</b> 色";
+    "有班級登記 <b>" + used + "</b> 色　·　已定案 <b>" + done + "</b> 色";
   document.getElementById("colorHint").textContent =
-    "每個顏色最多 " + CFG.perColor + " 個班，前 " + CFG.freeSeats + " 席先送出先得，第 "
-    + CFG.perColor + " 席由 " + CFG.contact + "主持抽籤決定。色塊下方的小格子就是這個顏色的席次。";
+    "一個顏色最後只有 " + CFG.perColor + " 個班能用。兩個班以上想要同一個顏色，就抽籤決定留哪一班，"
+    + "沒抽中的班要改選。色塊下方的小格子就是這個顏色的席次。"
+    + "先送出不會比較有利 —— 抽籤時所有登記這個顏色的班一起抽。";
 }
 function syncFormInputs(){
   const on = document.activeElement;
@@ -1478,26 +1496,26 @@ function renderClassFlags(){
     const d = losers(m.hex)[me];
     cbox.append(mkFlag("warn",
       "<b>" + paletteName(m.hex) + " 抽籤沒有抽中</b>（" + shortStamp(d && d.at) + " 抽，抽中的是 "
-      + (d && d.win) + " 班）。請改選其他還有名額的顏色，再按送出。", [m.hex]));
+      + drawWins(d).join("、") + " 班）。請改選其他還沒定案的顏色，再按送出。", [m.hex]));
   }else if(st === "wait"){
     const s = seatsOf(m.hex);
     cbox.append(mkFlag("note",
-      "你選的 <b>" + paletteName(m.hex) + "</b> 前 " + CFG.freeSeats + " 席已被 " + s.seated.join("、")
-      + " 班選走，第 " + CFG.perColor + " 席要抽籤。目前候補 " + s.waiting.length + " 班（"
-      + s.waiting.join("、") + "），等 " + CFG.contact + "主持抽籤。", [m.hex]));
-  }else if(st === "free" || st === "won"){
-    const s = seatsOf(m.hex);
-    const same = s.seated.filter(c => c !== me);
+      "<b>" + paletteName(m.hex) + "</b> 目前有 " + s.reg + " 個班登記（" + s.waiting.join("、")
+      + "），最後只留 " + CFG.perColor + " 個班，要等抽籤定案。"
+      + "沒抽中的 " + (s.reg - s.open) + " 個班要改選其他顏色。", [m.hex]));
+  }else if(st === "won"){
     cbox.append(mkFlag("good",
-      "<b>" + paletteName(m.hex) + "</b> 名額確定（" + (st === "won" ? "抽籤抽中" : "先選先得") + "）。"
-      + (same.length ? "同色的還有 " + same.join("、") + " 班。" : "目前只有你這一班選這個顏色。"), [m.hex]));
+      "<b>" + paletteName(m.hex) + "</b> 抽籤抽中，名額確定，這個顏色是你們的了。", [m.hex]));
+  }else if(st === "free"){
+    cbox.append(mkFlag("good",
+      "目前只有你這一班登記 <b>" + paletteName(m.hex) + "</b>，暫時算你們的。"
+      + "截止前若有別班也登記同一色，兩班要一起抽籤 —— 先送出不會比較有利。", [m.hex]));
   }
   if(draft && draft.hex && (!m || !sameHex(m.hex, draft.hex))){
     const s = seatsOf(draft.hex);
-    cbox.append(mkFlag(s.free > 0 ? "" : "note",
-      "草稿選的是 <b>" + paletteName(draft.hex) + "</b>，"
-      + (s.free > 0 ? "還有 " + s.free + " 席先選先得，按下方送出才算數。"
-                    : "送出後會排進第 " + CFG.perColor + " 席的抽籤。"), [draft.hex]));
+    cbox.append(mkFlag("note",
+      "草稿選的是 <b>" + paletteName(draft.hex) + "</b>（目前 " + s.reg + " 個班登記），"
+      + "<b>要按下方送出才算數</b>。", [draft.hex]));
   }
 
   /* 撞色：顏色不同但遠看會混 */
@@ -1610,9 +1628,10 @@ function renderDraw(){
   const box = document.getElementById("drawList");
   if(!box) return;
   document.getElementById("drawRule").textContent =
-    "規則：每個顏色最多 " + CFG.perColor + " 個班。依送出時間，前 " + CFG.freeSeats
-    + " 席先選先得直接確定；第 " + CFG.perColor + " 席只要有班候補就用抽籤決定，"
-    + "抽輸的班不能再選這個顏色，要改選其他顏色。抽籤用可重現的亂數，種子與順序都留在下面的紀錄裡。";
+    "規則：一個顏色最後只留 " + CFG.perColor + " 個班。兩個班以上登記同一個顏色就要抽籤，"
+    + "登記的班全部一起抽（包含最早送出的那一班，先送出沒有保障）。沒抽中的班要改選，"
+    + "而且不能再登記這個顏色。建議收件截止後再抽 —— 太早抽，後面才填的班就沒機會了。"
+    + "抽籤用可重現的亂數，種子與抽出順序都留在下面的紀錄裡，任何人都能重算查驗。";
   box.textContent = "";
   const pend = pendingDraws();
   if(!pend.length){
@@ -1626,10 +1645,12 @@ function renderDraw(){
     hd.append(el("span", "hx", s.hex));
     card.append(hd);
     const who = el("div", "who");
-    who.innerHTML = "已入席（先選先得）：<b>" + (s.seated.join("、") || "—") + "</b><br>"
-      + "候補第 " + CFG.perColor + " 席：<b>" + s.waiting.join("、") + "</b>"
-      + (s.waiting.length === 1 ? "（只有 1 班候補，抽籤結果就是這一班）" : "（" + s.waiting.length + " 班抽 1）")
-      + (s.out.length ? "<br>先前抽輸、已不能再選此色：" + s.out.join("、") : "");
+    const n = Math.min(s.open, s.waiting.length);
+    who.innerHTML = (s.seated.length ? "已抽中確定：<b>" + s.seated.join("、") + "</b><br>" : "")
+      + "登記待抽：<b>" + s.waiting.join("、") + "</b>（" + s.waiting.length + " 班抽 " + n + " 席"
+      + (s.waiting.length > n ? "，會有 " + (s.waiting.length - n) + " 個班要改選" : "，都抽得到")
+      + "）"
+      + (s.out.length ? "<br>先前抽輸、已不能再登記此色：" + s.out.join("、") : "");
     card.append(who);
     const act = el("div", "actions");
     const b = el("button", "btn sm", "主持抽籤");
@@ -1650,7 +1671,9 @@ function renderDraw(){
     const row = el("div", "logrow");
     const i = el("i"); i.style.background = d.hex; row.append(i);
     const t = el("div");
-    t.innerHTML = "<b>" + paletteName(d.hex) + "</b> 第 " + CFG.perColor + " 席 · 抽中 <b>" + d.win + "</b> 班<br>"
+    const w = drawWins(d);
+    t.innerHTML = "<b>" + paletteName(d.hex) + "</b> · 抽中 <b>" + w.join("、") + "</b>"
+      + ((d.lose || []).length ? "　未抽中 " + d.lose.join("、") : "") + "<br>"
       + "參與：" + (d.entrants || []).join("、")
       + "　→　抽籤順序 " + (d.order || []).join(" → ") + "<br>"
       + "<span class='seed'>" + shortStamp(d.at) + " · 亂數種子 " + d.seed + "</span>";
@@ -1658,18 +1681,20 @@ function renderDraw(){
     log.append(row);
   });
   document.getElementById("drawTally").innerHTML =
-    "待抽 <b>" + pend.length + "</b> 色　·　已抽 <b>" + (state.draws || []).length + "</b> 次";
+    "要抽 <b>" + pend.length + "</b> 色　·　已抽 <b>" + (state.draws || []).length + "</b> 次";
 }
 async function runDraw(hex){
   const seed = newSeed();
   let result = null;
   const ok = await commit(d => {
     const s = withState(d, () => seatsOf(hex));
-    if(!s.waiting.length) refuse("這個顏色已經沒有候補班級了，畫面剛剛更新過");
-    if(s.open <= 0) refuse("這個顏色已經額滿了，不需要抽籤");
+    if(!s.waiting.length) refuse("這個顏色目前沒有等著抽的班級，畫面剛剛更新過");
+    if(s.open <= 0) refuse("這個顏色已經定案了，不需要抽籤");
     const order = shuffle(s.waiting, seed);
+    const n = Math.min(s.open, order.length);
     result = {hex:normHex(hex), at:new Date().toISOString(), seed:seed,
-              entrants:s.waiting.slice(), order:order, win:order[0], lose:order.slice(1)};
+              entrants:s.waiting.slice(), order:order,
+              wins:order.slice(0, n), lose:order.slice(n)};
     d.draws = (d.draws || []).concat([result]);
   });
   if(ok && result) showReel(result);
@@ -1678,13 +1703,14 @@ async function runDraw(hex){
 function showReel(d){
   const wrap = el("div");
   wrap.style.cssText = "display:flex;flex-direction:column;gap:10px;align-items:center;min-width:min(86vw,330px)";
-  const t = el("div", null, paletteName(d.hex) + " 第 " + CFG.perColor + " 席抽籤");
+  const t = el("div", null, paletteName(d.hex) + " 抽籤");
   t.style.cssText = "font-weight:600;font-size:15px";
   const sw = el("div");
   sw.style.cssText = "width:64px;height:20px;border-radius:6px;border:1px solid rgba(0,0,0,.2);background:" + d.hex;
   const reel = el("div", "reel", "…");
   reel.style.minWidth = "220px";
-  const sub = el("div", "hint", (d.entrants || []).join("、") + " 抽 1");
+  const sub = el("div", "hint",
+    (d.entrants || []).join("、") + " 抽 " + drawWins(d).length + " 席");
   wrap.append(t, sw, reel, sub);
   lbShow(wrap);
   const pool = d.entrants || [];
@@ -1694,10 +1720,12 @@ function showReel(d){
     n++;
     if(n > 16){
       clearInterval(spin);
-      reel.textContent = d.win + " 班";
+      const w = drawWins(d);
+      reel.textContent = w.join("、") + " 班";
       reel.style.color = "var(--a3)";
       sub.textContent = "抽籤順序 " + (d.order || []).join(" → ") + "　·　種子 " + d.seed;
-      toast(paletteName(d.hex) + " 第 " + CFG.perColor + " 席由 " + d.win + " 班抽中");
+      toast(paletteName(d.hex) + " 由 " + w.join("、") + " 班抽中"
+        + ((d.lose || []).length ? "，" + d.lose.join("、") + " 班要改選" : ""));
     }
   }, 90);
 }
@@ -1717,8 +1745,8 @@ function renderCheck(){
 
   const pend = pendingDraws();
   if(pend.length) box.append(mkFlag("note",
-    "<b>有 " + pend.length + " 個顏色要抽籤：</b>"
-    + pend.map(s => s.name + "（候補 " + s.waiting.join("、") + "）").join("；"),
+    "<b>有 " + pend.length + " 個顏色要抽籤（同色多班登記）：</b>"
+    + pend.map(s => s.name + "（" + s.waiting.join("、") + "）").join("；"),
     pend.map(s => s.hex)));
 
   const noArt = done.filter(c => !meta(c).frontAt && !meta(c).backAt);
@@ -1732,6 +1760,13 @@ function renderCheck(){
     "顏色不同但很接近：" + cl.map(x => x.a + "↔" + x.b + "（色差 " + x.d.toFixed(1) + "）").join("、")
     + "。運動會遠看可能分不出來，可請其中一班換色。",
     cl.slice(0, 4).reduce((a, x) => a.concat([x.ha, x.hb]), [])));
+
+  /* 一色一班的話，顏色數量必須夠所有班分 */
+  const free = CFG.palette.filter(p => !settled(seatsOf(p.hex))).length;
+  const undecided = CFG.classes.filter(c => ["none", "out", "wait"].indexOf(statusOf(c)) >= 0).length;
+  box.append(mkFlag(free < undecided ? "warn" : "",
+    "還沒定案的顏色 <b>" + free + "</b> 色　·　還沒定案的班 <b>" + undecided + "</b> 班"
+    + (free < undecided ? "　顏色不夠分，請在 CFG.palette 加色票。" : "")));
 
   const ss = schoolSizes();
   box.append(mkFlag("", "全校合計 <b>" + ss.total + "</b> 件　·　"
@@ -2055,8 +2090,9 @@ async function saveMine(){
   if(!hex){ toast("請先在上面點一個顏色"); return; }
   if(losers(hex)[me]){ toast("這個顏色你已經抽過籤沒抽中，請改選其他顏色"); return; }
   const pre = seatsOf(hex);
-  if(pre.seated.indexOf(me) < 0 && pre.waiting.indexOf(me) < 0 && pre.open <= 0){
-    toast("這個顏色已經額滿了，請改選其他顏色"); return;
+  const held = pre.seated.indexOf(me) >= 0 || pre.waiting.indexOf(me) >= 0;
+  if(!held && settled(pre)){
+    toast("這個顏色已經抽籤定案給 " + pre.seated.join("、") + " 班了，請改選其他顏色"); return;
   }
   const prev = meta(me);
   let frontAt = (prev && prev.frontAt) || null;
@@ -2093,7 +2129,7 @@ async function saveMine(){
     const s = withState(d, () => seatsOf(hex));
     if(mine) d.classes[me] = mine;
     if(withState(d, () => losers(hex))[me]) refuse("這個顏色你已經抽過籤沒抽中，請改選其他顏色");
-    if(s.seated.length >= CFG.perColor) refuse("慢了一步 —— 這個顏色剛剛被其他班選滿了，請改選其他顏色");
+    if(settled(s)) refuse("慢了一步 —— 這個顏色剛剛抽籤定案了，請改選其他顏色");
     rec.at = (mine && sameHex(mine.hex, hex) && mine.at) ? mine.at : new Date().toISOString();
     d.classes[me] = rec;
     /* 交易回來時快照還沒到，state 仍是舊的 —— 名額狀態要用剛寫進去的這份算 */
@@ -2336,9 +2372,9 @@ function buildXlsx(){
 
   /* --- 抽籤紀錄 --- */
   const r3 = [];
-  r3.push([{v:"同色第 " + CFG.perColor + " 席抽籤紀錄", s:S_TITLE}]);
-  r3.push([{v:"每色最多 " + CFG.perColor + " 班，前 " + CFG.freeSeats
-            + " 席先選先得，其餘席次抽籤。亂數種子可重現同一組順序，供查驗。", s:S_SUB}]);
+  r3.push([{v:"顏色抽籤紀錄", s:S_TITLE}]);
+  r3.push([{v:"一個顏色最後只留 " + CFG.perColor + " 個班，兩個班以上登記同一色就全部一起抽。"
+            + "亂數種子可重現同一組順序，供查驗。", s:S_SUB}]);
   r3.push([]);
   r3.push(["抽籤時間","顏色","色碼","參與班級","抽籤順序","抽中","未抽中","亂數種子"]
     .map(h => ({v:h, s:S_HEAD})));
@@ -2347,7 +2383,7 @@ function buildXlsx(){
   ds.forEach(d => {
     r3.push([{v:shortStamp(d.at), s:S_CELL}, {v:paletteName(d.hex), s:S_CELL}, {v:d.hex, s:S_CELL},
              {v:(d.entrants || []).join("、"), s:S_CELL}, {v:(d.order || []).join(" → "), s:S_CELL},
-             {v:d.win || "", s:S_RH}, {v:(d.lose || []).join("、"), s:S_CELL},
+             {v:drawWins(d).join("、"), s:S_RH}, {v:(d.lose || []).join("、"), s:S_CELL},
              {v:String(d.seed), s:S_CELL}]);
   });
   const cols3 = [{min:1, max:1, w:13}, {min:2, max:2, w:12}, {min:3, max:3, w:11},
@@ -2410,7 +2446,8 @@ function buildCsv(){
   L.push(["時間","顏色","色碼","參與班級","抽籤順序","抽中","未抽中","亂數種子"].map(q).join(","));
   (state.draws || []).forEach(d => {
     L.push([shortStamp(d.at), paletteName(d.hex), d.hex, (d.entrants || []).join("、"),
-            (d.order || []).join(" → "), d.win, (d.lose || []).join("、"), d.seed].map(q).join(","));
+            (d.order || []).join(" → "), drawWins(d).join("、"), (d.lose || []).join("、"),
+            d.seed].map(q).join(","));
   });
   L.push("");
   L.push(["廠商報價"].map(q).join(","));
@@ -2473,7 +2510,8 @@ function renderSheetCanvas(scale, imgs){
   const notes = [];
   const miss = missing();
   notes.push(miss.length ? "尚未填寫：" + miss.join("、") : "全部 " + CFG.classes.length + " 班皆已填寫");
-  if(ds.length) notes.push("抽籤 " + ds.length + " 次：" + ds.map(d => paletteName(d.hex) + "→" + d.win).join("、"));
+  if(ds.length) notes.push("抽籤 " + ds.length + " 次："
+    + ds.map(d => paletteName(d.hex) + "→" + drawWins(d).join("、")).join("、"));
   const outs = CFG.classes.filter(c => statusOf(c) === "out");
   if(outs.length) notes.push("需改選顏色：" + outs.join("、"));
   if(qs.length) notes.push("最低報價：" + (qs[0].q.name || "未署名") + " " + money(qs[0].c.amount)
@@ -2553,8 +2591,9 @@ function renderSheetCanvas(scale, imgs){
     const ti = 4 + CFG.sizes.length;
     txt(String(totalOf(cls)), xs[ti] + COLS[ti].w / 2, mid, '700 15px ' + FM, PC.ink);
     const st = STATUS[statusOf(cls)];
+    const stk = statusOf(cls);
     txt(st.label, xs[ti + 1] + COLS[ti + 1].w / 2, mid, '600 12px ' + FS,
-        statusOf(cls) === "out" ? PC.warn : (statusOf(cls) === "wait" ? "#a1670f" : PC.good));
+        stk === "out" ? PC.warn : (stk === "won" ? PC.good : "#a1670f"));
     g.textAlign = "left";
     txt(clip(m.note || "—", COLS[ti + 2].w - 14, '400 12px ' + FS), xs[ti + 2] + 8, mid,
         '400 12px ' + FS, m.note ? PC.dim : PC.faint, "left");
@@ -2960,7 +2999,7 @@ function wire(){
         if(!(d.draws || []).length) refuse("目前沒有抽籤紀錄");
         d.draws = d.draws.slice(0, -1);
       });
-      if(ok) toast("已撤銷最近一次抽籤，該色回到候補狀態");
+      if(ok) toast("已撤銷最近一次抽籤，該色回到待抽籤狀態");
     });
   }
 
