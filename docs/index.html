@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>畢冊班服共編模組</title>
+<meta name="description" content="115 學年度畢冊班服共編：各班上傳、生教組檢視、廠商編字拍照">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#faf8f4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+<style>
+*{box-sizing:border-box}
+:root{
+  --paper:#faf8f4; --card:#ffffff; --ink:#1e1c19; --dim:#6d675e; --faint:#989185;
+  --line:#e4dfd5; --sunk:#f4f1ea;
+  --a1:#a1670f; --a1-bg:#fbf3e2; --a2:#1d5ba4; --a2-bg:#edf3fc; --a4:#7a3f8c; --a4-bg:#f8eefb;
+  --focus:#1d5ba4;
+  --sh:0 1px 2px rgba(40,32,18,.05), 0 8px 26px -14px rgba(40,32,18,.26);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#1a1815; --card:#232019; --ink:#ece6dc; --dim:#a09789; --faint:#7b7366;
+    --line:#35312a; --sunk:#1f1c17;
+    --a1:#e3a943; --a1-bg:#332a17; --a2:#7db0ef; --a2-bg:#1a2634; --a4:#cb99dc; --a4-bg:#2b1f31;
+    --focus:#7db0ef;
+    --sh:0 1px 2px rgba(0,0,0,.3), 0 8px 26px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1a1815; --card:#232019; --ink:#ece6dc; --dim:#a09789; --faint:#7b7366;
+  --line:#35312a; --sunk:#1f1c17;
+  --a1:#e3a943; --a1-bg:#332a17; --a2:#7db0ef; --a2-bg:#1a2634; --a4:#cb99dc; --a4-bg:#2b1f31;
+  --focus:#7db0ef;
+  --sh:0 1px 2px rgba(0,0,0,.3), 0 8px 26px -14px rgba(0,0,0,.7);
+}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:16px/1.65 "Noto Sans TC",-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif}
+.wrap{max-width:620px;margin:0 auto;padding:44px 20px 64px;display:flex;flex-direction:column;gap:22px}
+header{display:flex;flex-direction:column;gap:6px}
+.eyebrow{margin:0;font-size:12.5px;letter-spacing:.14em;color:var(--dim);font-weight:500}
+h1{margin:0;font-family:"Noto Serif TC",serif;font-weight:700;font-size:clamp(25px,5.2vw,32px);line-height:1.3}
+.lede{margin:0;color:var(--dim);font-size:15px}
+.roles{display:flex;flex-direction:column;gap:13px}
+.role{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:17px 19px;
+  box-shadow:var(--sh);transition:border-color .12s}
+.role:hover{border-color:var(--dim)}
+.role a{color:inherit}
+.role a:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:4px}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.1em;padding:2px 10px;border-radius:999px}
+.t1{color:var(--a2);background:var(--a2-bg)} .t2{color:var(--a1);background:var(--a1-bg)}
+.t3{color:var(--a4);background:var(--a4-bg)}
+.role h2{margin:8px 0 2px;font-family:"Noto Serif TC",serif;font-size:19px;font-weight:600}
+.role p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.6}
+.role h2 a{text-decoration:none}
+.role h2 a:hover{text-decoration:underline;text-underline-offset:3px}
+.role .go{margin-top:10px;font-size:13px;color:var(--dim);display:flex;gap:8px 16px;flex-wrap:wrap;align-items:baseline}
+.role .go .u{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--faint)}
+footer{color:var(--faint);font-size:12.5px;line-height:1.8;border-top:1px solid var(--line);padding-top:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">永福國小 · 115 學年度 · 六年級</p>
+    <h1>畢冊班服共編模組</h1>
+    <p class="lede">三個角色共用同一份資料，任何一邊改動，其他人一兩秒內就看得到。</p>
+  </header>
+
+  <div class="roles">
+    <div class="role">
+      <span class="tag t1">各班導師</span>
+      <h2><a href="banfu.html">上傳班服顏色 →</a></h2>
+      <p>點自己的班級，選色票或自訂色碼，拍一張班服照片送出。畫面會即時提醒和哪一班撞色。</p>
+      <div class="go"><a href="banfu-share.html">QR 入口頁</a><span class="u">banfu.html</span></div>
+    </div>
+
+    <div class="role">
+      <span class="tag t2">生教組</span>
+      <h2><a href="banfu.html?v=check">檢視全校色卡 →</a></h2>
+      <p>繳交狀況、未附照片名單、撞色提醒與全校總表，可匯出 Excel、PDF 存查。唯讀，不會動到各班填寫。</p>
+      <div class="go"><a href="banfu-check-share.html">QR 入口頁</a><span class="u">banfu.html?v=check</span></div>
+    </div>
+
+    <div class="role">
+      <span class="tag t3">廠商</span>
+      <h2><a href="banfu.html?v=vendor">編字拍照與排字版位 →</a></h2>
+      <p>各班色卡與班服實照供對色，並規劃每個字由哪幾班排、共幾人。版位存回同一份資料。</p>
+      <div class="go"><a href="banfu-vendor-share.html">QR 入口頁</a><span class="u">banfu.html?v=vendor</span></div>
+    </div>
+  </div>
+
+  <footer>
+    掃 QR 的人不需登入。三個檢視靠網址參數區分，並非權限控管 ——<br>
+    廠商連結給了誰，誰就能改排字版位。
+  </footer>
+</div>
+</body>
+</html>
