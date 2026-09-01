@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>畢冊班服共編模組</title>
-<meta name="description" content="115 學年度畢冊班服共編：各班上傳、生教組檢視、廠商編字拍照">
+<title>班服共編模組</title>
+<meta name="description" content="115 學年度班服共編：六年級畢冊班服顏色、五年級班服選色抽籤與線上報價">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#faf8f4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,6 +44,10 @@ header{display:flex;flex-direction:column;gap:6px}
 h1{margin:0;font-family:"Noto Serif TC",serif;font-weight:700;font-size:clamp(25px,5.2vw,32px);line-height:1.3}
 .lede{margin:0;color:var(--dim);font-size:15px}
 .roles{display:flex;flex-direction:column;gap:13px}
+.mod{display:flex;flex-direction:column;gap:13px}
+.mod > h2{margin:6px 0 -2px;font-family:"Noto Serif TC",serif;font-size:17px;font-weight:600;
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.mod > h2 span{font-size:12.5px;font-weight:400;color:var(--dim);font-family:"Noto Sans TC",sans-serif}
 .role{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:17px 19px;
   box-shadow:var(--sh);transition:border-color .12s}
 .role:hover{border-color:var(--dim)}
@@ -65,12 +69,39 @@ footer{color:var(--faint);font-size:12.5px;line-height:1.8;border-top:1px solid 
 <body>
 <div class="wrap">
   <header>
-    <p class="eyebrow">永福國小 · 115 學年度 · 六年級</p>
-    <h1>畢冊班服共編模組</h1>
-    <p class="lede">三個角色共用同一份資料，任何一邊改動，其他人一兩秒內就看得到。</p>
+    <p class="eyebrow">永福國小 · 115 學年度</p>
+    <h1>班服共編模組</h1>
+    <p class="lede">兩個模組、各三個角色，同一份資料即時共用；任何一邊改動，其他人一兩秒內就看得到。</p>
   </header>
 
-  <div class="roles">
+  <div class="mod">
+    <h2>五年級班服共編<span>選色抽籤 · 圖案 · 試衣間 · 尺寸 · 線上報價</span></h2>
+
+    <div class="role">
+      <span class="tag t1">各班導師</span>
+      <h2><a href="banfu5.html">選顏色、上傳圖案、填件數 →</a></h2>
+      <p>每個顏色最多 3 個班，前 2 席先選先得，第 3 席抽籤。上傳去背圖案可即時看試衣間效果，再填 XS 到 XXL 的件數。</p>
+      <div class="go"><a href="banfu5-share.html">QR 入口頁</a><span class="u">banfu5.html</span></div>
+    </div>
+
+    <div class="role">
+      <span class="tag t2">學務處</span>
+      <h2><a href="banfu5.html?v=admin">名額、抽籤與比價 →</a></h2>
+      <p>看誰還沒填、哪個顏色要抽籤，主持抽籤（種子與順序留紀錄可查驗），並看尺寸總表與各家廠商報價比較。</p>
+      <div class="go"><a href="banfu5-admin-share.html">QR 入口頁</a><span class="u">banfu5.html?v=admin</span></div>
+    </div>
+
+    <div class="role">
+      <span class="tag t3">廠商</span>
+      <h2><a href="banfu5.html?v=vendor">線上報價 →</a></h2>
+      <p>各班顏色、款式、設計圖案與件數都在頁面上，直接填單價與版費，小計與總價即時算，可下載一頁報價單 PDF。</p>
+      <div class="go"><a href="banfu5-vendor-share.html">QR 入口頁</a><span class="u">banfu5.html?v=vendor</span></div>
+    </div>
+  </div>
+
+  <div class="mod">
+    <h2>六年級畢冊班服<span>顏色 · 班服照片 · 編字拍照排字</span></h2>
+
     <div class="role">
       <span class="tag t1">各班導師</span>
       <h2><a href="banfu.html">上傳班服顏色 →</a></h2>
@@ -94,8 +125,9 @@ footer{color:var(--faint);font-size:12.5px;line-height:1.8;border-top:1px solid 
   </div>
 
   <footer>
-    掃 QR 的人不需登入。三個檢視靠網址參數區分，並非權限控管 ——<br>
-    廠商連結給了誰，誰就能改排字版位。
+    掃 QR 的人不需登入。檢視靠網址參數區分，並非權限控管 ——<br>
+    廠商連結給了誰，誰就能改排字版位、送出報價。<br>
+    兩個模組資料各自獨立，改一邊不會動到另一邊。
   </footer>
 </div>
 </body>

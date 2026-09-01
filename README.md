@@ -1,6 +1,26 @@
-# 115 學年度畢冊班服共編模組
+# 115 學年度班服共編模組
 
-一份 HTML 檔、三個角色檢視，跑在同一份即時共用的資料上。
+兩個模組、各三個角色，跑在同一份即時共用的資料上。掃 QR 的人都不需要登入。
+
+## 五年級班服共編 — `banfu5.html`
+
+選色（含名額與抽籤）、上傳設計圖案、線上試衣間、各尺寸件數，廠商直接線上報價。
+
+| 角色 | 網址 | 能做什麼 |
+|---|---|---|
+| 各班導師 | `banfu5.html` | 選顏色（名額即時扣）、上傳正反面圖案、試衣間調版位、填 XS–XXL 件數 |
+| 學務處 | `banfu5.html?v=admin` | 名額狀況、主持同色抽籤、尺寸總表、廠商比價、匯出 |
+| 廠商 | `banfu5.html?v=vendor` | 看款式與圖案、填單價與版費、即時算小計與總價、下載報價單 |
+
+**顏色名額規則**：每個顏色最多 3 個班。依送出時間，前 2 席先選先得直接確定；
+第 3 席只要有班候補就一律抽籤 —— 只有一班候補時，抽籤結果自然就是那一班。
+抽輸的班對該色永久出局，必須改選，避免同一色反覆抽。
+
+抽籤用可重現的亂數（mulberry32 + Fisher–Yates），**種子、參與名單、抽出順序全部留在紀錄裡**，
+任何人都能拿種子重算查驗。抽完會跳一個大字動畫，可以直接投影給學生看。
+承辦端另有「撤銷最近一次抽籤」，撤銷後該色回到候補狀態可重抽。
+
+## 六年級畢冊班服 — `banfu.html`
 
 | 角色 | 網址 | 能做什麼 |
 |---|---|---|
@@ -8,77 +28,78 @@
 | 生教組 | `banfu.html?v=check` | 全校色卡、未繳名單、撞色提醒、匯出（**唯讀**） |
 | 廠商 | `banfu.html?v=vendor` | 對色、規劃編字拍照排字版位、匯出 |
 
-三個檢視共用同一份 Firestore 資料，任何一邊改動，其他人一兩秒內看得到。
-生教組檢視刻意不給編輯能力：要改內容一律回到班級端由導師自己改，責任才清楚。
+兩個模組的資料在 Firestore 是不同集合，改一邊不會動到另一邊。
+生教組檢視刻意不給編輯能力；五年級的承辦檢視同理，唯一的寫入是主持抽籤 ——
+要改內容一律回到班級端由導師自己改，責任才清楚。
 
 ## 檔案
 
 ```
 docs/
-  banfu.html                 共編模組本體（三個檢視都在這一支）
-  banfu-share.html           各班掃描入口頁（大 QR ＋步驟＋色票一覽）
-  banfu-check-share.html     生教組入口頁
-  banfu-vendor-share.html    廠商入口頁
-  banfu-qr.png               三張 QR 圖，可單獨貼到通知單或 LINE
+  banfu5.html                五年級班服共編（三個檢視都在這一支）
+  banfu5-share.html          各班掃描入口頁
+  banfu5-admin-share.html    學務處入口頁
+  banfu5-vendor-share.html   廠商入口頁
+  banfu5-qr.png              三張 QR 圖，可單獨貼到通知單或 LINE
+  banfu5-admin-qr.png
+  banfu5-vendor-qr.png
+
+  banfu.html                 六年級畢冊班服（三個檢視都在這一支）
+  banfu-share.html           各班／生教組／廠商入口頁與 QR
+  banfu-check-share.html
+  banfu-vendor-share.html
+  banfu-qr.png
   banfu-check-qr.png
   banfu-vendor-qr.png
+
+  index.html                 兩個模組的總入口
 assets/
   share-page.html            入口頁模板（build-share.py 用）
 scripts/
-  build-share.py             從 banfu.html 的 CFG 產生 QR 與三張入口頁
+  build-share.py             從表單的 CFG 產生 QR 與入口頁
 ```
 
 入口頁與 QR **不要手改**，一律用腳本重生，否則會出現「表單改了但入口頁還寫舊期限」。
+腳本依檔名選角色文案（`banfu`／`banfu5`），也可以用 `--set` 指定。
 
 ## 上線步驟
 
 ### 1. 建 repo 並推上去
 
-```bash
-git init && git add -A && git commit -m "115 畢冊班服共編模組"
-```
-
 GitHub 建一個叫 **`banfu-115`** 的 repo（QR 已綁定這個名稱），推上去後到
-Settings → Pages → Source 選預設分支的 `/docs`。
+Settings → Pages → Source 選預設分支的 `/docs`。兩個模組同一個 repo。
 
 repo 名稱只能用 ASCII（英數、`-`、`_`、`.`）。中文名會變成百分比編碼的網址，
 QR 掃出來與廠商手打都是一長串亂碼 —— 頁面標題是中文沒問題，網址那一段維持 ASCII。
 
-### 2. 改了 repo 名稱就重跑這支
+### 2. 改了 repo 名稱或 CFG 就重跑這支
 
 QR 內容綁死網址，名稱一改舊 QR 全部失效：
 
 ```bash
-python3 scripts/build-share.py --form docs/banfu.html --url https://simon05091004.github.io/<repo>/banfu.html
+python3 scripts/build-share.py --form docs/banfu5.html --url https://simon05091004.github.io/banfu-115/banfu5.html
 ```
 
 ### 3. 確認上線
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}\n" https://simon05091004.github.io/banfu-115/banfu.html
+curl -s -o /dev/null -w "%{http_code}\n" https://simon05091004.github.io/banfu-115/banfu5.html
 ```
 
 ### 4. 開啟即時共用（沒這步各班看不到彼此）
 
-`FIREBASE_CONFIG` 已填入 **chinese-50d0c**（沿用 Chinese／MATH 練習頁那個專案）。
-但那支專案原本只用 **Realtime Database**，本模組用的是 **Firestore**，兩者是同一專案下
-不同的服務，所以還差一步：
+`FIREBASE_CONFIG` 兩支都指向 **chinese-50d0c**，Firestore 資料庫在做畢冊模組時已經建立過，
+所以五年級模組只差**加規則**這一步：
 
-1. **先建立 Firestore 資料庫**。Firebase 主控台 → 選 `chinese-50d0c` → Firestore Database
-   → 建立資料庫 → 位置選 `asia-east1`（台灣）或 `asia-southeast1`（新加坡，和現有 RTDB 同區）
-   → 模式選「正式版」（規則下一步覆蓋）。
-   沒建立之前，Cloud Firestore API 是關閉的，前端會拿到
-   `403 SERVICE_DISABLED`，畫面狀態列顯示紅點「連不上雲端」。
-   建立 Firestore **不會影響**原本的 Realtime Database，Chinese／MATH 照常運作。
-2. Firestore → 規則，把 `banfu.html` 檔案最下方註解裡的**兩段 match 加進**現有規則的
-   `match /databases/{database}/documents { … }` 大括號內，既有區塊原封不動保留。
-   （這個專案的 Firestore 是新建的，規則會是預設那份，直接貼上即可。）
+1. Firebase 主控台 → `chinese-50d0c` → Firestore Database → 規則。
+2. 把 `banfu5.html` 檔案最下方註解裡的**兩段 match 加進**現有規則的
+   `match /databases/{database}/documents { … }` 大括號內，既有區塊（含 `yearbookShirt`）原封不動保留。
 3. 規則發布後有數秒傳播延遲，剛發布時的寫入可能被擋，重試即可。
 
-不想在 chinese-50d0c 開 Firestore 的話，`family-ledger-e196d`（家庭記帳）已經在跑 Firestore，
-換成它的 firebaseConfig 就只剩「加規則」一步。
+沒有做這步，模組仍然完全可用，只是資料存在各自的瀏覽器裡（狀態列會顯示琥珀點）。
 
-沒有做這步，模組仍然完全可用，只是資料存在各自的瀏覽器裡。
+Firestore 沒啟用或規則沒開時，SDK 丟的錯誤訊息是 `client is offline`，會誤導 ——
+要用 REST 打 `firestore.googleapis.com` 才看得到真正原因（例如 403 SERVICE_DISABLED）。
 
 ### 狀態列怎麼看
 
@@ -92,11 +113,39 @@ curl -s -o /dev/null -w "%{http_code}\n" https://simon05091004.github.io/banfu-1
 Firestore 連不上時仍會回快取快照，**不能**把「收到快照」當成「連線成功」——
 否則導師會以為填的東西大家都看得到，其實只在自己手機裡。程式用
 `snapshot.metadata.fromCache` 擋掉這個誤判，6 秒後仍是快取就轉成紅點警告。
-SDK 這時丟的錯誤訊息是 `client is offline`，很容易誤導，真正原因通常是上面那兩項設定。
 
 ## 資料長怎樣
 
-主文件 `yearbookShirt/115-1`：
+### 五年級 — 主文件 `classShirt/115-5`
+
+```json
+{
+  "classes": {
+    "501": {"hex":"#1F3864","at":"…","sleeve":"短袖","neck":"圓領","trim":"#FFFFFF",
+            "art":{"front":{"x":200,"y":200,"w":160},"back":{"x":200,"y":236,"w":250}},
+            "sizes":{"XS":1,"S":4,"M":8,"L":6,"XL":2,"XXL":1},
+            "note":"背面印班級口號","frontAt":"…","by":"501","updated":"…"}
+  },
+  "draws": [{"hex":"#1F3864","at":"…","seed":2915222368,
+             "entrants":["503","504","505"],"order":["503","505","504"],
+             "win":"503","lose":["505","504"]}],
+  "quotes": {
+    "v1a2b3c": {"name":"永昌服飾","contact":"王小姐 09…","valid":"115/11/30","big":20,
+                "note":"報價含稅…","at":"…","items":{"501":{"unit":180,"plate":800}}}
+  },
+  "updated": "…", "v": 1
+}
+```
+
+`at` 是**選色時間**，只有換顏色才會重寫 —— 名額排序看它，改尺寸不會讓班級掉到隊伍後面。
+`draws` 是附加式的紀錄，班級狀態由「目前選了什麼色」加上「有沒有在某次抽籤的 lose 裡」推導，
+不另外存狀態欄位，才不會出現資料互相矛盾。
+
+設計圖案不放主文件，放子集合 `classShirt/115-5/art/{班級}_{front|back}`，
+主文件只留 `frontAt` / `backAt` 時間戳。廠商報價的小計是**即時算**的（件數 × 單價 ＋ 大尺寸加價 ＋ 版費），
+班級改件數，比價表跟著動；決標前請以廠商確認過的件數為準。
+
+### 六年級 — 主文件 `yearbookShirt/115-1`
 
 ```json
 {
@@ -109,34 +158,51 @@ SDK 這時丟的錯誤訊息是 `client is offline`，很容易誤導，真正�
 }
 ```
 
-照片不放主文件，放子集合 `yearbookShirt/115-1/photos/{班級}`，
-主文件只留 `photoAt` 時間戳。這樣主文件維持在幾 KB，改一次顏色不會重寫幾百 KB 的照片；
-班級端只抓自己那張，生教組與廠商才抓全部。
+照片放子集合 `yearbookShirt/115-1/photos/{班級}`，主文件只留 `photoAt`。
 
-照片在瀏覽器端就壓好再上傳：長邊 1000px、JPEG，先降畫質再降尺寸，
-直到小於 560KB（Firestore 單一文件上限 1MB）。實測 11.8MB 的手機照壓到 242KB，約 0.5 秒。
-另存一張 320px 縮圖給色卡牆與表格用，捲動時不會拖垮頁面。
+## 圖片怎麼處理
+
+兩個模組都在瀏覽器端壓好再上傳，Firestore 單一文件上限 1MB。
+
+- **五年級的設計圖案**先驗透明：有 alpha 就走 PNG（保留去背），沒有才走 JPEG。
+  壓成 JPEG 會在衣服上多出一塊白底，這是很容易踩的雷。長邊 900px、上限 540KB，
+  另存 300px 縮圖給色卡牆與表格。實測 640×360 的去背 PNG 約 37KB。
+- **六年級的班服照片**一律 JPEG：長邊 1000px，先降畫質再降尺寸直到小於 560KB。
+  實測 11.8MB 的手機照壓到 242KB，約 0.5 秒。
+
+試衣間上傳的是**報價與版面參考用的預覽圖**，實際印製請另外提供圖案原始檔給廠商，
+頁面上也是這樣寫的。
 
 ## 常見修改
 
 **改班級／期限／承辦** — 改 `CFG` 就好，標頭、頁尾、入口頁全部跟著推導。改完重跑 `build-share.py`。
 
-**加減色票** — 改 `CFG.palette`。腳本會擋掉重複色碼。導師仍可自訂 HEX，色票只是捷徑。
+**加減色票** — 改 `CFG.palette`。腳本會擋掉重複色碼。
 
-**撞色門檻** — `CFG.nearThreshold`，預設 12（CIE76 色差）。數字調大＝更嚴格，會抓出更多「太像」的配對。
+**改名額規則** — `CFG.perColor`（每色幾個班，預設 3）與 `CFG.freeSeats`（先選先得幾席，預設 2）。
+兩個數字改了，色票說明、抽籤面板、Excel 標題全部跟著改，不必動別的地方。
 
-**換下一屆** — 把 `FIRE_ID` 換成 `116-1`，Firestore 規則裡的文件 id 跟著改，
-舊資料留在 `115-1` 不會被覆蓋，需要時還查得到。
+**改尺寸** — `CFG.sizes` 與 `CFG.sizeChart`（畫面上的胸寬／衣長參考值），
+`CFG.bigSizes` 是廠商加價的尺寸。加一個尺寸，表格、統計、報價、匯出全部自動長出來。
 
-**排字內容改字** — 廠商在頁面上改即可。字數變少時，超出的版位指派會自動清掉（其餘保留）。
+**改款式** — `CFG.sleeves`（袖長）與 `CFG.necks`（領型）。領型的字串同時是試衣間畫圖的 key，
+新增領型要在 `NECKS` 加一段路徑，否則會退回圓領。
+
+**撞色門檻** — `CFG.nearThreshold`，預設 12（CIE76 色差）。數字調大＝更嚴格。
+
+**換下一屆** — 把 `FIRE_ID` 換成 `116-5`（或 `116-1`），Firestore 規則裡的文件 id 跟著改，
+舊資料留在原文件不會被覆蓋，需要時還查得到。
 
 ## 內建能力（不要重寫）
 
 | 功能 | 實作 |
 |---|---|
-| Excel | 自寫 ZIP（store）＋ inlineStr 的 xlsx，三個工作表：班服總表、色卡對照、排字版位 |
-| PDF | canvas 畫 A4 橫式 → Flate → 最小 PDF 骨架；含色塊與班服照片縮圖 |
+| 試衣間 | 純 SVG 畫衣服，袖長／領型／配色／圖案位置都是屬性；同一份程式碼供大圖、色卡縮圖、匯出使用 |
+| Excel | 自寫 ZIP（store）＋ inlineStr 的 xlsx。五年級四張表：顏色與款式、尺寸統計、抽籤紀錄、廠商報價 |
+| PDF | canvas 畫 A4 橫式 → Flate → 最小 PDF 骨架；含色塊與試衣縮圖。廠商端另有一頁報價單 |
+| PNG | 試衣圖正反面並排，含班級、色碼、款式抬頭，給廠商看版面比例 |
 | CSV | 帶 BOM，Excel 開中文不亂碼 |
+| 抽籤 | mulberry32 種子亂數 + Fisher–Yates，可重現、可查驗 |
 | 撞色檢查 | hex → Lab → CIE76 色差，兩兩比對 |
 | 即時共用 | Firestore `runTransaction`，三段降級 Artifact → Firestore → localStorage |
 
@@ -144,20 +210,29 @@ SDK 這時丟的錯誤訊息是 `client is offline`，很容易誤導，真正�
 那會讓它在校內受限網路下反而不能用。PDF 走點陣是刻意的：
 向量中文得嵌 CJK 字型（好幾 MB）或賭閱讀器自備字型（macOS 預覽程式就沒有）。
 
+**名額判斷一定要在交易裡重算**。班級端送出時會先在本機擋一次，再於 Firestore 交易裡
+用剛讀到的資料重算一次；兩個班同時搶最後一席時，後到的會收到「慢了一步」而不是把名額擠掉。
+
 ## 驗證清單
 
 - [ ] 線上網址回 200，且 `curl | grep` 得到新的期限字串
 - [ ] 狀態列顯示綠點與「即時共用中」
 - [ ] 兩個分頁各開一個班，一邊送出，另一邊**不重新整理**應在一兩秒內看到
-- [ ] 手機掃 QR 進得去，拍照上傳後色卡牆出現縮圖
+- [ ] 三個班選同一色 → 第三班顯示「候補」，承辦端出現抽籤卡
+- [ ] 抽完籤：抽中的班顯示「抽中」，沒抽中的班色票變灰、按送出會被擋
+- [ ] 手機掃 QR 進得去，上傳去背 PNG 後試衣間不會多一塊白底
+- [ ] 廠商填單價後，班級端改件數，比價表的總額跟著變
 - [ ] 匯出 Excel 用 `openpyxl` 開得起來；PDF 用 `qlmanage -t` 算得出縮圖
-- [ ] 兩班選相近顏色時，班級端與生教組端都要跳撞色提醒
 
 ## 已知限制
 
 - **Claude Artifact 裡不能用 Firestore**（CSP 擋 gstatic），會降級成 artifact runtime，
-  且該模式不支援照片上傳，畫面會說明。正式使用請走 GitHub Pages。
-- **規則刻意不允許刪除照片**。清除某班填寫時主文件紀錄會消失，子集合舊照片仍在，
-  但畫面只走主文件，孤兒照片不會顯示，該班重新上傳會直接覆蓋。
-- **檢視靠網址參數區分，不是權限控管**。校內工具夠用，但把廠商連結給誰就等於給了排字編輯權。
+  且該模式不支援圖案上傳，畫面會說明。正式使用請走 GitHub Pages。
+- **先選先得看的是各裝置自己的時鐘**。手機時間差幾秒不影響結果（第 3 席本來就要抽籤），
+  但兩班同時搶第 2 席時，理論上有幾秒的排序誤差。
+- **規則刻意不允許刪除圖案**。清除某班填寫時主文件紀錄會消失，子集合舊圖案仍在，
+  但畫面只走主文件的時間戳，孤兒圖案不會顯示，該班重新上傳會直接覆蓋。
+- **同一家廠商換裝置填會多出一列**。廠商身分存在瀏覽器 localStorage，換手機等於新的一份報價，
+  比價表看更新時間可以分辨，多的那份可請廠商自己按「清除我的報價」。
+- **檢視靠網址參數區分，不是權限控管**。校內工具夠用，但把廠商連結給誰就等於給了報價編輯權。
 - QR 卡片在深色模式仍維持白底黑碼，這是刻意的 —— 反白 QR 有些掃描器讀不到。

@@ -1,0 +1,3095 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>五年級班服共編</title>
+<meta name="description" content="各班選色（同色三班額滿、第三席抽籤）、上傳圖案、線上試衣間、尺寸數量統計，廠商據以線上報價">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#faf8f4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+<style>
+*{box-sizing:border-box}
+:root{
+  --paper:#faf8f4; --card:#ffffff; --sunk:#f4f1ea;
+  --ink:#1e1c19; --dim:#6d675e; --faint:#989185;
+  --line:#e4dfd5; --hair:#efebe2; --hatch:#eae6dc;
+  --a1:#a1670f; --a1-bg:#fbf3e2; --a1-ln:#e6d3a8;
+  --a2:#1d5ba4; --a2-bg:#edf3fc; --a2-ln:#c3d7f0;
+  --a3:#1c7549; --a3-bg:#eaf6ef; --a3-ln:#b5dcc4;
+  --a4:#7a3f8c; --a4-bg:#f8eefb; --a4-ln:#e0c6e8;
+  --warn:#9c3412; --warn-bg:#fbeee7; --warn-ln:#eccdbd;
+  --focus:#1d5ba4;
+  --sh:0 1px 2px rgba(40,32,18,.05), 0 6px 18px -10px rgba(40,32,18,.18);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#1a1815; --card:#232019; --sunk:#1f1c17;
+    --ink:#ece6dc; --dim:#a09789; --faint:#7b7366;
+    --line:#35312a; --hair:#2b2822; --hatch:#26231d;
+    --a1:#e3a943; --a1-bg:#332a17; --a1-ln:#584825;
+    --a2:#7db0ef; --a2-bg:#1a2634; --a2-ln:#2e4864;
+    --a3:#5ec68e; --a3-bg:#172b20; --a3-ln:#2b543e;
+    --a4:#cb99dc; --a4-bg:#2b1f31; --a4-ln:#4a3553;
+    --warn:#f0a184; --warn-bg:#33211a; --warn-ln:#5c3626;
+    --focus:#7db0ef;
+    --sh:0 1px 2px rgba(0,0,0,.3), 0 6px 18px -10px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1a1815; --card:#232019; --sunk:#1f1c17;
+  --ink:#ece6dc; --dim:#a09789; --faint:#7b7366;
+  --line:#35312a; --hair:#2b2822; --hatch:#26231d;
+  --a1:#e3a943; --a1-bg:#332a17; --a1-ln:#584825;
+  --a2:#7db0ef; --a2-bg:#1a2634; --a2-ln:#2e4864;
+  --a3:#5ec68e; --a3-bg:#172b20; --a3-ln:#2b543e;
+  --a4:#cb99dc; --a4-bg:#2b1f31; --a4-ln:#4a3553;
+  --warn:#f0a184; --warn-bg:#33211a; --warn-ln:#5c3626;
+  --focus:#7db0ef;
+  --sh:0 1px 2px rgba(0,0,0,.3), 0 6px 18px -10px rgba(0,0,0,.6);
+}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:16px/1.65 "Noto Sans TC",-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:36px 18px 72px;display:flex;flex-direction:column;gap:28px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+header{display:flex;flex-direction:column;gap:6px}
+.eyebrow{margin:0;font-size:12.5px;letter-spacing:.14em;color:var(--dim);font-weight:500}
+h1{margin:0;font-family:"Noto Serif TC",serif;font-weight:700;font-size:clamp(25px,4.4vw,34px);
+  line-height:1.3;letter-spacing:.01em;text-wrap:balance}
+.lede{margin:2px 0 0;color:var(--dim);font-size:15px;max-width:64ch}
+.role{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:12px;font-weight:600;
+  letter-spacing:.08em;padding:3px 11px;border-radius:999px;border:1px solid currentColor;margin-bottom:2px}
+.role.r1{color:var(--a2)} .role.r2{color:var(--a1)} .role.r3{color:var(--a4)}
+.syncbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:13px;color:var(--dim)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--a3);flex:0 0 auto}
+.dot.local{background:var(--a1)} .dot.bad{background:var(--warn)}
+
+/* ---------- panels ---------- */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh)}
+.panel-hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:18px 20px 0}
+.panel-bd{padding:16px 20px 20px;display:flex;flex-direction:column;gap:15px}
+h2{margin:0;font-family:"Noto Serif TC",serif;font-weight:600;font-size:19px;letter-spacing:.01em}
+h3{margin:0;font-size:14px;font-weight:600}
+.kicker{font-size:11.5px;letter-spacing:.16em;color:var(--dim);font-weight:600;text-transform:uppercase}
+.hint{margin:0;font-size:13.5px;color:var(--dim)}
+.tally{margin-left:auto;font-size:13px;color:var(--dim)}
+.tally b{color:var(--ink);font-weight:600}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:600;color:var(--dim)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
+input[type=text],input[type=number],select,textarea{
+  font:inherit;font-size:15px;color:var(--ink);background:var(--card);
+  border:1px solid var(--line);border-radius:10px;padding:9px 11px;width:100%}
+textarea{resize:vertical;min-height:64px;line-height:1.5}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+input[disabled],select[disabled],textarea[disabled]{opacity:.5}
+
+/* ---------- 班級選擇 ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{appearance:none;background:var(--card);color:var(--ink);border:1px solid var(--line);
+  border-radius:11px;padding:8px 12px 7px;cursor:pointer;display:flex;flex-direction:column;
+  align-items:center;gap:4px;min-width:66px;transition:border-color .12s,background .12s,transform .08s}
+.chip:hover{border-color:var(--dim)}
+.chip:active{transform:translateY(1px)}
+.chip .cn{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:16px;font-variant-numeric:tabular-nums}
+.chip .pip{width:16px;height:6px;border-radius:3px;background:var(--line);border:1px solid var(--hair)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* ---------- 色票 + 名額 ---------- */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:9px}
+.sw{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:0;
+  cursor:pointer;overflow:hidden;display:flex;flex-direction:column;text-align:center;
+  transition:border-color .12s,transform .08s}
+.sw:hover{border-color:var(--dim)} .sw:active{transform:translateY(1px)}
+.sw i{display:block;height:46px;border-bottom:1px solid var(--hair);position:relative}
+.sw b{display:block;font-size:12.5px;font-weight:600;padding:6px 4px 1px;color:var(--ink);line-height:1.3}
+.sw u{display:block;font-size:11px;text-decoration:none;color:var(--dim);padding:0 4px 3px;line-height:1.35}
+.sw .seats{display:flex;gap:3px;justify-content:center;padding:0 0 7px}
+.sw .seats s{width:13px;height:5px;border-radius:3px;background:var(--hatch);text-decoration:none;display:block}
+.sw .seats s.take{background:var(--ink)}
+.sw .seats s.mine{background:var(--a2)}
+.sw .seats s.wait{background:var(--a1)}
+.sw[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.sw[disabled]{opacity:.42;cursor:not-allowed}
+.sw[disabled] b{text-decoration:line-through}
+.sw.full i::after{content:"額滿";position:absolute;inset:auto 0 0 0;font-size:10.5px;font-weight:700;
+  background:rgba(30,28,25,.72);color:#fff;padding:1px 0;letter-spacing:.1em}
+
+/* ---------- 試衣間 ---------- */
+.fitroom{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fit{background:var(--sunk);border:1px solid var(--hair);border-radius:14px;padding:10px 10px 6px;
+  display:flex;flex-direction:column;gap:4px;cursor:pointer;transition:border-color .12s}
+.fit.sel{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.fit svg{display:block;width:100%;height:auto}
+.fit figcaption{font-size:12px;color:var(--dim);text-align:center;padding-bottom:4px;font-weight:600}
+.fit .drop{border:1px dashed var(--line);border-radius:9px;font-size:12px;color:var(--faint);
+  text-align:center;padding:5px 4px;margin-top:2px}
+.slider{display:grid;grid-template-columns:64px 1fr 46px;align-items:center;gap:9px;font-size:13px;color:var(--dim)}
+.slider input[type=range]{width:100%;accent-color:var(--focus)}
+.slider output{font-family:"IBM Plex Mono",monospace;font-size:12.5px;text-align:right;color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{appearance:none;background:var(--card);border:0;border-right:1px solid var(--line);
+  font:inherit;font-size:13.5px;padding:7px 14px;color:var(--dim);cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:600}
+.presets{display:flex;flex-wrap:wrap;gap:7px}
+.pbtn{appearance:none;background:var(--card);border:1px solid var(--line);border-radius:999px;
+  font:inherit;font-size:12.5px;padding:5px 12px;color:var(--dim);cursor:pointer}
+.pbtn:hover{border-color:var(--dim);color:var(--ink)}
+
+/* ---------- 尺寸 ---------- */
+.sizes{display:grid;grid-template-columns:repeat(auto-fit,minmax(86px,1fr));gap:9px}
+.size{background:var(--sunk);border:1px solid var(--hair);border-radius:12px;padding:8px 8px 9px;
+  display:flex;flex-direction:column;gap:5px;align-items:center}
+.size span{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:14px;letter-spacing:.04em}
+.size em{font-style:normal;font-size:10.5px;color:var(--faint);line-height:1.3;text-align:center}
+.size input{text-align:center;font-family:"IBM Plex Mono",monospace;font-size:16px;padding:6px 4px}
+.sizesum{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:13.5px;color:var(--dim)}
+.sizesum b{font-family:"IBM Plex Mono",monospace;font-size:22px;color:var(--ink);font-weight:600}
+
+/* ---------- 色卡牆 ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--card);
+  display:flex;flex-direction:column}
+.card.empty{border-style:dashed;background:var(--sunk)}
+.card.mineHi{box-shadow:inset 0 0 0 2px var(--a2)}
+.card .band{height:9px}
+.card .sh{background:var(--sunk);border-bottom:1px solid var(--hair);padding:4px 8px 0}
+.card .sh svg{display:block;width:100%;height:auto}
+.card .body{padding:8px 10px 10px;display:flex;flex-direction:column;gap:3px}
+.card .cn{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:15px}
+.card .nm{font-size:12.5px;color:var(--dim);display:flex;align-items:center;gap:5px}
+.card .hx{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint)}
+.card .qty{font-size:12px;color:var(--dim)}
+.card .qty b{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:14px}
+.card .none{color:var(--faint);font-size:12.5px;padding:14px 0;text-align:center}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:1px 7px;
+  border-radius:999px;border:1px solid currentColor;align-self:flex-start}
+.badge.ok{color:var(--a3)} .badge.wait{color:var(--a1)} .badge.out{color:var(--warn)} .badge.won{color:var(--a4)}
+
+/* ---------- 表格 ---------- */
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:560px}
+th,td{border:1px solid var(--hair);padding:7px 9px;text-align:center;vertical-align:middle}
+th{background:var(--sunk);font-weight:600;font-size:12.5px;color:var(--dim);white-space:nowrap}
+td.l,th.l{text-align:left}
+tr.sum td{background:var(--sunk);font-weight:700}
+td em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+td.none{color:var(--faint)}
+td .sq{display:inline-block;width:15px;height:15px;border-radius:4px;border:1px solid rgba(0,0,0,.15);
+  vertical-align:-3px;margin-right:6px}
+table input{padding:5px 6px;font-size:14px;text-align:center;font-family:"IBM Plex Mono",monospace;min-width:66px}
+
+/* ---------- 提醒條 ---------- */
+.flags{display:flex;flex-direction:column;gap:8px}
+.flag{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.55;
+  border:1px solid var(--hair);background:var(--sunk);border-radius:11px;padding:9px 12px;color:var(--dim)}
+.flag b{color:var(--ink);font-weight:600}
+.flag.warn{background:var(--warn-bg);border-color:var(--warn-ln);color:var(--warn)}
+.flag.warn b{color:var(--warn)}
+.flag.good{background:var(--a3-bg);border-color:var(--a3-ln);color:var(--a3)}
+.flag.good b{color:var(--a3)}
+.flag.note{background:var(--a1-bg);border-color:var(--a1-ln);color:var(--a1)}
+.flag.note b{color:var(--a1)}
+.dabs{display:inline-flex;gap:3px;flex:0 0 auto;padding-top:4px}
+.dabs i{width:13px;height:13px;border-radius:4px;border:1px solid rgba(0,0,0,.18);display:block}
+
+/* ---------- 抽籤 ---------- */
+.draws{display:flex;flex-direction:column;gap:12px}
+.draw{border:1px solid var(--a1-ln);background:var(--a1-bg);border-radius:13px;padding:12px 14px;
+  display:flex;flex-direction:column;gap:9px}
+.draw .hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.draw .hd i{width:26px;height:26px;border-radius:8px;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.draw .hd b{font-size:15px}
+.draw .hd .hx{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--dim)}
+.draw .who{font-size:13.5px;color:var(--dim);line-height:1.7}
+.draw .who b{font-family:"IBM Plex Mono",monospace;color:var(--ink)}
+.reel{font-family:"IBM Plex Mono",monospace;font-size:26px;font-weight:600;letter-spacing:.08em;
+  background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;text-align:center}
+.log{display:flex;flex-direction:column;gap:7px;font-size:13px;color:var(--dim)}
+.logrow{display:flex;gap:9px;align-items:flex-start;border-top:1px dashed var(--hair);padding-top:7px;flex-wrap:wrap}
+.logrow:first-child{border-top:0;padding-top:0}
+.logrow i{width:15px;height:15px;border-radius:4px;border:1px solid rgba(0,0,0,.18);flex:0 0 auto;margin-top:4px}
+.logrow b{color:var(--ink)}
+.logrow .seed{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--faint)}
+
+/* ---------- 報價 ---------- */
+.money{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.total{display:flex;flex-wrap:wrap;gap:8px 26px;align-items:baseline;background:var(--sunk);
+  border:1px solid var(--hair);border-radius:12px;padding:12px 15px}
+.total div{display:flex;flex-direction:column;gap:1px}
+.total span{font-size:12px;color:var(--dim)}
+.total b{font-family:"IBM Plex Mono",monospace;font-size:21px;font-weight:600}
+
+/* ---------- 按鈕 / toast ---------- */
+.actions{display:flex;flex-wrap:wrap;gap:9px;align-items:center;padding-top:2px}
+.btn{appearance:none;font:inherit;font-size:14.5px;font-weight:600;border-radius:11px;padding:10px 17px;
+  border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;
+  transition:opacity .12s,transform .08s}
+.btn:hover{opacity:.88} .btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--dim)}
+.btn.danger{background:transparent;color:var(--warn);border-color:var(--warn);opacity:.75}
+.btn.danger:hover{opacity:1}
+.btn.sm{font-size:13px;padding:7px 13px;border-radius:9px}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,.chip:focus-visible,.sw:focus-visible,.pbtn:focus-visible,.seg button:focus-visible,.fit:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,14px);z-index:50;
+  background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:11px;font-size:14px;
+  box-shadow:0 10px 30px -8px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;
+  max-width:min(88vw,460px);text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#lightbox{position:fixed;inset:0;z-index:60;background:rgba(20,17,12,.86);display:none;place-items:center;padding:24px;cursor:zoom-out}
+#lightbox.show{display:grid}
+#lightbox img{max-width:100%;max-height:100%;border-radius:12px;box-shadow:0 20px 60px -20px #000}
+footer{color:var(--faint);font-size:12.5px;text-align:center;line-height:1.8}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:560px){
+  .wrap{padding:24px 12px 60px;gap:22px}
+  .panel-hd{padding:15px 14px 0} .panel-bd{padding:13px 14px 16px}
+  .cards{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .swatches{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}
+  .slider{grid-template-columns:54px 1fr 40px;gap:7px}
+}
+@media print{
+  body{background:#fff}
+  .panel{box-shadow:none;break-inside:avoid;border-color:#ccc}
+  .noprint,.actions,#toast,#lightbox{display:none!important}
+  .wrap{max-width:none;padding:0;gap:14px}
+  .card,.draw{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="role" id="hdRole"></span>
+    <p class="eyebrow" id="hdEyebrow"></p>
+    <h1 id="hdTitle"></h1>
+    <p class="lede" id="hdLede"></p>
+    <div class="syncbar"><span class="dot" id="syncDot"></span><span id="syncText">載入中…</span></div>
+  </header>
+
+  <!-- ── 班級端：選班級 ───────────────────────────────── -->
+  <section class="panel noprint" data-view="class" id="panelWho">
+    <div class="panel-hd"><span class="kicker">第一步</span><h2>選擇你的班級</h2>
+      <span class="tally" id="whoTally"></span></div>
+    <div class="panel-bd">
+      <div class="chips" id="classChips"></div>
+      <p class="hint" id="whoHint"></p>
+    </div>
+  </section>
+
+  <!-- ── 班級端：選色 ─────────────────────────────────── -->
+  <section class="panel" data-view="class" id="panelColor">
+    <div class="panel-hd"><span class="kicker">第二步</span><h2>選一個班服顏色</h2>
+      <span class="tally" id="colorTally"></span></div>
+    <div class="panel-bd">
+      <div class="flags" id="colorFlags"></div>
+      <div class="swatches" id="swatches"></div>
+      <p class="hint" id="colorHint"></p>
+    </div>
+  </section>
+
+  <!-- ── 班級端：款式與圖案 ───────────────────────────── -->
+  <section class="panel" data-view="class" id="panelDesign">
+    <div class="panel-hd"><span class="kicker">第三步</span><h2>款式、圖案與線上試衣間</h2></div>
+    <div class="panel-bd">
+
+      <div class="grid2">
+        <div class="field">
+          <label for="fSleeve">袖長</label>
+          <select id="fSleeve"></select>
+        </div>
+        <div class="field">
+          <label for="fNeck">領型</label>
+          <select id="fNeck"></select>
+        </div>
+        <div class="field">
+          <label>領口與袖口配色</label>
+          <div class="presets" id="trims"></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>上傳設計圖案<span class="hint" style="font-weight:400">　去背 PNG 會保留透明背景；正面、背面可以分開上傳</span></label>
+        <div class="actions" style="padding-top:0">
+          <button class="btn ghost sm" id="btnArtFront" type="button">上傳正面圖案</button>
+          <input type="file" id="fArtFront" accept="image/*" style="display:none">
+          <button class="btn ghost sm" id="btnArtBack" type="button">上傳背面圖案</button>
+          <input type="file" id="fArtBack" accept="image/*" style="display:none">
+          <button class="btn ghost sm" id="btnArtClear" type="button">移除這一面的圖案</button>
+        </div>
+        <p class="hint" id="artHint"></p>
+      </div>
+
+      <div class="field">
+        <label>試衣間預覽（點衣服可切換要調整哪一面）</label>
+        <div class="fitroom">
+          <figure class="fit sel" id="fitFront" tabindex="0" data-face="front">
+            <div id="shirtFront"></div>
+            <figcaption>正面</figcaption>
+          </figure>
+          <figure class="fit" id="fitBack" tabindex="0" data-face="back">
+            <div id="shirtBack"></div>
+            <figcaption>背面</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>圖案位置與大小　<span class="hint" style="font-weight:400" id="faceLabel"></span></label>
+        <div class="presets" id="artPresets">
+          <button class="pbtn" type="button" data-preset="chest">前胸中央</button>
+          <button class="pbtn" type="button" data-preset="left">左胸小圖</button>
+          <button class="pbtn" type="button" data-preset="big">滿版大圖</button>
+          <button class="pbtn" type="button" data-preset="low">下擺小圖</button>
+        </div>
+        <div class="slider"><span>大小</span><input type="range" id="rW" min="30" max="270" step="2"><output id="oW"></output></div>
+        <div class="slider"><span>上下</span><input type="range" id="rY" min="80" max="400" step="2"><output id="oY"></output></div>
+        <div class="slider"><span>左右</span><input type="range" id="rX" min="90" max="310" step="2"><output id="oX"></output></div>
+      </div>
+
+      <div class="actions noprint" style="padding-top:0">
+        <button class="btn ghost sm" id="btnShirtPng">下載試衣圖 PNG</button>
+        <span class="hint">試衣圖是給廠商看版面與比例用的；實際印製請另外提供圖案原始檔。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 班級端：尺寸數量 ─────────────────────────────── -->
+  <section class="panel" data-view="class" id="panelSizes">
+    <div class="panel-hd"><span class="kicker">第四步</span><h2>各尺寸件數</h2>
+      <span class="tally" id="sizeTallyMine"></span></div>
+    <div class="panel-bd">
+      <div class="sizes" id="sizeGrid"></div>
+      <div class="sizesum"><span>本班合計</span><b id="myTotal">0</b><span>件</span>
+        <span id="myBreak" class="hint"></span></div>
+      <div class="field">
+        <label for="fNote">備註（印製顏色、指定廠牌、特殊尺寸需求）</label>
+        <textarea id="fNote" maxlength="80" placeholder="例：正面印花白色，另需 3XL 兩件"></textarea>
+      </div>
+      <div class="flags" id="formFlags"></div>
+      <div class="actions noprint">
+        <button class="btn" id="btnSave">送出 / 更新</button>
+        <button class="btn ghost" id="btnCopy">複製我班的填寫</button>
+        <button class="btn danger" id="btnClearMine">清除我班的填寫</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 全校一覽（三種身分都看得到） ──────────────────── -->
+  <section class="panel" data-view="class admin vendor" id="panelBoard">
+    <div class="panel-hd"><span class="kicker">全校</span><h2>各班班服一覽</h2>
+      <span class="tally" id="boardTally"></span></div>
+    <div class="panel-bd">
+      <div class="cards" id="cards"></div>
+      <p class="hint" id="boardHint"></p>
+    </div>
+  </section>
+
+  <!-- ── 承辦：抽籤 ───────────────────────────────────── -->
+  <section class="panel" data-view="admin" id="panelDraw">
+    <div class="panel-hd"><span class="kicker">協調</span><h2>同色第三席抽籤</h2>
+      <span class="tally" id="drawTally"></span></div>
+    <div class="panel-bd">
+      <p class="hint" id="drawRule"></p>
+      <div class="draws" id="drawList"></div>
+      <div class="field" id="drawLogWrap">
+        <label>抽籤紀錄（全校同步，可公開查驗）</label>
+        <div class="log" id="drawLog"></div>
+      </div>
+      <div class="actions noprint">
+        <button class="btn danger sm" id="btnUndoDraw">撤銷最近一次抽籤</button>
+        <span class="hint">撤銷後該色回到候補狀態，可重新抽。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 承辦：繳交狀況 ───────────────────────────────── -->
+  <section class="panel" data-view="admin" id="panelCheck">
+    <div class="panel-hd"><span class="kicker">檢視</span><h2>繳交狀況與提醒</h2></div>
+    <div class="panel-bd">
+      <div class="flags" id="checkFlags"></div>
+    </div>
+  </section>
+
+  <!-- ── 承辦：尺寸總表 ───────────────────────────────── -->
+  <section class="panel" data-view="admin vendor" id="panelSizeTable">
+    <div class="panel-hd"><span class="kicker">總表</span><h2>各班尺寸與件數</h2>
+      <span class="tally" id="sizeTally"></span></div>
+    <div class="panel-bd">
+      <div class="tblwrap"><table id="sizeTable"></table></div>
+      <p class="hint" id="sizeHint"></p>
+    </div>
+  </section>
+
+  <!-- ── 廠商：線上報價 ───────────────────────────────── -->
+  <section class="panel" data-view="vendor" id="panelQuote">
+    <div class="panel-hd"><span class="kicker">報價</span><h2>線上報價單</h2>
+      <span class="tally" id="quoteTally"></span></div>
+    <div class="panel-bd">
+      <div class="grid2">
+        <div class="field">
+          <label for="qName">廠商名稱（作為這份報價的署名）</label>
+          <input type="text" id="qName" maxlength="20" placeholder="例：永昌服飾">
+        </div>
+        <div class="field">
+          <label for="qContact">聯絡方式</label>
+          <input type="text" id="qContact" maxlength="30" placeholder="例：王小姐 0912-345-678">
+        </div>
+        <div class="field">
+          <label for="qValid">報價有效期限</label>
+          <input type="text" id="qValid" maxlength="20" placeholder="例：115/11/30">
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="qBase">共同單價（元／件，填了按套用會帶入每一班）</label>
+          <div class="actions" style="padding-top:0">
+            <input type="number" id="qBase" min="0" max="9999" inputmode="numeric" placeholder="例：180" style="max-width:160px">
+            <button class="btn ghost sm" id="btnApplyBase" type="button">套用到全部班級</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="qBig">大尺寸加價（XL 以上每件加，元）</label>
+          <input type="number" id="qBig" min="0" max="999" inputmode="numeric" placeholder="例：20" style="max-width:160px">
+        </div>
+      </div>
+      <div class="tblwrap"><table id="quoteTable"></table></div>
+      <div class="total" id="quoteSum"></div>
+      <div class="field">
+        <label for="qNote">報價說明（含稅與否、交期、版費計算方式、贈品）</label>
+        <textarea id="qNote" maxlength="200" placeholder="例：報價含稅，版費每款一次性；下單後 14 個工作天交貨"></textarea>
+      </div>
+      <div class="actions noprint">
+        <button class="btn ghost sm" id="btnQuotePdf">下載這份報價單 PDF</button>
+        <button class="btn danger sm" id="btnClearQuote">清除我的報價</button>
+      </div>
+      <p class="hint" id="quoteHint"></p>
+    </div>
+  </section>
+
+  <!-- ── 承辦：比價 ───────────────────────────────────── -->
+  <section class="panel" data-view="admin" id="panelCompare">
+    <div class="panel-hd"><span class="kicker">比價</span><h2>廠商報價比較</h2>
+      <span class="tally" id="cmpTally"></span></div>
+    <div class="panel-bd">
+      <div class="tblwrap"><table id="cmpTable"></table></div>
+      <p class="hint" id="cmpHint"></p>
+    </div>
+  </section>
+
+  <!-- ── 匯出 ─────────────────────────────────────────── -->
+  <section class="panel noprint" data-view="admin vendor" id="panelOut">
+    <div class="panel-hd"><span class="kicker">輸出</span><h2>匯出與列印</h2></div>
+    <div class="panel-bd">
+      <div class="actions">
+        <button class="btn" id="btnXlsx">匯出 Excel</button>
+        <button class="btn" id="btnPdf">匯出 PDF</button>
+        <button class="btn ghost" id="btnCsv">匯出 CSV</button>
+        <button class="btn ghost" id="btnPrint">列印</button>
+      </div>
+      <p class="hint">Excel 四個工作表：顏色與款式、尺寸統計、抽籤紀錄、廠商報價。PDF 為 A4 橫式一頁，含色塊、試衣縮圖與各尺寸件數。</p>
+    </div>
+  </section>
+
+  <footer>
+    <span id="stamp"></span><br>
+    <span id="hdFoot"></span>
+  </footer>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="lightbox" role="dialog" aria-label="試衣圖放大"><img id="lightboxImg" alt="班服試衣圖"></div>
+<script>
+"use strict";
+
+/* ============================================================
+   設定：改這一區就好
+   班級、色票、款式、尺寸表都由此推導，不必動 HTML
+   ============================================================ */
+const CFG = {
+  school: "永福國小",
+  term: "115 學年度",
+  grade: "五年級",
+  title: "五年級班服共編",
+  shareTitle: "五年級班服共編入口",
+  deadline: "115/10/15",
+  contact: "學務處",
+  classes: ["501","502","503","504","505","506","507","508","509","510","511"],
+  perColor: 3,        /* 同一顏色最多幾個班 */
+  freeSeats: 2,       /* 先選先得的席次，其餘席次一律抽籤 */
+  sleeves: ["短袖","長袖"],
+  necks: ["圓領","V 領","POLO 領"],
+  trims: [
+    {name:"同主色", hex:""},
+    {name:"白",     hex:"#FFFFFF"},
+    {name:"黑",     hex:"#1E1E1E"},
+    {name:"丈青",   hex:"#1F3864"},
+    {name:"正紅",   hex:"#D32027"},
+    {name:"檸檬黃", hex:"#F2D024"}
+  ],
+  palette: [
+    {name:"丈青",   hex:"#1F3864"},
+    {name:"寶藍",   hex:"#1155CC"},
+    {name:"天藍",   hex:"#4FA8E0"},
+    {name:"湖水綠", hex:"#2FA98C"},
+    {name:"墨綠",   hex:"#17603F"},
+    {name:"草綠",   hex:"#5FA82B"},
+    {name:"螢光綠", hex:"#B6E42B"},
+    {name:"檸檬黃", hex:"#F2D024"},
+    {name:"螢光橘", hex:"#FF7A1A"},
+    {name:"磚紅",   hex:"#A93226"},
+    {name:"正紅",   hex:"#D32027"},
+    {name:"桃紅",   hex:"#E24A8B"},
+    {name:"藕紫",   hex:"#7A3F8C"},
+    {name:"卡其",   hex:"#C2A878"},
+    {name:"淺灰",   hex:"#C9CCCF"},
+    {name:"深灰",   hex:"#4A4F55"},
+    {name:"黑",     hex:"#1E1E1E"},
+    {name:"白",     hex:"#FFFFFF"}
+  ],
+  sizes: ["XS","S","M","L","XL","XXL"],
+  bigSizes: ["XL","XXL"],   /* 廠商加價的尺寸 */
+  sizeChart: [
+    {size:"XS",  chest:38, len:56},
+    {size:"S",   chest:41, len:61},
+    {size:"M",   chest:44, len:66},
+    {size:"L",   chest:47, len:70},
+    {size:"XL",  chest:50, len:74},
+    {size:"XXL", chest:53, len:77}
+  ],
+  nearThreshold: 12
+};
+
+/* 檢視：?v=class（各班，預設）／?v=admin（承辦）／?v=vendor（廠商） */
+const VIEWS = {
+  class:  {key:"class",  role:"各班填寫", cls:"r1",
+           lede:"點自己的班級，選一個還有名額的顏色，上傳圖案看試衣間效果，再填各尺寸件數。11 個班看到同一份，名額即時扣。"},
+  admin:  {key:"admin",  role:"承辦檢視", cls:"r2",
+           lede:"全校選色與名額狀況、同色第三席抽籤、尺寸總表與廠商比價。除了主持抽籤，此檢視不會更動各班填的內容。"},
+  vendor: {key:"vendor", role:"廠商 · 線上報價", cls:"r3",
+           lede:"各班的顏色、款式、設計圖案與各尺寸件數都在這裡，可直接在線上填單價與版費，系統即時算出小計與總價。"}
+};
+const VIEW = (() => {
+  const q = (new URLSearchParams(location.search).get("v") || "").toLowerCase();
+  if(q === "admin" || q === "check" || q === "xue") return VIEWS.admin;
+  if(q === "vendor" || q === "v" || q === "price") return VIEWS.vendor;
+  return VIEWS.class;
+})();
+
+const LS_KEY = "yfes-banfu5-115-5";
+const LS_ME  = "yfes-banfu5-115-5-me";
+const LS_ART = "yfes-banfu5-115-5-art";
+const LS_VD  = "yfes-banfu5-115-5-vendor";
+
+/* ============================================================
+   狀態
+   ============================================================ */
+let state = {classes:{}, draws:[], quotes:{}, updated:null};
+let me = null;                 /* 班級端目前身分 */
+let draft = null;              /* 班級端草稿 */
+let face = "front";            /* 試衣間目前調整哪一面 */
+let vendorKey = null;          /* 廠商端目前身分 */
+const ART = {};                /* 圖案快取 "501:front" -> {thumb, full, at} */
+const ARTing = {};             /* 正在抓的圖案，避免重複請求 */
+
+const meta = cls => state.classes[cls] || null;
+const filled = () => CFG.classes.filter(c => meta(c));
+const missing = () => CFG.classes.filter(c => !meta(c));
+const artKey = (cls, f) => cls + ":" + f;
+
+/* ---------- 顏色 ---------- */
+function normHex(s){
+  if(!s) return null;
+  const t = String(s).trim().replace(/^#?/, "#").toUpperCase();
+  if(/^#[0-9A-F]{3}$/.test(t)) return "#" + t[1] + t[1] + t[2] + t[2] + t[3] + t[3];
+  return /^#[0-9A-F]{6}$/.test(t) ? t : null;
+}
+const sameHex = (a, b) => !!a && !!b && normHex(a) === normHex(b);
+function rgb(hex){
+  const h = normHex(hex) || "#000000";
+  return [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+}
+/** 依背景亮度挑字色，確保色塊上的字讀得到 */
+function onColor(hex){
+  const [r,g,b] = rgb(hex).map(v => { v /= 255; return v <= .03928 ? v/12.92 : Math.pow((v+.055)/1.055, 2.4); });
+  return (.2126*r + .7152*g + .0722*b) > .42 ? "#1e1c19" : "#ffffff";
+}
+/** 往黑（amt>0）或往白（amt<0）調，用來畫領口內裡與陰影 */
+function shade(hex, amt){
+  const c = rgb(hex).map(v => amt >= 0 ? Math.round(v * (1 - amt)) : Math.round(v + (255 - v) * -amt));
+  return "#" + c.map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, "0")).join("").toUpperCase();
+}
+function lab(hex){
+  const [r,g,b] = rgb(hex).map(v => { v /= 255; return v <= .04045 ? v/12.92 : Math.pow((v+.055)/1.055, 2.4); });
+  const x = (r*.4124 + g*.3576 + b*.1805) / .95047;
+  const y = (r*.2126 + g*.7152 + b*.0722);
+  const z = (r*.0193 + g*.1192 + b*.9505) / 1.08883;
+  const f = t => t > .008856 ? Math.cbrt(t) : (7.787*t + 16/116);
+  const [fx,fy,fz] = [f(x), f(y), f(z)];
+  return [116*fy - 16, 500*(fx - fy), 200*(fy - fz)];
+}
+/** CIE76 色差：數字越小越像。同色 0，一般認為 <12 在遠處會混淆 */
+function deltaE(h1, h2){
+  const a = lab(h1), b = lab(h2);
+  return Math.sqrt(Math.pow(a[0]-b[0],2) + Math.pow(a[1]-b[1],2) + Math.pow(a[2]-b[2],2));
+}
+/** 已選色的班兩兩比對，回傳顏色不同但太接近的配對 */
+function clashes(){
+  const f = filled().filter(c => meta(c).hex), out = [];
+  for(let i = 0; i < f.length; i++){
+    for(let j = i + 1; j < f.length; j++){
+      if(sameHex(meta(f[i]).hex, meta(f[j]).hex)) continue;
+      const d = deltaE(meta(f[i]).hex, meta(f[j]).hex);
+      if(d < CFG.nearThreshold) out.push({a:f[i], b:f[j], d:d, ha:meta(f[i]).hex, hb:meta(f[j]).hex});
+    }
+  }
+  return out.sort((x, y) => x.d - y.d);
+}
+const paletteName = hex => {
+  const p = CFG.palette.find(q => sameHex(q.hex, hex));
+  return p ? p.name : (normHex(hex) || "");
+};
+/** 領口袖口配色：空字串代表跟主色同色 */
+const trimName = hex => {
+  if(!normHex(hex)) return "同主色";
+  const t = CFG.trims.find(q => sameHex(q.hex, hex));
+  return t ? t.name : paletteName(hex);
+};
+
+/* ============================================================
+   名額與抽籤
+   每色 perColor 席。依「送出選色的時間」排序，前 freeSeats 席先選先得，
+   之後的席次一律抽籤決定 —— 只有一班候補時抽籤結果就是該班。
+   抽輸的班記在 draws[].lose，對該色永久出局，必須改選，避免反覆抽同一色。
+   ============================================================ */
+/** 曾經在這個顏色抽輸的班 */
+function losers(hex){
+  const out = {};
+  (state.draws || []).forEach(d => {
+    if(sameHex(d.hex, hex)) (d.lose || []).forEach(c => { out[c] = d; });
+  });
+  return out;
+}
+/** 抽中這個顏色的班 */
+function winners(hex){
+  return (state.draws || []).filter(d => sameHex(d.hex, hex)).map(d => d.win).filter(Boolean);
+}
+/** 目前選了這個顏色的班，依選色時間排序（同時間以班級序） */
+function pickers(hex){
+  return CFG.classes.filter(c => meta(c) && sameHex(meta(c).hex, hex))
+    .sort((a, b) => String(meta(a).at || "").localeCompare(String(meta(b).at || "")) || a.localeCompare(b));
+}
+/** 這個顏色的席位盤點：seated 已入席、waiting 候補、out 抽輸需改選 */
+function seatsOf(hex){
+  const lose = losers(hex), win = winners(hex);
+  const all = pickers(hex);
+  const out = all.filter(c => lose[c]);
+  const live = all.filter(c => !lose[c]);
+  const seated = [], waiting = [];
+  live.forEach(c => {
+    if(seated.length < CFG.freeSeats){ seated.push(c); return; }
+    if(win.indexOf(c) >= 0 && seated.length < CFG.perColor){ seated.push(c); return; }
+    waiting.push(c);
+  });
+  return {hex:normHex(hex), seated:seated, waiting:waiting, out:out,
+          open:Math.max(0, CFG.perColor - seated.length), free:Math.max(0, CFG.freeSeats - seated.length)};
+}
+/** 一個班目前的狀態：none 未選／free 先選先得／won 抽中／wait 候補／out 需改選 */
+function statusOf(cls){
+  const m = meta(cls);
+  if(!m || !m.hex) return "none";
+  const s = seatsOf(m.hex);
+  if(s.out.indexOf(cls) >= 0) return "out";
+  const i = s.seated.indexOf(cls);
+  if(i >= 0) return i < CFG.freeSeats ? "free" : "won";
+  return "wait";
+}
+const STATUS = {
+  none:{label:"未選色", cls:"", txt:"尚未選色"},
+  free:{label:"確定",   cls:"ok",   txt:"先選先得，名額確定"},
+  won: {label:"抽中",   cls:"won",  txt:"抽籤抽中第 " + CFG.perColor + " 席"},
+  wait:{label:"候補",   cls:"wait", txt:"候補中，等承辦主持抽籤"},
+  out: {label:"需改選", cls:"out",  txt:"抽籤未抽中，請改選其他顏色"}
+};
+/** 需要抽籤的顏色（有人候補、而且還有空席） */
+function pendingDraws(){
+  return CFG.palette.map(p => seatsOf(p.hex)).filter(s => s.waiting.length && s.open > 0)
+    .map(s => Object.assign(s, {name:paletteName(s.hex)}));
+}
+/** 可重現的亂數：同一個種子一定抽出同一個順序，任何人都能重算查驗 */
+function mulberry32(seed){
+  let a = seed >>> 0;
+  return function(){
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+/** 種子洗牌（Fisher–Yates） */
+function shuffle(list, seed){
+  const r = mulberry32(seed), a = list.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(r() * (i + 1));
+    const t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function newSeed(){
+  try{
+    const b = new Uint32Array(1);
+    crypto.getRandomValues(b);
+    return b[0] >>> 0;
+  }catch(e){ return Math.floor(Math.random() * 4294967296) >>> 0; }
+}
+
+/* ---------- 尺寸 ---------- */
+const sizesOf = cls => (meta(cls) && meta(cls).sizes) || {};
+function totalOf(cls){
+  const s = sizesOf(cls);
+  return CFG.sizes.reduce((n, k) => n + (Number(s[k]) || 0), 0);
+}
+function schoolSizes(){
+  const out = {};
+  CFG.sizes.forEach(k => { out[k] = 0; });
+  CFG.classes.forEach(c => {
+    const s = sizesOf(c);
+    CFG.sizes.forEach(k => { out[k] += Number(s[k]) || 0; });
+  });
+  out.total = CFG.sizes.reduce((n, k) => n + out[k], 0);
+  return out;
+}
+const bigCount = cls => {
+  const s = sizesOf(cls);
+  return CFG.bigSizes.reduce((n, k) => n + (Number(s[k]) || 0), 0);
+};
+
+/* ---------- 小工具 ---------- */
+function el(tag, cls, txt){
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(txt != null) e.textContent = txt;
+  return e;
+}
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove("show"), 3200);
+}
+function fmtStamp(d){
+  const z = n => String(n).padStart(2, "0");
+  return (d.getFullYear() - 1911) + "/" + z(d.getMonth()+1) + "/" + z(d.getDate())
+    + " " + z(d.getHours()) + ":" + z(d.getMinutes());
+}
+function shortStamp(iso){
+  if(!iso) return "—";
+  const d = new Date(iso);
+  if(isNaN(d)) return "—";
+  const z = n => String(n).padStart(2, "0");
+  return z(d.getMonth()+1) + "/" + z(d.getDate()) + " " + z(d.getHours()) + ":" + z(d.getMinutes());
+}
+const num = (v, max) => {
+  const n = Math.floor(Number(v));
+  return isFinite(n) && n > 0 ? Math.min(n, max == null ? 999 : max) : 0;
+};
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(raw){
+      const d = JSON.parse(raw);
+      if(d && d.classes) state = {classes:d.classes, draws:d.draws || [], quotes:d.quotes || {}, updated:d.updated || null};
+    }
+    me = localStorage.getItem(LS_ME) || null;
+    if(me && CFG.classes.indexOf(me) < 0) me = null;
+    vendorKey = localStorage.getItem(LS_VD) || null;
+    const a = localStorage.getItem(LS_ART);
+    if(a){ const o = JSON.parse(a); Object.keys(o).forEach(k => { ART[k] = o[k]; }); }
+  }catch(e){}
+}
+function saveLocal(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+/* ============================================================
+   即時共用
+   ── fire   ：Firebase Firestore，全校看到同一份（GitHub Pages）
+   ── shared ：Claude Artifact runtime（無法存圖案，只共用文字欄位）
+   ── local  ：都沒有時，資料只存在這台裝置的瀏覽器
+
+   設計圖案放在子集合 art/{班級_面}，主文件只留時間戳。
+   這樣主文件維持在幾 KB，改一次尺寸不會重寫幾百 KB 的圖檔。
+   規則設定見檔案最下方註解。FIREBASE_CONFIG 設成 null 即退回本機模式。
+   ============================================================ */
+/* 與 banfu.html 同一個 Firebase 專案（chinese-50d0c），但用不同的集合，兩份資料互不影響。 */
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyAFh8Dmf25j1D9rCpBpCpcxKLVBNsAF4m4",
+  authDomain:        "chinese-50d0c.firebaseapp.com",
+  projectId:         "chinese-50d0c",
+  storageBucket:     "chinese-50d0c.firebasestorage.app",
+  messagingSenderId: "1044608618028",
+  appId:             "1:1044608618028:web:d95f2811e0dd61bbe30b89"
+};
+const FIRE_COL = "classShirt";
+const FIRE_ID  = "115-5";
+const FIRE_SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
+
+const SYNC = {api:null, db:null, ref:null, unsub:null, mode:"local", note:"", timer:null,
+               pending:false, cached:false, cacheTimer:null};
+let DL = null;
+
+const blankState = () => ({classes:{}, draws:[], quotes:{}, updated:null});
+function adopt(d){
+  state = {classes:(d && d.classes) || {}, draws:(d && d.draws) || [],
+           quotes:(d && d.quotes) || {}, updated:(d && d.updated) || null};
+}
+
+async function initRuntime(){
+  renderSync();
+  if(typeof window !== "undefined" && window.claude && typeof window.claude.use === "function"){
+    try{ DL = await window.claude.use("downloads"); }catch(e){ DL = null; }
+    let art = null;
+    try{ art = await window.claude.use("artifact"); }catch(e){ art = null; }
+    if(art){
+      SYNC.api = art;
+      try{
+        const r = await fetch("data/banfu5.json", {cache:"no-store"});
+        if(r.ok){
+          const d = await r.json();
+          if(d && d.classes){ adopt(d); renderAll(); }
+        }
+      }catch(e){}
+      SYNC.mode = "shared"; renderSync(); return;
+    }
+  }
+  if(FIREBASE_CONFIG){ await initFirebase(); return; }
+  SYNC.mode = "local"; renderSync();
+}
+
+function loadScript(src){
+  return new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src = src; s.async = false;
+    s.onload = res;
+    s.onerror = () => rej(new Error("script " + src));
+    document.head.appendChild(s);
+  });
+}
+async function initFirebase(){
+  SYNC.mode = "connecting"; renderSync();
+  try{
+    await loadScript(FIRE_SDK + "firebase-app-compat.js");
+    await loadScript(FIRE_SDK + "firebase-firestore-compat.js");
+    firebase.initializeApp(FIREBASE_CONFIG);
+    SYNC.db = firebase.firestore();
+    SYNC.ref = SYNC.db.collection(FIRE_COL).doc(FIRE_ID);
+    SYNC.unsub = SYNC.ref.onSnapshot({includeMetadataChanges:true},
+      snap => {
+        adopt(snap.exists ? (snap.data() || {}) : null);
+        SYNC.mode = "fire"; SYNC.pending = false;
+        /* 連不上雲端時 Firestore 仍會回快取快照，不能當成連線成功 —— 否則導師會
+           以為填的東西大家都看得到，其實只在自己手機裡。 */
+        SYNC.cached = !!(snap.metadata && snap.metadata.fromCache);
+        clearTimeout(SYNC.cacheTimer);
+        if(SYNC.cached){
+          SYNC.cacheTimer = setTimeout(() => {          /* 給第一次連線幾秒緩衝，避免閃爍 */
+            if(SYNC.cached){
+              SYNC.note = "連不上雲端，畫面是本機快取，填寫還沒送出去";
+              renderSync();
+            }
+          }, 6000);
+        }else{
+          SYNC.note = "";
+        }
+        saveLocal(); renderAll(); pullArt();
+      },
+      err => {
+        SYNC.mode = "local";
+        SYNC.note = (err && err.code === "permission-denied")
+          ? "Firestore 規則尚未開放 " + FIRE_COL + "，資料僅存在這台裝置"
+          : "即時共用連線失敗，資料僅存在這台裝置";
+        renderSync();
+      }
+    );
+  }catch(e){
+    SYNC.mode = "local";
+    SYNC.note = "載入不到即時共用元件，資料僅存在這台裝置";
+    renderSync();
+  }
+}
+
+function fireCommit(mutate){
+  return SYNC.db.runTransaction(async t => {
+    const snap = await t.get(SYNC.ref);
+    const d = snap.exists ? (snap.data() || {}) : {};
+    const data = {classes:d.classes ? JSON.parse(JSON.stringify(d.classes)) : {},
+                  draws:d.draws ? JSON.parse(JSON.stringify(d.draws)) : [],
+                  quotes:d.quotes ? JSON.parse(JSON.stringify(d.quotes)) : {}};
+    mutate(data);
+    t.set(SYNC.ref, {classes:data.classes, draws:data.draws, quotes:data.quotes,
+                     updated:new Date().toISOString(), v:1});
+  });
+}
+/** 拒絕這次異動並把原因說給使用者聽（名額被搶走之類的） */
+function refuse(msg){
+  const e = new Error(msg);
+  e.refuse = true;
+  throw e;
+}
+/** 所有異動都走這裡：fire 模式進交易（重新讀一次才判名額），其餘就地套用 */
+async function commit(mutate){
+  if(SYNC.mode === "fire"){
+    SYNC.pending = true; renderSync();
+    try{
+      await fireCommit(mutate);
+      SYNC.pending = false; SYNC.note = ""; renderSync();
+      return true;                        /* onSnapshot 會帶回最新結果並重繪 */
+    }catch(e){
+      SYNC.pending = false;
+      if(e && e.refuse){ renderSync(); toast(e.message); return false; }
+      SYNC.note = "儲存失敗，請再試一次";
+      renderSync();
+      clearTimeout(SYNC.timer);
+      SYNC.timer = setTimeout(() => { SYNC.note = ""; renderSync(); }, 3200);
+      return false;
+    }
+  }
+  const before = JSON.stringify(state);
+  try{
+    mutate(state);
+  }catch(e){
+    state = JSON.parse(before);
+    if(e && e.refuse){ toast(e.message); return false; }
+    throw e;
+  }
+  state.updated = new Date().toISOString();
+  saveLocal(); queuePush(); renderAll();
+  return true;
+}
+function queuePush(){
+  if(SYNC.mode !== "shared" || !SYNC.api) return;
+  SYNC.pending = true; renderSync();
+  clearTimeout(SYNC.timer);
+  SYNC.timer = setTimeout(push, 700);
+}
+async function push(){
+  if(!SYNC.api) return;
+  try{
+    await SYNC.api.publish({"data/banfu5.json": JSON.stringify(state)});
+    SYNC.pending = false; SYNC.note = ""; renderSync();
+  }catch(e){
+    const c = e && e.code;
+    SYNC.pending = false;
+    if(c === "conflict"){
+      SYNC.note = "剛才有人同時送出，正在載入最新版…";
+      renderSync(); setTimeout(() => location.reload(), 900);
+    }else if(c === "rate_limited"){
+      SYNC.note = "儲存太頻繁，稍候再試"; renderSync();
+      clearTimeout(SYNC.timer); SYNC.timer = setTimeout(push, 4000);
+    }else{
+      SYNC.mode = "local";
+      SYNC.note = (c === "not_writer" || c === "not_granted")
+        ? "你只有檢視權限，填寫僅存在這台裝置"
+        : "共用儲存無法使用，填寫僅存在這台裝置";
+      renderSync();
+    }
+  }
+}
+
+/* ---------- 設計圖案：主文件只放時間戳，實體放子集合 ---------- */
+const artRef = (cls, f) => SYNC.ref.collection("art").doc(cls + "_" + f);
+const artAt = (cls, f) => { const m = meta(cls); return (m && m[f === "front" ? "frontAt" : "backAt"]) || null; };
+/** 圖案時間戳和快取不一致就補抓。班級端只抓自己的，其他檢視抓全部 */
+function pullArt(){
+  if(SYNC.mode !== "fire") return;
+  const want = (VIEW.key === "class") ? (me ? [me] : []) : CFG.classes;
+  want.forEach(c => {
+    ["front","back"].forEach(f => {
+      const at = artAt(c, f);
+      const k = artKey(c, f);
+      if(!at) return;
+      if(ART[k] && ART[k].at === at) return;
+      if(ARTing[k] === at) return;
+      ARTing[k] = at;
+      artRef(c, f).get()
+        .then(s => {
+          if(s.exists){
+            const d = s.data() || {};
+            ART[k] = {thumb:d.thumb || d.full || "", full:d.full || d.thumb || "", at:d.at || at};
+            if(c === me) saveMyArtLocal();
+            renderCards(); renderFit(); renderSizeTable(); renderQuote();
+          }
+        })
+        .catch(() => {})
+        .then(() => { delete ARTing[k]; });
+    });
+  });
+}
+function saveMyArtLocal(){
+  try{
+    const o = {};
+    ["front","back"].forEach(f => { const k = artKey(me, f); if(ART[k]) o[k] = ART[k]; });
+    localStorage.setItem(LS_ART, JSON.stringify(o));
+  }catch(e){}
+}
+async function saveArt(cls, f, thumb, full){
+  const at = new Date().toISOString();
+  if(SYNC.mode === "fire"){
+    await artRef(cls, f).set({full:full, thumb:thumb, at:at, by:cls});
+  }
+  ART[artKey(cls, f)] = {thumb:thumb, full:full, at:at};
+  if(cls === me) saveMyArtLocal();
+  return at;
+}
+
+/* ---------- 狀態列 ---------- */
+function renderSync(){
+  const dot = document.getElementById("syncDot");
+  const txt = document.getElementById("syncText");
+  let cls = "dot", s;
+  if(SYNC.mode === "fire"){
+    if(SYNC.cached && SYNC.note){ cls += " bad"; s = SYNC.note; }
+    else if(SYNC.cached){ cls += " local"; s = "連線中，尚未確認雲端資料…"; }
+    else s = "即時共用中，全校 " + CFG.classes.length + " 班看到同一份";
+  }else if(SYNC.mode === "shared"){
+    s = "即時共用中（Artifact 模式，不支援圖案上傳）";
+  }else if(SYNC.mode === "connecting"){
+    cls += " local"; s = "連線中…";
+  }else{
+    cls += " local"; s = SYNC.note || "資料儲存在這台裝置的瀏覽器";
+  }
+  if(SYNC.pending) s = "儲存中…";
+  if(SYNC.note && SYNC.mode !== "fire") s = SYNC.note;
+  dot.className = cls;
+  txt.textContent = s;
+}
+
+/* ============================================================
+   線上試衣間：純 SVG 畫一件衣服，顏色、款式、圖案都是屬性
+   同一組程式碼供三處使用 —— 班級端大圖、色卡牆縮圖、匯出用點陣圖。
+   座標系固定 400×470，圖案位置也用同一組座標存，換裝置看起來一樣。
+   ============================================================ */
+const SVGNS = "http://www.w3.org/2000/svg";
+const XLINK = "http://www.w3.org/1999/xlink";
+const SHIRT_W = 400, SHIRT_H = 470;
+let uid = 0;
+
+const NECKS = {
+  "圓領":    "C168,50 172,88 200,88 C228,88 232,50 260,52",
+  "V 領":    "C166,54 178,64 200,116 C222,64 234,54 260,52",
+  "POLO 領": "C168,50 172,80 200,80 C228,80 232,50 260,52",
+  back:      "C170,50 176,66 200,66 C224,66 230,50 260,52"
+};
+const SLEEVES = {
+  "短袖": {r:"L352,152 L298,182 L280,158", l:"L102,182 L48,152 L94,72",
+           cuffR:"M352,152 L298,182 L290,168 L344,138 Z", cuffL:"M48,152 L102,182 L110,168 L56,138 Z"},
+  "長袖": {r:"L348,146 L374,318 L322,332 L280,158", l:"L78,332 L26,318 L52,146 L94,72",
+           cuffR:"M374,318 L322,332 L318,316 L370,302 Z", cuffL:"M26,318 L78,332 L82,316 L30,302 Z"}
+};
+const neckPath = (neck, face) => (face === "back") ? NECKS.back : (NECKS[neck] || NECKS["圓領"]);
+const sleeveSet = sleeve => SLEEVES[sleeve] || SLEEVES["短袖"];
+
+function bodyPath(sleeve, neck, face){
+  const s = sleeveSet(sleeve);
+  return "M140,52 " + neckPath(neck, face) + " L306,72 " + s.r
+       + " L276,424 C270,438 240,444 200,444 C160,444 130,438 124,424 L120,158 " + s.l + " Z";
+}
+const collarPath = (neck, face) => "M140,52 " + neckPath(neck, face);
+const INNER_NECK = "M140,52 C160,30 240,30 260,52 C244,126 156,126 140,52 Z";
+const FOLDS = "M152,196 C162,258 150,332 160,418 M248,196 C238,258 250,332 240,418 "
+            + "M126,168 C146,190 152,214 150,238 M274,168 C254,190 248,214 250,238";
+
+function svgEl(tag, attrs){
+  const e = document.createElementNS(SVGNS, tag);
+  if(attrs) Object.keys(attrs).forEach(k => e.setAttribute(k, attrs[k]));
+  return e;
+}
+/** 建一件空白的衣服，回傳可重複套用規格的節點集合 */
+function mkShirt(){
+  const id = "s" + (++uid);
+  const root = svgEl("svg", {viewBox:"0 0 " + SHIRT_W + " " + SHIRT_H, xmlns:SVGNS,
+                            "xmlns:xlink":XLINK, width:"100%", role:"img"});
+  const defs = svgEl("defs");
+  const clip = svgEl("clipPath", {id:"c" + id});
+  const clipPathEl = svgEl("path");
+  clip.append(clipPathEl);
+  const grad = svgEl("linearGradient", {id:"g" + id, x1:"0", y1:"0", x2:"0.25", y2:"1"});
+  [["0","#ffffff",".17"], ["0.42","#ffffff","0"], ["0.72","#000000",".05"], ["1","#000000",".2"]]
+    .forEach(s => grad.append(svgEl("stop", {offset:s[0], "stop-color":s[1], "stop-opacity":s[2]})));
+  defs.append(clip, grad);
+
+  const inner = svgEl("path", {d:INNER_NECK});
+  const body  = svgEl("path", {"stroke-width":"1.6", "stroke-linejoin":"round"});
+  const g     = svgEl("g", {"clip-path":"url(#c" + id + ")"});
+  const art   = svgEl("image", {preserveAspectRatio:"xMidYMid meet", visibility:"hidden"});
+  const folds = svgEl("path", {d:FOLDS, fill:"none", stroke:"#000000", "stroke-opacity":".055",
+                              "stroke-width":"11", "stroke-linecap":"round"});
+  const shade = svgEl("rect", {x:"0", y:"0", width:SHIRT_W, height:SHIRT_H, fill:"url(#g" + id + ")"});
+  g.append(art, folds, shade);
+  const collar  = svgEl("path", {fill:"none", "stroke-width":"9", "stroke-linecap":"round"});
+  const cuffL   = svgEl("path", {stroke:"rgba(0,0,0,.14)", "stroke-width":"1"});
+  const cuffR   = svgEl("path", {stroke:"rgba(0,0,0,.14)", "stroke-width":"1"});
+  const placket = svgEl("g", {visibility:"hidden"});
+  const pl1 = svgEl("path", {fill:"none", "stroke-width":"1.4", "stroke-dasharray":"5 4", "stroke-opacity":".5"});
+  const pl2 = svgEl("path", {fill:"none", "stroke-width":"1.4", "stroke-dasharray":"5 4", "stroke-opacity":".5"});
+  const b1  = svgEl("circle", {cx:"200", cy:"104", r:"5", stroke:"rgba(0,0,0,.2)", "stroke-width":"1"});
+  const b2  = svgEl("circle", {cx:"200", cy:"134", r:"5", stroke:"rgba(0,0,0,.2)", "stroke-width":"1"});
+  placket.append(pl1, pl2, b1, b2);
+  const line = svgEl("path", {fill:"none", stroke:"rgba(0,0,0,.22)", "stroke-width":"1.6", "stroke-linejoin":"round"});
+  root.append(defs, inner, body, g, collar, cuffL, cuffR, placket, line);
+  return {root:root, clip:clipPathEl, inner:inner, body:body, art:art, collar:collar,
+          cuffL:cuffL, cuffR:cuffR, placket:placket, pl1:pl1, pl2:pl2, b1:b1, b2:b2, line:line,
+          src:null};
+}
+/** spec: {hex, trim, sleeve, neck, face, art:{x,y,w}, img} */
+function applyShirt(s, spec){
+  const hex = normHex(spec.hex) || "#DDD8CE";
+  const face = spec.face === "back" ? "back" : "front";
+  const d = bodyPath(spec.sleeve, spec.neck, face);
+  const trim = normHex(spec.trim) || shade(hex, .16);
+  s.clip.setAttribute("d", d);
+  s.body.setAttribute("d", d);
+  s.body.setAttribute("fill", hex);
+  s.body.setAttribute("stroke", shade(hex, .3));
+  s.line.setAttribute("d", d);
+  s.inner.setAttribute("fill", shade(hex, .34));
+  s.collar.setAttribute("d", collarPath(spec.neck, face));
+  s.collar.setAttribute("stroke", trim);
+  const sl = sleeveSet(spec.sleeve);
+  s.cuffL.setAttribute("d", sl.cuffL); s.cuffL.setAttribute("fill", trim);
+  s.cuffR.setAttribute("d", sl.cuffR); s.cuffR.setAttribute("fill", trim);
+  const polo = spec.neck === "POLO 領" && face === "front";
+  s.placket.setAttribute("visibility", polo ? "visible" : "hidden");
+  if(polo){
+    s.pl1.setAttribute("d", "M186,80 L186,152"); s.pl1.setAttribute("stroke", trim);
+    s.pl2.setAttribute("d", "M214,80 L214,152"); s.pl2.setAttribute("stroke", trim);
+    s.b1.setAttribute("fill", trim); s.b2.setAttribute("fill", trim);
+  }
+  const a = spec.art, img = spec.img;
+  if(img && a){
+    const w = Math.max(20, Number(a.w) || 150);
+    s.art.setAttribute("x", (Number(a.x) || 200) - w / 2);
+    s.art.setAttribute("y", (Number(a.y) || 210) - w / 2);
+    s.art.setAttribute("width", w);
+    s.art.setAttribute("height", w);
+    if(s.src !== img){
+      s.art.setAttribute("href", img);
+      s.art.setAttributeNS(XLINK, "xlink:href", img);
+      s.src = img;
+    }
+    s.art.setAttribute("visibility", "visible");
+  }else{
+    s.art.setAttribute("visibility", "hidden");
+  }
+}
+/** 圖案預設位置：不同版位的常見比例 */
+const ART_PRESETS = {
+  chest: {x:200, y:212, w:150},
+  left:  {x:150, y:150, w:58},
+  big:   {x:200, y:236, w:250},
+  low:   {x:200, y:340, w:96}
+};
+const blankArt = () => ({front:Object.assign({}, ART_PRESETS.chest), back:Object.assign({}, ART_PRESETS.big)});
+/** 某班目前該怎麼畫（色卡牆與匯出用） */
+function specOf(cls, f, thumb){
+  const m = meta(cls);
+  if(!m) return null;
+  const a = (m.art && m.art[f]) || ART_PRESETS[f === "back" ? "big" : "chest"];
+  const k = artAt(cls, f) ? ART[artKey(cls, f)] : null;
+  return {hex:m.hex, trim:m.trim, sleeve:m.sleeve, neck:m.neck, face:f, art:a,
+          img:k ? (thumb ? k.thumb : (k.full || k.thumb)) : null};
+}
+/** 班級端草稿現在該怎麼畫 */
+function draftSpec(f){
+  if(!draft) return null;
+  const local = draft.imgs && draft.imgs[f];
+  const dropped = draft.drop && draft.drop[f];
+  const k = (me && !dropped && artAt(me, f)) ? ART[artKey(me, f)] : null;
+  return {hex:draft.hex, trim:draft.trim, sleeve:draft.sleeve, neck:draft.neck, face:f,
+          art:draft.art[f], img:local ? local.full : (k ? (k.full || k.thumb) : null)};
+}
+
+const FIT = {front:null, back:null};
+function renderFit(){
+  if(!document.getElementById("shirtFront")) return;
+  ["front","back"].forEach(f => {
+    if(!FIT[f]){
+      FIT[f] = mkShirt();
+      document.getElementById(f === "front" ? "shirtFront" : "shirtBack").append(FIT[f].root);
+    }
+    const spec = draftSpec(f);
+    applyShirt(FIT[f], spec || {hex:"#DDD8CE", sleeve:CFG.sleeves[0], neck:CFG.necks[0], face:f});
+  });
+  document.getElementById("fitFront").classList.toggle("sel", face === "front");
+  document.getElementById("fitBack").classList.toggle("sel", face === "back");
+  document.getElementById("faceLabel").textContent = "目前調整：" + (face === "front" ? "正面" : "背面");
+  const a = draft ? draft.art[face] : ART_PRESETS.chest;
+  const set = (id, oid, v) => {
+    const e = document.getElementById(id);
+    if(e && document.activeElement !== e) e.value = v;
+    const o = document.getElementById(oid);
+    if(o) o.value = v;
+  };
+  set("rW", "oW", Math.round(a.w));
+  set("rY", "oY", Math.round(a.y));
+  set("rX", "oX", Math.round(a.x));
+  const has = !!(draft && ((draft.imgs && draft.imgs[face])
+                || (me && !draft.drop[face] && artAt(me, face))));
+  const hint = document.getElementById("artHint");
+  if(hint){
+    const parts = [];
+    ["front","back"].forEach(f => {
+      const local = draft && draft.imgs && draft.imgs[f];
+      const dropped = draft && draft.drop[f];
+      const up = me && artAt(me, f);
+      parts.push((f === "front" ? "正面" : "背面") + "："
+        + (local ? "已選好，尚未送出" : (dropped ? "待移除，尚未送出" : (up ? "已上傳" : "尚未上傳"))));
+    });
+    if(SYNC.mode === "shared") parts.push("Artifact 模式無法上傳圖案，請走 GitHub Pages 網址");
+    hint.textContent = parts.join("　·　");
+  }
+  const clr = document.getElementById("btnArtClear");
+  if(clr) clr.disabled = !has;
+}
+
+/* ============================================================
+   畫面
+   ============================================================ */
+function renderHeader(){
+  document.getElementById("hdRole").textContent = VIEW.role;
+  document.getElementById("hdRole").className = "role " + VIEW.cls;
+  document.getElementById("hdEyebrow").textContent = CFG.school + " · " + CFG.term + " · " + CFG.grade;
+  document.getElementById("hdTitle").textContent = CFG.title;
+  document.getElementById("hdLede").textContent = VIEW.lede;
+  document.title = CFG.title + "　" + VIEW.role;
+  document.getElementById("stamp").textContent =
+    "最後更新 " + (state.updated ? fmtStamp(new Date(state.updated)) : "—") + "　·　畫面產生於 " + fmtStamp(new Date());
+  document.getElementById("hdFoot").textContent =
+    "繳交期限 " + CFG.deadline + "　·　" + CFG.contact + "　·　共 " + CFG.classes.length + " 班";
+}
+function applyView(){
+  document.querySelectorAll("[data-view]").forEach(sec => {
+    sec.hidden = !sec.dataset.view.split(" ").includes(VIEW.key);
+  });
+}
+
+/* ---------- 班級端 ---------- */
+function newDraft(cls){
+  const m = meta(cls);
+  const sz = {};
+  CFG.sizes.forEach(k => { sz[k] = (m && m.sizes && m.sizes[k]) || 0; });
+  const a = blankArt();
+  if(m && m.art){
+    ["front","back"].forEach(f => { if(m.art[f]) Object.assign(a[f], m.art[f]); });
+  }
+  return {hex:(m && m.hex) || null,
+          sleeve:(m && m.sleeve) || CFG.sleeves[0],
+          neck:(m && m.neck) || CFG.necks[0],
+          trim:(m && m.trim) || "",
+          art:a, sizes:sz, note:(m && m.note) || "",
+          imgs:{front:null, back:null},
+          drop:{front:false, back:false}};
+}
+function renderChips(){
+  const box = document.getElementById("classChips");
+  if(!box) return;
+  box.textContent = "";
+  CFG.classes.forEach(c => {
+    const b = el("button", "chip");
+    b.type = "button";
+    b.setAttribute("aria-pressed", c === me ? "true" : "false");
+    b.append(el("span", "cn", c));
+    const pip = el("span", "pip");
+    const m = meta(c);
+    if(m && m.hex) pip.style.background = m.hex;
+    b.append(pip);
+    b.addEventListener("click", () => {
+      me = c; draft = newDraft(c);
+      try{ localStorage.setItem(LS_ME, c); }catch(e){}
+      renderAll(); pullArt();
+      document.getElementById("panelColor").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+    box.append(b);
+  });
+  const done = filled().length;
+  document.getElementById("whoTally").innerHTML =
+    "已填寫 <b>" + done + "</b> / " + CFG.classes.length + " 班";
+  document.getElementById("whoHint").textContent = me
+    ? "目前身分是 " + me + " 班，下面的填寫都會存到這個班。換班級點一下就好。"
+    : "先點自己的班級，下面才能填。這台裝置會記住你的選擇。";
+}
+function renderStyleOptions(){
+  const fill = (id, list) => {
+    const sel = document.getElementById(id);
+    if(!sel || sel.options.length) return;
+    list.forEach(s => {
+      const o = document.createElement("option");
+      o.value = s; o.textContent = s;
+      sel.append(o);
+    });
+  };
+  fill("fSleeve", CFG.sleeves);
+  fill("fNeck", CFG.necks);
+}
+function renderTrims(){
+  const box = document.getElementById("trims");
+  if(!box) return;
+  box.textContent = "";
+  CFG.trims.forEach(t => {
+    const b = el("button", "pbtn");
+    b.type = "button";
+    const on = draft && (normHex(draft.trim) || "") === (normHex(t.hex) || "");
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    if(on){ b.style.borderColor = "var(--ink)"; b.style.color = "var(--ink)"; b.style.fontWeight = "600"; }
+    if(t.hex){
+      const i = el("span");
+      i.style.cssText = "display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;"
+        + "vertical-align:-1px;border:1px solid rgba(0,0,0,.2);background:" + t.hex;
+      b.append(i);
+    }
+    b.append(document.createTextNode(t.name));
+    b.disabled = !me;
+    b.addEventListener("click", () => {
+      if(!draft) return;
+      draft.trim = t.hex || "";
+      renderTrims(); renderFit();
+    });
+    box.append(b);
+  });
+}
+function renderSwatches(){
+  const box = document.getElementById("swatches");
+  if(!box) return;
+  box.textContent = "";
+  CFG.palette.forEach(p => {
+    const s = seatsOf(p.hex);
+    const mine = me && (s.seated.indexOf(me) >= 0 || s.waiting.indexOf(me) >= 0);
+    const barred = me && s.out.indexOf(me) >= 0;
+    const b = el("button", "sw" + (s.open === 0 ? " full" : ""));
+    b.type = "button";
+    b.setAttribute("aria-pressed", draft && sameHex(draft.hex, p.hex) ? "true" : "false");
+    b.disabled = !me || barred || (s.open === 0 && !mine);
+    const i = el("i"); i.style.background = p.hex; b.append(i);
+    b.append(el("b", null, p.name));
+    const seats = el("span", "seats");
+    for(let k = 0; k < CFG.perColor; k++){
+      const dot = el("s");
+      if(k < s.seated.length) dot.className = (s.seated[k] === me) ? "mine" : "take";
+      else if(s.waiting.length && k === s.seated.length) dot.className = "wait";
+      seats.append(dot);
+    }
+    b.append(seats);
+    let note;
+    if(barred) note = "你已抽過此色";
+    else if(s.open === 0) note = "已額滿";
+    else if(s.waiting.length) note = "抽籤中 · " + s.waiting.length + " 班候補";
+    else if(s.free > 0) note = "還有 " + s.free + " 席先選先得";
+    else note = "僅剩第 " + CFG.perColor + " 席，選了要抽籤";
+    b.append(el("u", null, note));
+    b.title = p.name + " " + p.hex + "　" + note
+      + (s.seated.length ? "　已入席：" + s.seated.join("、") : "")
+      + (s.waiting.length ? "　候補：" + s.waiting.join("、") : "");
+    b.addEventListener("click", () => {
+      if(!draft) return;
+      draft.hex = normHex(p.hex);
+      renderSwatches(); renderFit(); renderClassFlags();
+    });
+    box.append(b);
+  });
+  const used = CFG.palette.filter(p => seatsOf(p.hex).seated.length).length;
+  const full = CFG.palette.filter(p => seatsOf(p.hex).open === 0).length;
+  document.getElementById("colorTally").innerHTML =
+    "已有班級的顏色 <b>" + used + "</b> 色　·　額滿 <b>" + full + "</b> 色";
+  document.getElementById("colorHint").textContent =
+    "每個顏色最多 " + CFG.perColor + " 個班，前 " + CFG.freeSeats + " 席先送出先得，第 "
+    + CFG.perColor + " 席由 " + CFG.contact + "主持抽籤決定。色塊下方的小格子就是這個顏色的席次。";
+}
+function syncFormInputs(){
+  const on = document.activeElement;
+  const set = (id, v) => { const e = document.getElementById(id); if(e && e !== on) e.value = v; };
+  if(!draft) return;
+  set("fSleeve", draft.sleeve);
+  set("fNeck", draft.neck);
+  set("fNote", draft.note);
+  CFG.sizes.forEach(k => set("sz_" + k, draft.sizes[k] || 0));
+  const t = CFG.sizes.reduce((n, k) => n + num(draft.sizes[k], 200), 0);
+  const tot = document.getElementById("myTotal");
+  if(tot) tot.textContent = String(t);
+  const brk = document.getElementById("myBreak");
+  if(brk) brk.textContent = CFG.sizes.map(k => k + " " + num(draft.sizes[k], 200)).join("　");
+  const tally = document.getElementById("sizeTallyMine");
+  if(tally) tally.innerHTML = me ? me + " 班　合計 <b>" + t + "</b> 件" : "";
+}
+function buildSizeGrid(){
+  const box = document.getElementById("sizeGrid");
+  if(!box || box.children.length) return;
+  CFG.sizes.forEach(k => {
+    const c = CFG.sizeChart.find(x => x.size === k);
+    const cell = el("div", "size");
+    cell.append(el("span", null, k));
+    const inp = document.createElement("input");
+    inp.type = "number"; inp.min = "0"; inp.max = "200"; inp.inputMode = "numeric";
+    inp.id = "sz_" + k; inp.value = "0";
+    inp.addEventListener("input", () => {
+      if(!draft) return;
+      draft.sizes[k] = num(inp.value, 200);
+      syncFormInputs();
+    });
+    cell.append(inp);
+    if(c) cell.append(el("em", null, "胸寬 " + c.chest + " · 衣長 " + c.len));
+    box.append(cell);
+  });
+}
+function mkFlag(kind, text, hexes){
+  const f = el("div", "flag" + (kind ? " " + kind : ""));
+  if(hexes && hexes.length){
+    const d = el("span", "dabs");
+    hexes.forEach(h => { const i = el("i"); i.style.background = h; d.append(i); });
+    f.append(d);
+  }
+  const s = el("span");
+  s.innerHTML = text;
+  f.append(s);
+  return f;
+}
+function renderClassFlags(){
+  const box = document.getElementById("formFlags");
+  if(!box) return;
+  box.textContent = "";
+  const cbox = document.getElementById("colorFlags");
+  cbox.textContent = "";
+  if(!me){ cbox.append(mkFlag("", "先在上面點選你的班級。")); return; }
+
+  const st = statusOf(me);
+  const m = meta(me);
+  if(st === "out"){
+    const d = losers(m.hex)[me];
+    cbox.append(mkFlag("warn",
+      "<b>" + paletteName(m.hex) + " 抽籤沒有抽中</b>（" + shortStamp(d && d.at) + " 抽，抽中的是 "
+      + (d && d.win) + " 班）。請改選其他還有名額的顏色，再按送出。", [m.hex]));
+  }else if(st === "wait"){
+    const s = seatsOf(m.hex);
+    cbox.append(mkFlag("note",
+      "你選的 <b>" + paletteName(m.hex) + "</b> 前 " + CFG.freeSeats + " 席已被 " + s.seated.join("、")
+      + " 班選走，第 " + CFG.perColor + " 席要抽籤。目前候補 " + s.waiting.length + " 班（"
+      + s.waiting.join("、") + "），等 " + CFG.contact + "主持抽籤。", [m.hex]));
+  }else if(st === "free" || st === "won"){
+    const s = seatsOf(m.hex);
+    const same = s.seated.filter(c => c !== me);
+    cbox.append(mkFlag("good",
+      "<b>" + paletteName(m.hex) + "</b> 名額確定（" + (st === "won" ? "抽籤抽中" : "先選先得") + "）。"
+      + (same.length ? "同色的還有 " + same.join("、") + " 班。" : "目前只有你這一班選這個顏色。"), [m.hex]));
+  }
+  if(draft && draft.hex && (!m || !sameHex(m.hex, draft.hex))){
+    const s = seatsOf(draft.hex);
+    cbox.append(mkFlag(s.free > 0 ? "" : "note",
+      "草稿選的是 <b>" + paletteName(draft.hex) + "</b>，"
+      + (s.free > 0 ? "還有 " + s.free + " 席先選先得，按下方送出才算數。"
+                    : "送出後會排進第 " + CFG.perColor + " 席的抽籤。"), [draft.hex]));
+  }
+
+  /* 撞色：顏色不同但遠看會混 */
+  if(draft && draft.hex){
+    const near = CFG.classes.filter(c => c !== me && meta(c) && meta(c).hex && !sameHex(meta(c).hex, draft.hex))
+      .map(c => ({c:c, d:deltaE(draft.hex, meta(c).hex), h:meta(c).hex}))
+      .filter(x => x.d < CFG.nearThreshold).sort((a, b) => a.d - b.d);
+    if(near.length){
+      box.append(mkFlag("note", "和 " + near.map(x => x.c).join("、")
+        + " 班的顏色很接近，運動會遠遠看可能分不出來。",
+        [draft.hex].concat(near.map(x => x.h))));
+    }
+  }
+  const t = draft ? CFG.sizes.reduce((n, k) => n + num(draft.sizes[k], 200), 0) : 0;
+  if(!t) box.append(mkFlag("", "各尺寸件數還是 0，記得把全班的件數填進去（含師長要的話一起填）。"));
+  const noArt = draft && !draft.imgs.front && !ART[artKey(me, "front")] && !ART[artKey(me, "back")];
+  if(noArt) box.append(mkFlag("", "還沒上傳設計圖案。先送出顏色和件數也可以，圖案之後再補。"));
+}
+
+/* ---------- 全校一覽 ---------- */
+function renderCards(){
+  const box = document.getElementById("cards");
+  if(!box) return;
+  box.textContent = "";
+  CFG.classes.forEach(c => {
+    const m = meta(c);
+    const card = el("div", "card" + (m ? "" : " empty") + (VIEW.key === "class" && c === me ? " mineHi" : ""));
+    const band = el("div", "band");
+    band.style.background = m && m.hex ? m.hex : "var(--hatch)";
+    card.append(band);
+    if(m){
+      const sh = el("div", "sh");
+      const s = mkShirt();
+      applyShirt(s, specOf(c, "front", true));
+      sh.append(s.root);
+      sh.style.cursor = "zoom-in";
+      sh.addEventListener("click", () => zoomShirt(c));
+      card.append(sh);
+    }
+    const body = el("div", "body");
+    body.append(el("div", "cn", c));
+    if(!m){
+      body.append(el("div", "none", "尚未填寫"));
+    }else{
+      const st = STATUS[statusOf(c)];
+      const nm = el("div", "nm");
+      nm.append(document.createTextNode(paletteName(m.hex)));
+      nm.append(el("span", "hx", m.hex || ""));
+      body.append(nm);
+      body.append(el("div", "qty", (m.sleeve || "") + " · " + (m.neck || "")));
+      const q = el("div", "qty");
+      q.innerHTML = "共 <b>" + totalOf(c) + "</b> 件";
+      body.append(q);
+      if(st.cls) body.append(el("span", "badge " + st.cls, st.label));
+    }
+    card.append(body);
+    box.append(card);
+  });
+  const done = filled().length;
+  const heads = schoolSizes().total;
+  document.getElementById("boardTally").innerHTML =
+    "已填 <b>" + done + "</b> / " + CFG.classes.length + " 班　·　全校 <b>" + heads + "</b> 件";
+  const miss = missing();
+  document.getElementById("boardHint").textContent = miss.length
+    ? "尚未填寫：" + miss.join("、")
+    : "全部 " + CFG.classes.length + " 班都填好了。";
+}
+function zoomShirt(cls){
+  const wrap = el("div");
+  wrap.style.cssText = "display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:flex-start";
+  ["front","back"].forEach(f => {
+    const fig = el("figure");
+    fig.style.cssText = "margin:0;display:flex;flex-direction:column;gap:6px;align-items:center";
+    const s = mkShirt();
+    applyShirt(s, specOf(cls, f, false));
+    s.root.setAttribute("width", "300");
+    s.root.style.cssText = "width:min(38vw,300px);height:auto;display:block";
+    fig.append(s.root);
+    fig.append(el("figcaption", "hint", cls + " 班　" + (f === "front" ? "正面" : "背面")));
+    wrap.append(fig);
+  });
+  lbShow(wrap);
+}
+
+/* ============================================================
+   承辦端：抽籤、繳交狀況、尺寸總表
+   ============================================================ */
+/** 在交易剛讀到的那份資料上重算名額，而不是畫面上可能過期的資料 */
+function withState(st, fn){
+  const keep = state;
+  state = st;
+  try{ return fn(); }finally{ state = keep; }
+}
+function lbShow(node){
+  const lb = document.getElementById("lightbox");
+  document.getElementById("lightboxImg").style.display = "none";
+  let host = document.getElementById("lbHost");
+  if(!host){
+    host = el("div");
+    host.id = "lbHost";
+    host.style.cssText = "background:var(--card);border-radius:14px;padding:16px;max-width:100%;"
+      + "max-height:100%;overflow:auto;box-shadow:0 20px 60px -20px #000";
+    lb.append(host);
+  }
+  host.textContent = "";
+  host.append(node);
+  lb.classList.add("show");
+}
+function renderDraw(){
+  const box = document.getElementById("drawList");
+  if(!box) return;
+  document.getElementById("drawRule").textContent =
+    "規則：每個顏色最多 " + CFG.perColor + " 個班。依送出時間，前 " + CFG.freeSeats
+    + " 席先選先得直接確定；第 " + CFG.perColor + " 席只要有班候補就用抽籤決定，"
+    + "抽輸的班不能再選這個顏色，要改選其他顏色。抽籤用可重現的亂數，種子與順序都留在下面的紀錄裡。";
+  box.textContent = "";
+  const pend = pendingDraws();
+  if(!pend.length){
+    box.append(mkFlag("good", "目前沒有需要抽籤的顏色。"));
+  }
+  pend.forEach(s => {
+    const card = el("div", "draw");
+    const hd = el("div", "hd");
+    const i = el("i"); i.style.background = s.hex; hd.append(i);
+    hd.append(el("b", null, s.name));
+    hd.append(el("span", "hx", s.hex));
+    card.append(hd);
+    const who = el("div", "who");
+    who.innerHTML = "已入席（先選先得）：<b>" + (s.seated.join("、") || "—") + "</b><br>"
+      + "候補第 " + CFG.perColor + " 席：<b>" + s.waiting.join("、") + "</b>"
+      + (s.waiting.length === 1 ? "（只有 1 班候補，抽籤結果就是這一班）" : "（" + s.waiting.length + " 班抽 1）")
+      + (s.out.length ? "<br>先前抽輸、已不能再選此色：" + s.out.join("、") : "");
+    card.append(who);
+    const act = el("div", "actions");
+    const b = el("button", "btn sm", "主持抽籤");
+    b.type = "button";
+    armed(b, "主持抽籤", () => runDraw(s.hex));
+    act.append(b);
+    card.append(act);
+    box.append(card);
+  });
+
+  const log = document.getElementById("drawLog");
+  log.textContent = "";
+  const ds = (state.draws || []).slice().reverse();
+  if(!ds.length){
+    log.append(el("div", "logrow", "還沒有任何抽籤紀錄。"));
+  }
+  ds.forEach(d => {
+    const row = el("div", "logrow");
+    const i = el("i"); i.style.background = d.hex; row.append(i);
+    const t = el("div");
+    t.innerHTML = "<b>" + paletteName(d.hex) + "</b> 第 " + CFG.perColor + " 席 · 抽中 <b>" + d.win + "</b> 班<br>"
+      + "參與：" + (d.entrants || []).join("、")
+      + "　→　抽籤順序 " + (d.order || []).join(" → ") + "<br>"
+      + "<span class='seed'>" + shortStamp(d.at) + " · 亂數種子 " + d.seed + "</span>";
+    row.append(t);
+    log.append(row);
+  });
+  document.getElementById("drawTally").innerHTML =
+    "待抽 <b>" + pend.length + "</b> 色　·　已抽 <b>" + (state.draws || []).length + "</b> 次";
+}
+async function runDraw(hex){
+  const seed = newSeed();
+  let result = null;
+  const ok = await commit(d => {
+    const s = withState(d, () => seatsOf(hex));
+    if(!s.waiting.length) refuse("這個顏色已經沒有候補班級了，畫面剛剛更新過");
+    if(s.open <= 0) refuse("這個顏色已經額滿了，不需要抽籤");
+    const order = shuffle(s.waiting, seed);
+    result = {hex:normHex(hex), at:new Date().toISOString(), seed:seed,
+              entrants:s.waiting.slice(), order:order, win:order[0], lose:order.slice(1)};
+    d.draws = (d.draws || []).concat([result]);
+  });
+  if(ok && result) showReel(result);
+}
+/** 抽籤動畫：結果早就定了，這裡只是把它演出來給大家看 */
+function showReel(d){
+  const wrap = el("div");
+  wrap.style.cssText = "display:flex;flex-direction:column;gap:10px;align-items:center;min-width:min(86vw,330px)";
+  const t = el("div", null, paletteName(d.hex) + " 第 " + CFG.perColor + " 席抽籤");
+  t.style.cssText = "font-weight:600;font-size:15px";
+  const sw = el("div");
+  sw.style.cssText = "width:64px;height:20px;border-radius:6px;border:1px solid rgba(0,0,0,.2);background:" + d.hex;
+  const reel = el("div", "reel", "…");
+  reel.style.minWidth = "220px";
+  const sub = el("div", "hint", (d.entrants || []).join("、") + " 抽 1");
+  wrap.append(t, sw, reel, sub);
+  lbShow(wrap);
+  const pool = d.entrants || [];
+  let n = 0;
+  const spin = setInterval(() => {
+    reel.textContent = pool[n % pool.length];
+    n++;
+    if(n > 16){
+      clearInterval(spin);
+      reel.textContent = d.win + " 班";
+      reel.style.color = "var(--a3)";
+      sub.textContent = "抽籤順序 " + (d.order || []).join(" → ") + "　·　種子 " + d.seed;
+      toast(paletteName(d.hex) + " 第 " + CFG.perColor + " 席由 " + d.win + " 班抽中");
+    }
+  }, 90);
+}
+function renderCheck(){
+  const box = document.getElementById("checkFlags");
+  if(!box) return;
+  box.textContent = "";
+  const done = filled(), miss = missing();
+  box.append(mkFlag(miss.length ? "warn" : "good",
+    miss.length ? "<b>尚未填寫：" + miss.join("、") + "</b>（共 " + miss.length + " 班）"
+                : "<b>全部 " + CFG.classes.length + " 班都填好了。</b>"));
+
+  const outs = CFG.classes.filter(c => statusOf(c) === "out");
+  if(outs.length) box.append(mkFlag("warn",
+    "<b>需要改選顏色：" + outs.join("、") + "</b>　抽籤沒抽中，請通知這幾班回填表改選。",
+    outs.map(c => meta(c).hex)));
+
+  const pend = pendingDraws();
+  if(pend.length) box.append(mkFlag("note",
+    "<b>有 " + pend.length + " 個顏色要抽籤：</b>"
+    + pend.map(s => s.name + "（候補 " + s.waiting.join("、") + "）").join("；"),
+    pend.map(s => s.hex)));
+
+  const noArt = done.filter(c => !meta(c).frontAt && !meta(c).backAt);
+  if(noArt.length) box.append(mkFlag("", "還沒上傳設計圖案：" + noArt.join("、")));
+
+  const noSize = done.filter(c => totalOf(c) === 0);
+  if(noSize.length) box.append(mkFlag("warn", "<b>件數還是 0：" + noSize.join("、") + "</b>　廠商沒辦法報價。"));
+
+  const cl = clashes();
+  if(cl.length) box.append(mkFlag("note",
+    "顏色不同但很接近：" + cl.map(x => x.a + "↔" + x.b + "（色差 " + x.d.toFixed(1) + "）").join("、")
+    + "。運動會遠看可能分不出來，可請其中一班換色。",
+    cl.slice(0, 4).reduce((a, x) => a.concat([x.ha, x.hb]), [])));
+
+  const ss = schoolSizes();
+  box.append(mkFlag("", "全校合計 <b>" + ss.total + "</b> 件　·　"
+    + CFG.sizes.map(k => k + " " + ss[k]).join("　·　")));
+}
+function renderSizeTable(){
+  const t = document.getElementById("sizeTable");
+  if(!t) return;
+  t.textContent = "";
+  const head = ["班級","顏色","款式","狀態"].concat(CFG.sizes).concat(["合計","圖案","更新"]);
+  const thead = el("thead"), hr = el("tr");
+  head.forEach((h, i) => { const th = el("th", i === 1 ? "l" : null, h); hr.append(th); });
+  thead.append(hr); t.append(thead);
+  const tb = el("tbody");
+  CFG.classes.forEach(c => {
+    const m = meta(c), tr = el("tr");
+    tr.append(el("td", null, c));
+    if(!m){
+      const td = el("td", "none l", "尚未填寫");
+      td.colSpan = head.length - 1;
+      tr.append(td); tb.append(tr); return;
+    }
+    const c2 = el("td", "l");
+    const sq = el("span", "sq"); sq.style.background = m.hex || "transparent";
+    c2.append(sq);
+    c2.append(document.createTextNode(paletteName(m.hex)));
+    tr.append(c2);
+    tr.append(el("td", null, (m.sleeve || "") + " " + (m.neck || "")));
+    tr.append(el("td", null, STATUS[statusOf(c)].label));
+    const s = sizesOf(c);
+    CFG.sizes.forEach(k => {
+      const td = el("td");
+      const n = Number(s[k]) || 0;
+      td.append(el("em", null, n ? String(n) : "—"));
+      if(!n) td.className = "none";
+      tr.append(td);
+    });
+    const tt = el("td"); tt.append(el("em", null, String(totalOf(c)))); tr.append(tt);
+    tr.append(el("td", null, ((m.frontAt ? "正" : "") + (m.backAt ? "背" : "")) || "—"));
+    tr.append(el("td", null, shortStamp(m.updated)));
+    tb.append(tr);
+  });
+  const ss = schoolSizes();
+  const sr = el("tr", "sum");
+  sr.append(el("td", null, "合計"));
+  const sc = el("td", "l", filled().length + " 班已填");
+  sc.colSpan = 3;
+  sr.append(sc);
+  CFG.sizes.forEach(k => { const td = el("td"); td.append(el("em", null, String(ss[k]))); sr.append(td); });
+  const st = el("td"); st.append(el("em", null, String(ss.total))); sr.append(st);
+  const rest = el("td"); rest.colSpan = 2; sr.append(rest);
+  tb.append(sr);
+  t.append(tb);
+  document.getElementById("sizeTally").innerHTML = "全校 <b>" + ss.total + "</b> 件";
+  document.getElementById("sizeHint").textContent =
+    "尺寸參考（平量，公分）：" + CFG.sizeChart.map(x => x.size + " 胸寬 " + x.chest + "／衣長 " + x.len).join("　·　")
+    + "。實際以廠商尺寸表為準，建議請廠商送樣衣讓學生試穿。";
+}
+
+/* ============================================================
+   廠商端：線上報價
+   一家廠商一份報價，用瀏覽器裡的識別碼認人，改名字不會變成另一份。
+   ============================================================ */
+function vendorId(){
+  if(!vendorKey){
+    vendorKey = "v" + Date.now().toString(36) + Math.floor(Math.random() * 46656).toString(36);
+    try{ localStorage.setItem(LS_VD, vendorKey); }catch(e){}
+  }
+  return vendorKey;
+}
+const myQuote = () => (state.quotes && state.quotes[vendorId()]) || null;
+let QD = null, QDat = "";
+function quoteDraft(){
+  if(!QD){
+    const q = myQuote();
+    QD = q ? JSON.parse(JSON.stringify(q)) : {name:"", contact:"", valid:"", big:0, note:"", items:{}};
+    QDat = (q && q.at) || "";
+  }
+  return QD;
+}
+const qItem = c => {
+  const q = quoteDraft();
+  if(!q.items) q.items = {};
+  if(!q.items[c]) q.items[c] = {unit:0, plate:0};
+  return q.items[c];
+};
+/** 一份報價的小計與總計：件數×單價 ＋ 大尺寸加價 ＋ 版費 */
+function quoteCalc(q){
+  const big = num(q && q.big, 9999);
+  const rows = CFG.classes.map(c => {
+    const it = (q && q.items && q.items[c]) || {};
+    const qty = totalOf(c), bg = bigCount(c);
+    const unit = num(it.unit, 99999), plate = num(it.plate, 999999);
+    /* 沒填單價也沒填版費＝這班還沒報，小計算 0，不要只剩加價 */
+    return {cls:c, qty:qty, big:bg, unit:unit, plate:plate,
+            sub:(unit || plate) ? (qty * unit + bg * big + plate) : 0};
+  });
+  const qty = rows.reduce((n, r) => n + r.qty, 0);
+  const amount = rows.reduce((n, r) => n + r.sub, 0);
+  const priced = rows.filter(r => r.unit > 0).length;
+  return {rows:rows, qty:qty, amount:amount, priced:priced, avg:qty ? amount / qty : 0};
+}
+const money = n => "$" + Math.round(n).toLocaleString("en-US");
+
+function buildQuoteTable(){
+  const t = document.getElementById("quoteTable");
+  if(!t || t.children.length) return;
+  const thead = el("thead"), hr = el("tr");
+  ["班級","顏色與款式","件數","XL 以上","單價","版費","小計"].forEach((h, i) => {
+    hr.append(el("th", i === 1 ? "l" : null, h));
+  });
+  thead.append(hr); t.append(thead);
+  const tb = el("tbody");
+  CFG.classes.forEach(c => {
+    const tr = el("tr");
+    tr.id = "qr_" + c;
+    tr.append(el("td", null, c));
+    const c2 = el("td", "l");
+    c2.id = "qc_" + c;
+    tr.append(c2);
+    const q1 = el("td"); q1.append(el("em", null, "0")); q1.id = "qq_" + c; tr.append(q1);
+    const q2 = el("td"); q2.append(el("em", null, "0")); q2.id = "qb_" + c; tr.append(q2);
+    ["unit","plate"].forEach(kind => {
+      const td = el("td");
+      const inp = document.createElement("input");
+      inp.type = "number"; inp.min = "0"; inp.max = kind === "unit" ? "9999" : "99999";
+      inp.inputMode = "numeric";
+      inp.id = (kind === "unit" ? "qu_" : "qp_") + c;
+      inp.placeholder = kind === "unit" ? "單價" : "0";
+      inp.addEventListener("input", () => {
+        qItem(c)[kind] = num(inp.value, kind === "unit" ? 99999 : 999999);
+        renderQuote(); saveQuote();
+      });
+      td.append(inp);
+      tr.append(td);
+    });
+    const sub = el("td"); sub.append(el("em", null, "—")); sub.id = "qs_" + c; tr.append(sub);
+    tb.append(tr);
+  });
+  t.append(tb);
+}
+function renderQuote(){
+  const t = document.getElementById("quoteTable");
+  if(!t) return;
+  buildQuoteTable();
+  const on = document.activeElement;
+  const stored = myQuote();
+  /* 別台裝置改過同一份報價時才覆蓋草稿，正在打字的欄位不動 */
+  if(stored && stored.at !== QDat && !(on && on.closest && on.closest("#panelQuote"))){
+    QD = JSON.parse(JSON.stringify(stored));
+    QDat = stored.at;
+  }
+  const q = quoteDraft();
+  const set = (id, v) => { const e = document.getElementById(id); if(e && e !== on) e.value = v; };
+  set("qName", q.name || "");
+  set("qContact", q.contact || "");
+  set("qValid", q.valid || "");
+  set("qBig", q.big || "");
+  set("qNote", q.note || "");
+  const calc = quoteCalc(q);
+  calc.rows.forEach(r => {
+    const m = meta(r.cls);
+    const c2 = document.getElementById("qc_" + r.cls);
+    if(c2){
+      c2.textContent = "";
+      if(m){
+        const sq = el("span", "sq"); sq.style.background = m.hex || "transparent";
+        c2.append(sq);
+        c2.append(document.createTextNode(paletteName(m.hex) + "　" + (m.sleeve || "") + " " + (m.neck || "")));
+      }else{
+        c2.append(el("span", "none", "尚未填寫"));
+        c2.className = "l none";
+      }
+    }
+    const put = (id, v, dim) => {
+      const e = document.getElementById(id);
+      if(!e) return;
+      e.textContent = "";
+      e.append(el("em", null, v));
+      e.className = dim ? "none" : "";
+    };
+    put("qq_" + r.cls, String(r.qty), !r.qty);
+    put("qb_" + r.cls, String(r.big), !r.big);
+    put("qs_" + r.cls, r.sub ? money(r.sub) : "—", !r.sub);
+    set("qu_" + r.cls, r.unit || "");
+    set("qp_" + r.cls, r.plate || "");
+  });
+  const sum = document.getElementById("quoteSum");
+  sum.textContent = "";
+  const cell = (label, value) => {
+    const d = el("div");
+    d.append(el("span", null, label));
+    d.append(el("b", "money", value));
+    return d;
+  };
+  sum.append(cell("全校件數", String(calc.qty) + " 件"));
+  sum.append(cell("報價總額", money(calc.amount)));
+  sum.append(cell("平均每件", calc.qty ? money(calc.avg) : "—"));
+  sum.append(cell("已報價班級", calc.priced + " / " + filled().length));
+  document.getElementById("quoteTally").innerHTML =
+    (q.name ? q.name : "未署名") + "　·　總額 <b>" + money(calc.amount) + "</b>";
+  document.getElementById("quoteHint").textContent =
+    "小計 ＝ 件數 × 單價 ＋ XL 以上加價 ＋ 版費。件數與圖案由各班自己填，改了這裡會即時跟著變。"
+    + "報價存回同一份資料，學校端看得到；同一台裝置再進來就是修改同一份報價。";
+}
+function renderCompare(){
+  const t = document.getElementById("cmpTable");
+  if(!t) return;
+  t.textContent = "";
+  const keys = Object.keys(state.quotes || {});
+  const rows = keys.map(k => {
+    const q = state.quotes[k];
+    const c = quoteCalc(q);
+    return {k:k, q:q, c:c};
+  }).filter(r => r.c.amount > 0 || (r.q.name || "").trim())
+    .sort((a, b) => (a.c.amount || Infinity) - (b.c.amount || Infinity));
+  const thead = el("thead"), hr = el("tr");
+  ["廠商","聯絡方式","已報價班級","件數","總額","平均每件","有效期限","更新"].forEach((h, i) => {
+    hr.append(el("th", i <= 1 ? "l" : null, h));
+  });
+  thead.append(hr); t.append(thead);
+  const tb = el("tbody");
+  if(!rows.length){
+    const tr = el("tr"), td = el("td", "none l", "還沒有廠商送出報價。把廠商入口的網址或 QR 給廠商即可。");
+    td.colSpan = 8; tr.append(td); tb.append(tr);
+  }
+  rows.forEach((r, i) => {
+    const tr = el("tr");
+    const n = el("td", "l");
+    n.append(document.createTextNode(r.q.name || "未署名"));
+    if(i === 0 && r.c.amount > 0) n.append(el("span", "badge ok", "最低"));
+    tr.append(n);
+    tr.append(el("td", "l", r.q.contact || "—"));
+    tr.append(el("td", null, r.c.priced + " 班"));
+    const q1 = el("td"); q1.append(el("em", null, String(r.c.qty))); tr.append(q1);
+    const q2 = el("td"); q2.append(el("em", null, money(r.c.amount))); tr.append(q2);
+    const q3 = el("td"); q3.append(el("em", null, r.c.qty ? money(r.c.avg) : "—")); tr.append(q3);
+    tr.append(el("td", null, r.q.valid || "—"));
+    tr.append(el("td", null, shortStamp(r.q.at)));
+    tb.append(tr);
+    if(r.q.note){
+      const nr = el("tr"), nd = el("td", "l");
+      nd.colSpan = 8;
+      nd.style.cssText = "color:var(--dim);font-size:12.5px;background:var(--sunk)";
+      nd.textContent = "說明：" + r.q.note;
+      nr.append(nd); tb.append(nr);
+    }
+  });
+  t.append(tb);
+  document.getElementById("cmpTally").innerHTML = "共 <b>" + rows.length + "</b> 家報價";
+  document.getElementById("cmpHint").textContent =
+    "總額依各班目前填的件數即時重算，班級改件數這裡就會變 —— 決標前請以廠商確認過的件數為準。"
+    + "同一家廠商換裝置填會多出一列，看更新時間即可分辨。";
+}
+
+/* ============================================================
+   設計圖案：一律在瀏覽器端縮圖 + 壓縮再上傳
+   去背 PNG 會走 PNG（保留透明），照片類走 JPEG（省很多空間）。
+   full 給試衣間與匯出，thumb 給色卡牆與表格。
+   ============================================================ */
+const ART_SPEC = {full:{edge:900, q:.82, max:540000}, thumb:{edge:300, q:.72, max:90000}};
+async function decodeFile(file){
+  if(typeof createImageBitmap === "function"){
+    try{ return await createImageBitmap(file, {imageOrientation:"from-image"}); }catch(e){}
+    try{ return await createImageBitmap(file); }catch(e){}
+  }
+  return await new Promise((res, rej) => {
+    const url = URL.createObjectURL(file);
+    const i = new Image();
+    i.onload = () => { URL.revokeObjectURL(url); res(i); };
+    i.onerror = () => { URL.revokeObjectURL(url); rej(new Error("decode")); };
+    i.src = url;
+  });
+}
+function drawScaled(src, edge, opaque){
+  const s = Math.min(1, edge / Math.max(src.width, src.height));
+  const w = Math.max(1, Math.round(src.width * s)), h = Math.max(1, Math.round(src.height * s));
+  const cv = document.createElement("canvas");
+  cv.width = w; cv.height = h;
+  const g = cv.getContext("2d");
+  if(opaque){ g.fillStyle = "#ffffff"; g.fillRect(0, 0, w, h); }
+  g.drawImage(src, 0, 0, w, h);
+  return cv;
+}
+/** 圖案多半是去背 PNG，壓成 JPEG 會多一塊白底貼在衣服上，所以先驗透明 */
+function hasAlpha(src){
+  try{
+    const cv = drawScaled(src, 220, false);
+    const d = cv.getContext("2d").getImageData(0, 0, cv.width, cv.height).data;
+    for(let i = 3; i < d.length; i += 4) if(d[i] < 250) return true;
+  }catch(e){}
+  return false;
+}
+/** 先降畫質再降尺寸，直到 dataURL 小於上限（Firestore 單一文件 1MB） */
+function encodeArt(src, spec, alpha){
+  let e = spec.edge, q = spec.q, out = "";
+  for(let n = 0; n < 9; n++){
+    const cv = drawScaled(src, e, !alpha);
+    out = alpha ? cv.toDataURL("image/png") : cv.toDataURL("image/jpeg", q);
+    if(out.length <= spec.max) return out;
+    if(alpha) e = Math.round(e * .78);
+    else if(q > .45) q -= .12;
+    else e = Math.round(e * .82);
+  }
+  if(out.length > spec.max) throw new Error("圖檔太大壓不下來，請改用線條簡單一點的去背 PNG");
+  return out;
+}
+async function pickArt(file){
+  const src = await decodeFile(file);
+  const alpha = hasAlpha(src);
+  const full = encodeArt(src, ART_SPEC.full, alpha);
+  const thumb = encodeArt(src, ART_SPEC.thumb, alpha);
+  if(src.close) try{ src.close(); }catch(e){}
+  return {full:full, thumb:thumb, alpha:alpha};
+}
+
+/* ---------- 班級端送出 ---------- */
+async function saveMine(){
+  if(!me || !draft) return;
+  const hex = normHex(draft.hex);
+  if(!hex){ toast("請先在上面點一個顏色"); return; }
+  if(losers(hex)[me]){ toast("這個顏色你已經抽過籤沒抽中，請改選其他顏色"); return; }
+  const pre = seatsOf(hex);
+  if(pre.seated.indexOf(me) < 0 && pre.waiting.indexOf(me) < 0 && pre.open <= 0){
+    toast("這個顏色已經額滿了，請改選其他顏色"); return;
+  }
+  const prev = meta(me);
+  let frontAt = (prev && prev.frontAt) || null;
+  let backAt  = (prev && prev.backAt) || null;
+  for(const f of ["front","back"]){
+    if(draft.drop[f] && !draft.imgs[f]){
+      if(f === "front") frontAt = null; else backAt = null;
+      continue;
+    }
+    if(!draft.imgs[f]) continue;
+    try{
+      const at = await saveArt(me, f, draft.imgs[f].thumb, draft.imgs[f].full);
+      if(f === "front") frontAt = at; else backAt = at;
+    }catch(e){
+      toast((f === "front" ? "正面" : "背面") + "圖案上傳失敗，其他資料仍會送出");
+    }
+  }
+  const sizes = {};
+  CFG.sizes.forEach(k => { sizes[k] = num(draft.sizes[k], 200); });
+  const rec = {hex:hex,
+               sleeve:draft.sleeve || CFG.sleeves[0],
+               neck:draft.neck || CFG.necks[0],
+               trim:normHex(draft.trim) || "",
+               art:{front:tidyArt(draft.art.front), back:tidyArt(draft.art.back)},
+               sizes:sizes,
+               note:(draft.note || "").trim().slice(0, 80),
+               by:me, updated:new Date().toISOString()};
+  if(frontAt) rec.frontAt = frontAt;
+  if(backAt) rec.backAt = backAt;
+  const ok = await commit(d => {
+    const mine = d.classes[me];
+    delete d.classes[me];
+    const s = withState(d, () => seatsOf(hex));
+    if(mine) d.classes[me] = mine;
+    if(withState(d, () => losers(hex))[me]) refuse("這個顏色你已經抽過籤沒抽中，請改選其他顏色");
+    if(s.seated.length >= CFG.perColor) refuse("慢了一步 —— 這個顏色剛剛被其他班選滿了，請改選其他顏色");
+    rec.at = (mine && sameHex(mine.hex, hex) && mine.at) ? mine.at : new Date().toISOString();
+    d.classes[me] = rec;
+  });
+  if(ok){
+    draft.imgs = {front:null, back:null};
+    draft.drop = {front:false, back:false};
+    const st = statusOf(me);
+    renderAll();
+    toast(me + " 班已送出　·　" + STATUS[st].txt
+      + (SYNC.mode === "fire" ? "" : "（目前僅存在這台裝置）"));
+  }
+}
+const tidyArt = a => ({x:Math.round(Number(a.x) || 200), y:Math.round(Number(a.y) || 210),
+                       w:Math.round(Number(a.w) || 150)});
+function myText(cls){
+  const m = meta(cls);
+  if(!m) return cls + " 班尚未填寫";
+  const s = sizesOf(cls);
+  return [CFG.school + CFG.grade + "　" + cls + " 班班服",
+          "顏色：" + paletteName(m.hex) + " " + m.hex + "（" + STATUS[statusOf(cls)].txt + "）",
+          "款式：" + (m.sleeve || "") + " " + (m.neck || "") + "，領袖口 " + trimName(m.trim),
+          "件數：" + CFG.sizes.map(k => k + " " + (Number(s[k]) || 0)).join("、") + "，合計 " + totalOf(cls) + " 件",
+          m.note ? "備註：" + m.note : null,
+          (m.frontAt ? "已附正面圖案" : "") + (m.backAt ? " 已附背面圖案" : "")].filter(Boolean).join("\n");
+}
+
+/* ============================================================
+   匯出：Excel / CSV / PDF / PNG 全部自己寫，零外部相依
+   （學校網路擋 CDN 時仍然要能用）
+   ============================================================ */
+const CRCT = (() => {
+  const t = new Uint32Array(256);
+  for(let n = 0; n < 256; n++){
+    let c = n;
+    for(let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    t[n] = c >>> 0;
+  }
+  return t;
+})();
+function crc32(u8){
+  let c = 0xFFFFFFFF;
+  for(let i = 0; i < u8.length; i++) c = CRCT[(c ^ u8[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+function zipStore(files){
+  const enc = new TextEncoder(), chunks = [], dir = [];
+  const now = new Date();
+  const dosT = (now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1);
+  const dosD = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+  let off = 0;
+  files.forEach(f => {
+    const name = enc.encode(f.name);
+    const data = (typeof f.data === "string") ? enc.encode(f.data) : f.data;
+    const crc = crc32(data);
+    const h = new Uint8Array(30 + name.length), v = new DataView(h.buffer);
+    v.setUint32(0, 0x04034b50, true); v.setUint16(4, 20, true); v.setUint16(6, 0x0800, true);
+    v.setUint16(8, 0, true); v.setUint16(10, dosT, true); v.setUint16(12, dosD, true);
+    v.setUint32(14, crc, true); v.setUint32(18, data.length, true); v.setUint32(22, data.length, true);
+    v.setUint16(26, name.length, true); v.setUint16(28, 0, true);
+    h.set(name, 30);
+    chunks.push(h, data);
+    dir.push({name:name, crc:crc, size:data.length, off:off, t:dosT, d:dosD});
+    off += h.length + data.length;
+  });
+  const cdStart = off;
+  dir.forEach(c => {
+    const h = new Uint8Array(46 + c.name.length), v = new DataView(h.buffer);
+    v.setUint32(0, 0x02014b50, true); v.setUint16(4, 20, true); v.setUint16(6, 20, true);
+    v.setUint16(8, 0x0800, true); v.setUint16(10, 0, true);
+    v.setUint16(12, c.t, true); v.setUint16(14, c.d, true);
+    v.setUint32(16, c.crc, true); v.setUint32(20, c.size, true); v.setUint32(24, c.size, true);
+    v.setUint16(28, c.name.length, true); v.setUint16(30, 0, true); v.setUint16(32, 0, true);
+    v.setUint16(34, 0, true); v.setUint16(36, 0, true); v.setUint32(38, 0, true);
+    v.setUint32(42, c.off, true);
+    h.set(c.name, 46);
+    chunks.push(h); off += h.length;
+  });
+  const e = new Uint8Array(22), ev = new DataView(e.buffer);
+  ev.setUint32(0, 0x06054b50, true); ev.setUint16(4, 0, true); ev.setUint16(6, 0, true);
+  ev.setUint16(8, dir.length, true); ev.setUint16(10, dir.length, true);
+  ev.setUint32(12, off - cdStart, true); ev.setUint32(16, cdStart, true); ev.setUint16(20, 0, true);
+  chunks.push(e); off += 22;
+  const out = new Uint8Array(off);
+  let p = 0;
+  chunks.forEach(c => { out.set(c, p); p += c.length; });
+  return out;
+}
+const xe = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+const colName = n => { let s = ""; n++; while(n > 0){ const r = (n - 1) % 26; s = String.fromCharCode(65 + r) + s; n = (n - 1 - r) / 26; } return s; };
+function sheetXml(rows, cols, merges, heights){
+  let x = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+    + '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+  if(cols && cols.length){
+    x += "<cols>";
+    cols.forEach(c => { x += '<col min="' + c.min + '" max="' + c.max + '" width="' + c.w + '" customWidth="1"/>'; });
+    x += "</cols>";
+  }
+  x += "<sheetData>";
+  rows.forEach((row, ri) => {
+    const h = heights && heights[ri];
+    x += '<row r="' + (ri + 1) + '"' + (h ? ' ht="' + h + '" customHeight="1"' : "") + ">";
+    row.forEach((cell, ci) => {
+      if(cell == null) return;
+      const ref = colName(ci) + (ri + 1);
+      const s = cell.s ? ' s="' + cell.s + '"' : "";
+      if(cell.v === "" || cell.v == null){ x += '<c r="' + ref + '"' + s + "/>"; }
+      else { x += '<c r="' + ref + '"' + s + ' t="inlineStr"><is><t xml:space="preserve">' + xe(cell.v) + "</t></is></c>"; }
+    });
+    x += "</row>";
+  });
+  x += "</sheetData>";
+  if(merges && merges.length){
+    x += '<mergeCells count="' + merges.length + '">';
+    merges.forEach(m => { x += '<mergeCell ref="' + m + '"/>'; });
+    x += "</mergeCells>";
+  }
+  x += "</worksheet>";
+  return x;
+}
+const STYLES_XML = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
++ '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
++ '<fonts count="5">'
++ '<font><sz val="11"/><name val="Calibri"/></font>'
++ '<font><b/><sz val="11"/><name val="Calibri"/></font>'
++ '<font><b/><sz val="15"/><name val="Calibri"/></font>'
++ '<font><sz val="10"/><color rgb="FF9A9489"/><name val="Calibri"/></font>'
++ '<font><sz val="10"/><color rgb="FF6D675E"/><name val="Calibri"/></font>'
++ '</fonts>'
++ '<fills count="4">'
++ '<fill><patternFill patternType="none"/></fill>'
++ '<fill><patternFill patternType="gray125"/></fill>'
++ '<fill><patternFill patternType="solid"><fgColor rgb="FFF2EFE8"/><bgColor indexed="64"/></patternFill></fill>'
++ '<fill><patternFill patternType="solid"><fgColor rgb="FFF7F6F3"/><bgColor indexed="64"/></patternFill></fill>'
++ '</fills>'
++ '<borders count="2">'
++ '<border><left/><right/><top/><bottom/><diagonal/></border>'
++ '<border><left style="thin"><color rgb="FFC3BDB2"/></left><right style="thin"><color rgb="FFC3BDB2"/></right>'
++ '<top style="thin"><color rgb="FFC3BDB2"/></top><bottom style="thin"><color rgb="FFC3BDB2"/></bottom><diagonal/></border>'
++ '</borders>'
++ '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'
++ '<cellXfs count="7">'
++ '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'
++ '<xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment vertical="center"/></xf>'
++ '<xf numFmtId="0" fontId="4" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment vertical="center"/></xf>'
++ '<xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>'
++ '<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>'
++ '<xf numFmtId="0" fontId="3" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'
++ '<xf numFmtId="0" fontId="1" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>'
++ '</cellXfs></styleSheet>';
+
+const S_TITLE = 1, S_SUB = 2, S_HEAD = 3, S_CELL = 4, S_BLOCK = 5, S_RH = 6;
+const sheetTitle = () => CFG.school + "　" + CFG.term + "　" + CFG.title;
+
+/** sheets: [{name, rows, cols, merges, heights}] → xlsx 位元組 */
+function buildXlsxFrom(sheets){
+  let types = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+    + '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+    + '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+    + '<Default Extension="xml" ContentType="application/xml"/>'
+    + '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>';
+  let wbSheets = "", wbRels = "";
+  const files = [];
+  sheets.forEach((sh, i) => {
+    const n = i + 1;
+    types += '<Override PartName="/xl/worksheets/sheet' + n + '.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>';
+    wbSheets += '<sheet name="' + xe(sh.name) + '" sheetId="' + n + '" r:id="rId' + n + '"/>';
+    wbRels += '<Relationship Id="rId' + n + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet' + n + '.xml"/>';
+    files.push({name:"xl/worksheets/sheet" + n + ".xml",
+                data:sheetXml(sh.rows, sh.cols, sh.merges, sh.heights)});
+  });
+  types += '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>';
+  wbRels += '<Relationship Id="rId' + (sheets.length + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>';
+  return zipStore([
+    {name:"[Content_Types].xml", data:types},
+    {name:"_rels/.rels", data:
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+      + '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>'
+      + '</Relationships>'},
+    {name:"xl/workbook.xml", data:
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      + '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+      + '<sheets>' + wbSheets + '</sheets></workbook>'},
+    {name:"xl/_rels/workbook.xml.rels", data:
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+      + wbRels + '</Relationships>'},
+    {name:"xl/styles.xml", data:STYLES_XML}
+  ].concat(files));
+}
+function buildXlsx(){
+  const now = fmtStamp(new Date());
+  const ss = schoolSizes();
+
+  /* --- 顏色與款式 --- */
+  const r1 = [];
+  r1.push([{v:sheetTitle(), s:S_TITLE}]);
+  r1.push([{v:"已填 " + filled().length + " / " + CFG.classes.length + " 班　·　全校 " + ss.total
+            + " 件　·　產出時間 " + now, s:S_SUB}]);
+  r1.push([]);
+  r1.push(["班級","顏色名稱","色碼","名額狀態","袖長","領型","領袖口配色","設計圖案","備註","更新時間"]
+    .map(h => ({v:h, s:S_HEAD})));
+  CFG.classes.forEach(c => {
+    const m = meta(c);
+    if(!m){
+      r1.push([{v:c, s:S_RH}].concat(new Array(9).fill(null).map((_, i) =>
+        ({v:i === 0 ? "尚未填寫" : "", s:S_BLOCK}))));
+      return;
+    }
+    r1.push([{v:c, s:S_RH}, {v:paletteName(m.hex), s:S_CELL}, {v:m.hex || "", s:S_CELL},
+             {v:STATUS[statusOf(c)].txt, s:S_CELL}, {v:m.sleeve || "", s:S_CELL},
+             {v:m.neck || "", s:S_CELL}, {v:trimName(m.trim), s:S_CELL},
+             {v:((m.frontAt ? "正面" : "") + (m.backAt ? " 背面" : "")).trim() || "未上傳", s:S_CELL},
+             {v:m.note || "", s:S_CELL}, {v:shortStamp(m.updated), s:S_CELL}]);
+  });
+  const cols1 = [{min:1, max:1, w:9}, {min:2, max:2, w:12}, {min:3, max:3, w:11}, {min:4, max:4, w:20},
+                 {min:5, max:6, w:9}, {min:7, max:7, w:13}, {min:8, max:8, w:13},
+                 {min:9, max:9, w:28}, {min:10, max:10, w:13}];
+
+  /* --- 尺寸統計 --- */
+  const r2 = [];
+  r2.push([{v:"各班尺寸與件數", s:S_TITLE}]);
+  r2.push([{v:"參考尺寸（平量公分）："
+            + CFG.sizeChart.map(x => x.size + " 胸寬" + x.chest + "/衣長" + x.len).join("、")
+            + "　·　產出時間 " + now, s:S_SUB}]);
+  r2.push([]);
+  r2.push(["班級","顏色"].concat(CFG.sizes).concat(["合計"]).map(h => ({v:h, s:S_HEAD})));
+  CFG.classes.forEach(c => {
+    const m = meta(c), s = sizesOf(c);
+    r2.push([{v:c, s:S_RH}, {v:m ? paletteName(m.hex) : "尚未填寫", s:m ? S_CELL : S_BLOCK}]
+      .concat(CFG.sizes.map(k => ({v:m ? String(Number(s[k]) || 0) : "", s:m ? S_CELL : S_BLOCK})))
+      .concat([{v:m ? String(totalOf(c)) : "", s:m ? S_CELL : S_BLOCK}]));
+  });
+  r2.push([{v:"合計", s:S_HEAD}, {v:filled().length + " 班", s:S_HEAD}]
+    .concat(CFG.sizes.map(k => ({v:String(ss[k]), s:S_HEAD})))
+    .concat([{v:String(ss.total), s:S_HEAD}]));
+  const cols2 = [{min:1, max:1, w:9}, {min:2, max:2, w:12}, {min:3, max:8, w:7}, {min:9, max:9, w:9}];
+
+  /* --- 抽籤紀錄 --- */
+  const r3 = [];
+  r3.push([{v:"同色第 " + CFG.perColor + " 席抽籤紀錄", s:S_TITLE}]);
+  r3.push([{v:"每色最多 " + CFG.perColor + " 班，前 " + CFG.freeSeats
+            + " 席先選先得，其餘席次抽籤。亂數種子可重現同一組順序，供查驗。", s:S_SUB}]);
+  r3.push([]);
+  r3.push(["抽籤時間","顏色","色碼","參與班級","抽籤順序","抽中","未抽中","亂數種子"]
+    .map(h => ({v:h, s:S_HEAD})));
+  const ds = state.draws || [];
+  if(!ds.length) r3.push([{v:"尚無抽籤", s:S_BLOCK}].concat(new Array(7).fill({v:"", s:S_BLOCK})));
+  ds.forEach(d => {
+    r3.push([{v:shortStamp(d.at), s:S_CELL}, {v:paletteName(d.hex), s:S_CELL}, {v:d.hex, s:S_CELL},
+             {v:(d.entrants || []).join("、"), s:S_CELL}, {v:(d.order || []).join(" → "), s:S_CELL},
+             {v:d.win || "", s:S_RH}, {v:(d.lose || []).join("、"), s:S_CELL},
+             {v:String(d.seed), s:S_CELL}]);
+  });
+  const cols3 = [{min:1, max:1, w:13}, {min:2, max:2, w:12}, {min:3, max:3, w:11},
+                 {min:4, max:5, w:24}, {min:6, max:6, w:9}, {min:7, max:7, w:18}, {min:8, max:8, w:14}];
+
+  /* --- 廠商報價 --- */
+  const r4 = [];
+  r4.push([{v:"廠商線上報價", s:S_TITLE}]);
+  r4.push([{v:"小計 ＝ 件數 × 單價 ＋ XL 以上加價 ＋ 版費　·　產出時間 " + now, s:S_SUB}]);
+  const qs = Object.keys(state.quotes || {}).map(k => ({q:state.quotes[k], c:quoteCalc(state.quotes[k])}))
+    .sort((a, b) => (a.c.amount || Infinity) - (b.c.amount || Infinity));
+  if(!qs.length){
+    r4.push([]);
+    r4.push([{v:"尚無廠商報價", s:S_BLOCK}]);
+  }
+  qs.forEach(x => {
+    r4.push([]);
+    r4.push([{v:(x.q.name || "未署名") + "　" + (x.q.contact || "") + "　有效期限 " + (x.q.valid || "—")
+              + "　大尺寸加價 " + num(x.q.big, 9999) + " 元／件", s:S_HEAD}]);
+    r4.push(["班級","顏色","件數","XL 以上","單價","版費","小計"].map(h => ({v:h, s:S_HEAD})));
+    x.c.rows.forEach(r => {
+      if(!meta(r.cls)) return;
+      r4.push([{v:r.cls, s:S_RH}, {v:paletteName(meta(r.cls).hex), s:S_CELL},
+               {v:String(r.qty), s:S_CELL}, {v:String(r.big), s:S_CELL},
+               {v:r.unit ? String(r.unit) : "", s:S_CELL}, {v:r.plate ? String(r.plate) : "", s:S_CELL},
+               {v:r.sub ? String(Math.round(r.sub)) : "", s:S_CELL}]);
+    });
+    r4.push([{v:"總計", s:S_HEAD}, {v:"", s:S_HEAD}, {v:String(x.c.qty), s:S_HEAD}, {v:"", s:S_HEAD},
+             {v:"平均 " + Math.round(x.c.avg), s:S_HEAD}, {v:"", s:S_HEAD},
+             {v:String(Math.round(x.c.amount)), s:S_HEAD}]);
+    if(x.q.note) r4.push([{v:"說明：" + x.q.note, s:S_SUB}]);
+  });
+  const cols4 = [{min:1, max:1, w:9}, {min:2, max:2, w:12}, {min:3, max:6, w:10}, {min:7, max:7, w:12}];
+
+  return buildXlsxFrom([
+    {name:"顏色與款式", rows:r1, cols:cols1, merges:["A1:J1", "A2:J2"], heights:[26, 18, 8, 22]},
+    {name:"尺寸統計",   rows:r2, cols:cols2, merges:["A1:I1", "A2:I2"], heights:[26, 18, 8, 22]},
+    {name:"抽籤紀錄",   rows:r3, cols:cols3, merges:["A1:H1", "A2:H2"], heights:[26, 18, 8, 22]},
+    {name:"廠商報價",   rows:r4, cols:cols4, merges:["A1:G1", "A2:G2"], heights:[26, 18]}
+  ]);
+}
+function buildCsv(){
+  const q = s => '"' + String(s == null ? "" : s).replace(/"/g, '""') + '"';
+  const L = [];
+  const ss = schoolSizes();
+  L.push([sheetTitle()].map(q).join(","));
+  L.push("");
+  L.push(["班級","顏色名稱","色碼","名額狀態","袖長","領型","備註"]
+    .concat(CFG.sizes).concat(["合計","更新時間"]).map(q).join(","));
+  CFG.classes.forEach(c => {
+    const m = meta(c), s = sizesOf(c);
+    if(!m){ L.push([c, "尚未填寫"].map(q).join(",")); return; }
+    L.push([c, paletteName(m.hex), m.hex, STATUS[statusOf(c)].txt, m.sleeve || "", m.neck || "", m.note || ""]
+      .concat(CFG.sizes.map(k => Number(s[k]) || 0))
+      .concat([totalOf(c), shortStamp(m.updated)]).map(q).join(","));
+  });
+  L.push(["合計", "", "", "", "", "", ""].concat(CFG.sizes.map(k => ss[k])).concat([ss.total, ""]).map(q).join(","));
+  L.push("");
+  L.push(["抽籤紀錄"].map(q).join(","));
+  L.push(["時間","顏色","色碼","參與班級","抽籤順序","抽中","未抽中","亂數種子"].map(q).join(","));
+  (state.draws || []).forEach(d => {
+    L.push([shortStamp(d.at), paletteName(d.hex), d.hex, (d.entrants || []).join("、"),
+            (d.order || []).join(" → "), d.win, (d.lose || []).join("、"), d.seed].map(q).join(","));
+  });
+  L.push("");
+  L.push(["廠商報價"].map(q).join(","));
+  L.push(["廠商","聯絡方式","有效期限","已報價班級","件數","總額","平均每件","說明"].map(q).join(","));
+  Object.keys(state.quotes || {}).forEach(k => {
+    const q2 = state.quotes[k], c = quoteCalc(q2);
+    L.push([q2.name || "未署名", q2.contact || "", q2.valid || "", c.priced, c.qty,
+            Math.round(c.amount), Math.round(c.avg), q2.note || ""].map(q).join(","));
+  });
+  return "﻿" + L.join("\r\n") + "\r\n";
+}
+
+/* ---------- 把 SVG 衣服轉成點陣圖（PDF 與 PNG 都要） ---------- */
+const PC = {ink:"#1e1c19", dim:"#6d675e", faint:"#a9a297", line:"#c9c3b8", hair:"#ded8cd",
+            head:"#f4f2ec", rowh:"#faf9f6", block:"#f2f0ea", warn:"#9c3412", good:"#1c7549"};
+const FS = '"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+const FM = '"IBM Plex Mono",ui-monospace,Menlo,monospace';
+
+function shirtUrl(spec, w){
+  const s = mkShirt();
+  applyShirt(s, spec || {hex:"#DDD8CE", sleeve:CFG.sleeves[0], neck:CFG.necks[0], face:"front"});
+  const width = w || SHIRT_W;
+  s.root.setAttribute("width", width);
+  s.root.setAttribute("height", Math.round(width * SHIRT_H / SHIRT_W));
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(s.root));
+}
+function loadImg(src){
+  return new Promise(res => {
+    const i = new Image();
+    i.onload = () => res(i);
+    i.onerror = () => res(null);
+    i.src = src;
+  });
+}
+/** 圖案是 data URL，畫布不會被污染，可以正常匯出 */
+async function shirtImages(w){
+  const jobs = filled().map(c => loadImg(shirtUrl(specOf(c, "front", true), w || 240))
+    .then(img => [c, img]));
+  const res = await Promise.all(jobs);
+  const out = {};
+  res.forEach(r => { if(r[1]) out[r[0]] = r[1]; });
+  return out;
+}
+
+/* ---------- 畫成 A4 橫式表格 → PDF ---------- */
+function renderSheetCanvas(scale, imgs){
+  const COLS = [{k:"cls", w:58, t:"班級"}, {k:"color", w:132, t:"顏色"}, {k:"style", w:104, t:"款式"},
+                {k:"shirt", w:88, t:"試衣"}]
+    .concat(CFG.sizes.map(s => ({k:s, w:44, t:s})))
+    .concat([{k:"total", w:56, t:"合計"}, {k:"state", w:74, t:"名額"}, {k:"note", w:150, t:"備註"}]);
+  const tableW = COLS.reduce((n, c) => n + c.w, 0);
+  const PAD = 30, HT = 78, H1 = 30, RH = 48;
+  const rows = CFG.classes.length + 1;
+  const W = tableW + PAD * 2;
+  const top = PAD + HT;
+  const tableH = H1 + rows * RH;
+  const ds = state.draws || [];
+  const qs = Object.keys(state.quotes || {}).map(k => ({q:state.quotes[k], c:quoteCalc(state.quotes[k])}))
+    .sort((a, b) => (a.c.amount || Infinity) - (b.c.amount || Infinity));
+  const notes = [];
+  const miss = missing();
+  notes.push(miss.length ? "尚未填寫：" + miss.join("、") : "全部 " + CFG.classes.length + " 班皆已填寫");
+  if(ds.length) notes.push("抽籤 " + ds.length + " 次：" + ds.map(d => paletteName(d.hex) + "→" + d.win).join("、"));
+  const outs = CFG.classes.filter(c => statusOf(c) === "out");
+  if(outs.length) notes.push("需改選顏色：" + outs.join("、"));
+  if(qs.length) notes.push("最低報價：" + (qs[0].q.name || "未署名") + " " + money(qs[0].c.amount)
+    + "（平均每件 " + money(qs[0].c.avg) + "）");
+  const H = top + tableH + 26 + notes.length * 17 + PAD;
+
+  const cv = document.createElement("canvas");
+  cv.width = Math.round(W * scale); cv.height = Math.round(H * scale);
+  const g = cv.getContext("2d");
+  g.setTransform(scale, 0, 0, scale, 0, 0);
+  g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, H);
+  g.textBaseline = "middle";
+
+  const txt = (s, x, y, font, color, align) => {
+    g.font = font; g.fillStyle = color; g.textAlign = align || "center";
+    g.fillText(s == null ? "" : String(s), x, y);
+  };
+  const clip = (s, max, font) => {
+    g.font = font;
+    s = String(s == null ? "" : s);
+    if(g.measureText(s).width <= max) return s;
+    let out = s;
+    while(out.length > 1 && g.measureText(out + "…").width > max) out = out.slice(0, -1);
+    return out + "…";
+  };
+  const box = (x, y, w, h, fill) => { g.fillStyle = fill; g.fillRect(x, y, w, h); };
+  const line = (x1, y1, x2, y2, color, lw) => {
+    g.strokeStyle = color; g.lineWidth = lw || 1;
+    g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke();
+  };
+
+  const ss = schoolSizes();
+  txt(sheetTitle(), W / 2, PAD + 22, '700 22px ' + FS, PC.ink);
+  txt("已填 " + filled().length + " / " + CFG.classes.length + " 班　·　全校 " + ss.total
+      + " 件　·　產出時間 " + fmtStamp(new Date()), W / 2, PAD + 50, '400 12.5px ' + FS, PC.dim);
+
+  const xs = [];
+  let x = PAD;
+  COLS.forEach(c => { xs.push(x); x += c.w; });
+  box(PAD, top, tableW, H1, PC.head);
+  COLS.forEach((c, i) => txt(c.t, xs[i] + c.w / 2, top + H1 / 2, '600 12.5px ' + FS, PC.dim));
+
+  CFG.classes.forEach((cls, r) => {
+    const y = top + H1 + r * RH, mid = y + RH / 2;
+    if(r % 2) box(PAD, y, tableW, RH, PC.rowh);
+    const m = meta(cls);
+    txt(cls, xs[0] + COLS[0].w / 2, mid, '600 14px ' + FM, PC.ink);
+    if(!m){
+      txt("尚未填寫", PAD + (tableW - COLS[0].w) / 2 + COLS[0].w, mid, '400 13px ' + FS, PC.faint);
+      return;
+    }
+    /* 顏色 */
+    const cw = COLS[1].w;
+    box(xs[1] + 10, y + 10, 26, RH - 20, m.hex || "#eee");
+    g.strokeStyle = "rgba(0,0,0,.2)"; g.lineWidth = 1;
+    g.strokeRect(xs[1] + 10, y + 10, 26, RH - 20);
+    txt(clip(paletteName(m.hex), cw - 50, '600 13px ' + FS), xs[1] + 44, mid - 7, '600 13px ' + FS, PC.ink, "left");
+    txt(m.hex || "", xs[1] + 44, mid + 9, '400 11px ' + FM, PC.dim, "left");
+    /* 款式 */
+    txt(clip((m.sleeve || "") + " " + (m.neck || ""), COLS[2].w - 12, '400 12.5px ' + FS),
+        xs[2] + COLS[2].w / 2, mid - 7, '400 12.5px ' + FS, PC.ink);
+    txt("領袖口 " + trimName(m.trim), xs[2] + COLS[2].w / 2, mid + 9, '400 10.5px ' + FS, PC.dim);
+    /* 試衣縮圖 */
+    const im = imgs && imgs[cls];
+    if(im && im.width){
+      const bh = RH - 8, bw = bh * SHIRT_W / SHIRT_H;
+      g.drawImage(im, xs[3] + (COLS[3].w - bw) / 2, y + 4, bw, bh);
+    }else{
+      txt("—", xs[3] + COLS[3].w / 2, mid, '400 13px ' + FS, PC.faint);
+    }
+    /* 尺寸 */
+    const s = sizesOf(cls);
+    CFG.sizes.forEach((k, i) => {
+      const n = Number(s[k]) || 0;
+      txt(n ? String(n) : "·", xs[4 + i] + COLS[4 + i].w / 2, mid, '400 13px ' + FM, n ? PC.ink : PC.faint);
+    });
+    const ti = 4 + CFG.sizes.length;
+    txt(String(totalOf(cls)), xs[ti] + COLS[ti].w / 2, mid, '700 15px ' + FM, PC.ink);
+    const st = STATUS[statusOf(cls)];
+    txt(st.label, xs[ti + 1] + COLS[ti + 1].w / 2, mid, '600 12px ' + FS,
+        statusOf(cls) === "out" ? PC.warn : (statusOf(cls) === "wait" ? "#a1670f" : PC.good));
+    g.textAlign = "left";
+    txt(clip(m.note || "—", COLS[ti + 2].w - 14, '400 12px ' + FS), xs[ti + 2] + 8, mid,
+        '400 12px ' + FS, m.note ? PC.dim : PC.faint, "left");
+  });
+
+  /* 合計列 */
+  const sy = top + H1 + CFG.classes.length * RH;
+  box(PAD, sy, tableW, RH, PC.head);
+  txt("合計", xs[0] + COLS[0].w / 2, sy + RH / 2, '700 14px ' + FS, PC.ink);
+  txt(filled().length + " 班已填", xs[1] + 10, sy + RH / 2, '400 12.5px ' + FS, PC.dim, "left");
+  CFG.sizes.forEach((k, i) => {
+    txt(String(ss[k]), xs[4 + i] + COLS[4 + i].w / 2, sy + RH / 2, '700 13.5px ' + FM, PC.ink);
+  });
+  const ti = 4 + CFG.sizes.length;
+  txt(String(ss.total), xs[ti] + COLS[ti].w / 2, sy + RH / 2, '700 16px ' + FM, PC.ink);
+
+  for(let r = 0; r <= rows; r++){
+    const y = top + H1 + r * RH;
+    line(PAD, y, PAD + tableW, y, r === 0 ? PC.line : PC.hair);
+  }
+  xs.forEach((x2, i) => { if(i) line(x2, top, x2, top + tableH, PC.hair); });
+  g.strokeStyle = PC.line; g.lineWidth = 1.4;
+  g.strokeRect(PAD, top, tableW, tableH);
+
+  let yy = top + tableH + 18;
+  notes.forEach((n, i) => {
+    txt(clip(n, tableW, '400 11.5px ' + FS), W / 2, yy + i * 17, '400 11.5px ' + FS,
+        (i === 0 && miss.length) ? PC.warn : PC.dim);
+  });
+  return cv;
+}
+async function canvasImage(cv){
+  try{
+    if(typeof CompressionStream === "function"){
+      const px = cv.getContext("2d").getImageData(0, 0, cv.width, cv.height).data;
+      const rgbb = new Uint8Array(cv.width * cv.height * 3);
+      for(let i = 0, j = 0; i < px.length; i += 4){ rgbb[j++] = px[i]; rgbb[j++] = px[i+1]; rgbb[j++] = px[i+2]; }
+      const st = new Blob([rgbb]).stream().pipeThrough(new CompressionStream("deflate"));
+      const buf = new Uint8Array(await new Response(st).arrayBuffer());
+      return {data:buf, filter:"/FlateDecode"};
+    }
+  }catch(e){}
+  const b64 = cv.toDataURL("image/jpeg", 0.95).split(",")[1];
+  const bin = atob(b64), u = new Uint8Array(bin.length);
+  for(let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return {data:u, filter:"/DCTDecode"};
+}
+function pdfFromCanvas(cv, img){
+  const PW = 842, PH_ = 595, M = 20;
+  const s = Math.min((PW - 2*M) / cv.width, (PH_ - 2*M) / cv.height);
+  const w = cv.width * s, h = cv.height * s, x = (PW - w) / 2, y = (PH_ - h) / 2;
+  const content = "q " + w.toFixed(2) + " 0 0 " + h.toFixed(2) + " " + x.toFixed(2) + " " + y.toFixed(2) + " cm /Im0 Do Q\n";
+  const parts = []; let len = 0;
+  const lat = str => { const a = new Uint8Array(str.length); for(let i = 0; i < str.length; i++) a[i] = str.charCodeAt(i) & 0xFF; return a; };
+  const put = u8 => { parts.push(u8); len += u8.length; };
+  const off = [0];
+  put(lat("%PDF-1.4\n%âãÏÓ\n"));
+  const obj = (n, head, stream) => {
+    off[n] = len;
+    put(lat(n + " 0 obj\n" + head + "\n"));
+    if(stream){ put(lat("stream\n")); put(stream); put(lat("\nendstream\n")); }
+    put(lat("endobj\n"));
+  };
+  const enc = new TextEncoder();
+  obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
+  obj(2, "<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
+  obj(3, "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + PW + " " + PH_ + "]"
+       + " /Resources << /ProcSet [/PDF /ImageC] /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>");
+  const cs = enc.encode(content);
+  obj(4, "<< /Length " + cs.length + " >>", cs);
+  obj(5, "<< /Type /XObject /Subtype /Image /Width " + cv.width + " /Height " + cv.height
+       + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter " + img.filter
+       + " /Length " + img.data.length + " >>", img.data);
+  const xref = len;
+  let x2 = "xref\n0 6\n0000000000 65535 f \n";
+  for(let i = 1; i <= 5; i++) x2 += String(off[i]).padStart(10, "0") + " 00000 n \n";
+  x2 += "trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF\n";
+  put(lat(x2));
+  const out = new Uint8Array(len);
+  let p = 0; parts.forEach(c => { out.set(c, p); p += c.length; });
+  return out;
+}
+async function buildPdf(){
+  if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+  const imgs = await shirtImages(240);
+  const cv = renderSheetCanvas(3, imgs);
+  return pdfFromCanvas(cv, await canvasImage(cv));
+}
+/** 廠商報價單：A4 橫式一頁，班級 × 單價 × 小計 */
+function renderQuoteCanvas(scale, q, calc){
+  const COLS = [{w:60, t:"班級"}, {w:150, t:"顏色與款式"}, {w:70, t:"件數"}, {w:80, t:"XL 以上"},
+                {w:80, t:"單價"}, {w:80, t:"版費"}, {w:110, t:"小計"}];
+  const tableW = COLS.reduce((n, c) => n + c.w, 0);
+  const PAD = 34, HT = 86, H1 = 30, RH = 30;
+  const rows = CFG.classes.filter(c => meta(c)).length + 1;
+  const W = tableW + PAD * 2;
+  const top = PAD + HT;
+  const H = top + H1 + rows * RH + 74 + PAD;
+  const cv = document.createElement("canvas");
+  cv.width = Math.round(W * scale); cv.height = Math.round(H * scale);
+  const g = cv.getContext("2d");
+  g.setTransform(scale, 0, 0, scale, 0, 0);
+  g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, H);
+  g.textBaseline = "middle";
+  const txt = (s, x, y, font, color, align) => {
+    g.font = font; g.fillStyle = color; g.textAlign = align || "center";
+    g.fillText(s == null ? "" : String(s), x, y);
+  };
+  txt(sheetTitle() + "　報價單", W / 2, PAD + 20, '700 20px ' + FS, PC.ink);
+  txt((q.name || "未署名") + "　" + (q.contact || "") + "　有效期限 " + (q.valid || "—"),
+      W / 2, PAD + 46, '600 13px ' + FS, PC.ink);
+  txt("大尺寸（" + CFG.bigSizes.join("、") + "）每件加價 " + num(q.big, 9999) + " 元　·　產出時間 "
+      + fmtStamp(new Date()), W / 2, PAD + 68, '400 12px ' + FS, PC.dim);
+  const xs = []; let x = PAD;
+  COLS.forEach(c => { xs.push(x); x += c.w; });
+  g.fillStyle = PC.head; g.fillRect(PAD, top, tableW, H1);
+  COLS.forEach((c, i) => txt(c.t, xs[i] + c.w / 2, top + H1 / 2, '600 12.5px ' + FS, PC.dim));
+  let r = 0;
+  calc.rows.forEach(row => {
+    const m = meta(row.cls);
+    if(!m) return;
+    const y = top + H1 + r * RH, mid = y + RH / 2;
+    if(r % 2){ g.fillStyle = PC.rowh; g.fillRect(PAD, y, tableW, RH); }
+    txt(row.cls, xs[0] + COLS[0].w / 2, mid, '600 13px ' + FM, PC.ink);
+    g.fillStyle = m.hex || "#eee"; g.fillRect(xs[1] + 10, y + 8, 16, RH - 16);
+    g.strokeStyle = "rgba(0,0,0,.2)"; g.lineWidth = 1; g.strokeRect(xs[1] + 10, y + 8, 16, RH - 16);
+    txt(paletteName(m.hex) + "　" + (m.sleeve || "") + " " + (m.neck || ""), xs[1] + 34, mid,
+        '400 12px ' + FS, PC.ink, "left");
+    txt(String(row.qty), xs[2] + COLS[2].w / 2, mid, '400 13px ' + FM, PC.ink);
+    txt(String(row.big), xs[3] + COLS[3].w / 2, mid, '400 13px ' + FM, row.big ? PC.ink : PC.faint);
+    txt(row.unit ? String(row.unit) : "—", xs[4] + COLS[4].w / 2, mid, '400 13px ' + FM, row.unit ? PC.ink : PC.faint);
+    txt(row.plate ? String(row.plate) : "—", xs[5] + COLS[5].w / 2, mid, '400 13px ' + FM, row.plate ? PC.ink : PC.faint);
+    txt(row.sub ? money(row.sub) : "—", xs[6] + COLS[6].w / 2, mid, '600 13px ' + FM, PC.ink);
+    r++;
+  });
+  const sy = top + H1 + r * RH;
+  g.fillStyle = PC.head; g.fillRect(PAD, sy, tableW, RH);
+  txt("總計", xs[0] + COLS[0].w / 2, sy + RH / 2, '700 13px ' + FS, PC.ink);
+  txt(String(calc.qty) + " 件", xs[2] + COLS[2].w / 2, sy + RH / 2, '700 13px ' + FM, PC.ink);
+  txt("平均 " + money(calc.avg), xs[4] + COLS[4].w / 2, sy + RH / 2, '400 12px ' + FM, PC.dim);
+  txt(money(calc.amount), xs[6] + COLS[6].w / 2, sy + RH / 2, '700 15px ' + FM, PC.ink);
+  g.strokeStyle = PC.hair; g.lineWidth = 1;
+  for(let i = 0; i <= r + 1; i++){
+    const y = top + H1 + i * RH;
+    g.beginPath(); g.moveTo(PAD, y); g.lineTo(PAD + tableW, y); g.stroke();
+  }
+  xs.forEach((x2, i) => {
+    if(!i) return;
+    g.beginPath(); g.moveTo(x2, top); g.lineTo(x2, sy + RH); g.stroke();
+  });
+  g.strokeStyle = PC.line; g.lineWidth = 1.4;
+  g.strokeRect(PAD, top, tableW, H1 + (r + 1) * RH);
+  const foot = ["小計 ＝ 件數 × 單價 ＋ XL 以上加價 ＋ 版費。件數為各班線上填報的數量，實際以確認後為準。"];
+  if(q.note) foot.push("說明：" + q.note);
+  foot.forEach((s, i) => txt(s, W / 2, sy + RH + 26 + i * 17, '400 11.5px ' + FS, PC.dim));
+  return cv;
+}
+async function buildQuotePdf(){
+  if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+  const q = quoteDraft();
+  const cv = renderQuoteCanvas(3, q, quoteCalc(q));
+  return pdfFromCanvas(cv, await canvasImage(cv));
+}
+/** 試衣圖 PNG：正反面並排，給廠商看版面比例 */
+async function buildShirtPng(cls){
+  const specs = ["front","back"].map(f => (cls ? specOf(cls, f, false) : draftSpec(f)));
+  const imgs = await Promise.all(specs.map(s => loadImg(shirtUrl(s, 880))));
+  const SW = 440, SH = Math.round(SW * SHIRT_H / SHIRT_W);
+  const PAD = 34, HEAD = 76, GAP = 26;
+  const W = PAD * 2 + SW * 2 + GAP, H = HEAD + SH + 56;
+  const scale = 2;
+  const cv = document.createElement("canvas");
+  cv.width = W * scale; cv.height = H * scale;
+  const g = cv.getContext("2d");
+  g.setTransform(scale, 0, 0, scale, 0, 0);
+  g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, H);
+  g.textBaseline = "middle"; g.textAlign = "center";
+  const who = cls || me || "";
+  const m = cls ? meta(cls) : null;
+  const hex = m ? m.hex : (draft && draft.hex);
+  const sleeve = m ? m.sleeve : (draft && draft.sleeve);
+  const neck = m ? m.neck : (draft && draft.neck);
+  g.font = '700 21px ' + FS; g.fillStyle = PC.ink;
+  g.fillText(CFG.school + "　" + CFG.term + CFG.grade + "　" + who + " 班班服", W / 2, 32);
+  g.font = '400 13px ' + FS; g.fillStyle = PC.dim;
+  g.fillText(paletteName(hex) + " " + (normHex(hex) || "") + "　·　" + (sleeve || "") + " " + (neck || "")
+    + "　·　" + fmtStamp(new Date()), W / 2, 56);
+  imgs.forEach((im, i) => {
+    const x = PAD + i * (SW + GAP);
+    g.fillStyle = "#f7f5f0"; g.fillRect(x, HEAD, SW, SH);
+    if(im) g.drawImage(im, x, HEAD, SW, SH);
+    g.font = '600 13px ' + FS; g.fillStyle = PC.dim;
+    g.fillText(i ? "背面" : "正面", x + SW / 2, HEAD + SH + 20);
+  });
+  g.font = '400 11.5px ' + FS; g.fillStyle = PC.faint;
+  g.fillText("此圖為線上試衣模擬，供版面與比例參考；實際印製請提供圖案原始檔並以廠商打樣為準。", W / 2, H - 16);
+  const blob = await new Promise(res => cv.toBlob(res, "image/png"));
+  return new Uint8Array(await blob.arrayBuffer());
+}
+
+/* ---------- 下載 ---------- */
+async function offer(filename, data, mime){
+  if(DL){
+    try{ await DL.save({filename:filename, data:data}); toast("已儲存 " + filename); return true; }
+    catch(e){
+      const c = e && e.code;
+      if(c === "declined") return false;
+      if(c === "rejected_extension" || c === "extension_not_enabled"){
+        toast("這個檢視不允許下載 ." + filename.split(".").pop() + "，請改用其他格式");
+        return false;
+      }
+      if(c !== "unavailable" && c !== "not_granted" && c !== "capability_disabled" && c !== "capability_removed"){
+        toast("下載失敗：" + (e.message || c)); return false;
+      }
+    }
+  }
+  try{
+    const blob = new Blob([data], {type:mime});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename; a.style.display = "none";
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 2000);
+    toast("已下載 " + filename);
+    return true;
+  }catch(e){ toast("下載失敗：" + e.message); return false; }
+}
+const fileBase = () => CFG.term.replace(/\s/g, "") + CFG.grade + "班服";
+const fileStamp = () => {
+  const d = new Date(), z = n => String(n).padStart(2, "0");
+  return String(d.getFullYear()).slice(2) + z(d.getMonth()+1) + z(d.getDate()) + z(d.getHours()) + z(d.getMinutes());
+};
+
+/* ============================================================
+   啟動
+   ============================================================ */
+function renderAll(){
+  renderHeader();
+  if(VIEW.key === "class"){
+    if(me && !draft) draft = newDraft(me);
+    renderChips(); renderStyleOptions(); renderSwatches(); renderTrims();
+    syncFormInputs(); renderFit(); renderClassFlags();
+    const dis = !me;
+    ["fSleeve","fNeck","fNote","btnArtFront","btnArtBack","btnSave","btnCopy","btnClearMine",
+     "btnShirtPng","rW","rY","rX"].forEach(id => {
+      const e = document.getElementById(id); if(e) e.disabled = dis;
+    });
+    CFG.sizes.forEach(k => { const e = document.getElementById("sz_" + k); if(e) e.disabled = dis; });
+    document.querySelectorAll("#artPresets .pbtn").forEach(b => { b.disabled = dis; });
+  }
+  renderCards();
+  if(VIEW.key === "admin"){ renderDraw(); renderCheck(); renderSizeTable(); renderCompare(); }
+  if(VIEW.key === "vendor"){ renderSizeTable(); renderQuote(); }
+}
+function debounce(fn, ms){
+  let t = null;
+  return function(){
+    const a = arguments;
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(null, a), ms);
+  };
+}
+const saveQuote = debounce(saveQuoteNow, 900);
+function saveQuoteNow(){
+  const q = quoteDraft();
+  const rec = {name:(q.name || "").trim().slice(0, 20),
+               contact:(q.contact || "").trim().slice(0, 30),
+               valid:(q.valid || "").trim().slice(0, 20),
+               big:num(q.big, 9999),
+               note:(q.note || "").trim().slice(0, 200),
+               items:{}, at:new Date().toISOString()};
+  CFG.classes.forEach(c => {
+    const it = (q.items && q.items[c]) || {};
+    const u = num(it.unit, 99999), p = num(it.plate, 999999);
+    if(u || p) rec.items[c] = {unit:u, plate:p};
+  });
+  if(!rec.name && !rec.note && !Object.keys(rec.items).length) return;   /* 空報價就先不要建立 */
+  const k = vendorId();
+  QDat = rec.at;
+  commit(d => { d.quotes = d.quotes || {}; d.quotes[k] = rec; });
+}
+/** 需要再按一次確認的按鈕，避免手滑清掉別人的填寫 */
+function armed(btn, label, run){
+  btn.addEventListener("click", () => {
+    if(btn.dataset.armed !== "1"){
+      btn.dataset.armed = "1"; btn.textContent = "再按一次確認";
+      clearTimeout(btn._t);
+      btn._t = setTimeout(() => { btn.dataset.armed = "0"; btn.textContent = label; }, 4000);
+      return;
+    }
+    clearTimeout(btn._t); btn.dataset.armed = "0"; btn.textContent = label;
+    run();
+  });
+}
+async function readArt(f, input){
+  if(!me || !draft){ toast("請先選擇你的班級"); return; }
+  const file = input.files && input.files[0];
+  input.value = "";
+  if(!file) return;
+  if(SYNC.mode === "shared"){ toast("Artifact 模式無法上傳圖案，請走 GitHub Pages 網址"); return; }
+  toast("處理圖檔中…");
+  try{
+    const img = await pickArt(file);
+    draft.imgs[f] = img;
+    draft.drop[f] = false;
+    face = f;
+    renderFit();
+    toast((f === "front" ? "正面" : "背面") + "圖案已載入，按「送出 / 更新」才會存到雲端"
+      + (img.alpha ? "（保留透明背景）" : ""));
+  }catch(e){
+    toast("圖檔讀取失敗：" + (e.message || "格式不支援"));
+  }
+}
+function wire(){
+  /* 款式 */
+  const bind = (id, key) => {
+    const e = document.getElementById(id);
+    if(!e) return;
+    e.addEventListener("change", () => { if(draft){ draft[key] = e.value; renderFit(); } });
+  };
+  bind("fSleeve", "sleeve");
+  bind("fNeck", "neck");
+  const note = document.getElementById("fNote");
+  if(note) note.addEventListener("input", () => { if(draft) draft.note = note.value; });
+  /* 試衣間 */
+  ["front","back"].forEach(f => {
+    const fig = document.getElementById(f === "front" ? "fitFront" : "fitBack");
+    if(!fig) return;
+    fig.addEventListener("click", () => { face = f; renderFit(); });
+    fig.addEventListener("keydown", ev => {
+      if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); face = f; renderFit(); }
+    });
+  });
+  [["rW","w"], ["rY","y"], ["rX","x"]].forEach(p => {
+    const e = document.getElementById(p[0]);
+    if(!e) return;
+    e.addEventListener("input", () => {
+      if(!draft) return;
+      draft.art[face][p[1]] = Number(e.value);
+      renderFit();
+    });
+  });
+  document.querySelectorAll("#artPresets .pbtn").forEach(b => {
+    b.addEventListener("click", () => {
+      if(!draft) return;
+      draft.art[face] = Object.assign({}, ART_PRESETS[b.dataset.preset] || ART_PRESETS.chest);
+      renderFit();
+    });
+  });
+  const af = document.getElementById("fArtFront"), ab = document.getElementById("fArtBack");
+  if(af){
+    document.getElementById("btnArtFront").addEventListener("click", () => af.click());
+    document.getElementById("btnArtBack").addEventListener("click", () => ab.click());
+    af.addEventListener("change", () => readArt("front", af));
+    ab.addEventListener("change", () => readArt("back", ab));
+    document.getElementById("btnArtClear").addEventListener("click", () => {
+      if(!draft) return;
+      draft.imgs[face] = null;
+      draft.drop[face] = true;
+      renderFit();
+      toast((face === "front" ? "正面" : "背面") + "圖案已移除，按「送出 / 更新」才會生效");
+    });
+    document.getElementById("btnShirtPng").addEventListener("click", async ev => {
+      const b = ev.currentTarget, t = b.textContent;
+      b.disabled = true; b.textContent = "產生中…";
+      try{
+        await offer(fileBase() + "_" + (me || "試衣") + "_" + fileStamp() + ".png",
+          await buildShirtPng(null), "image/png");
+      }catch(e){ toast("試衣圖產生失敗：" + e.message); }
+      finally{ b.disabled = false; b.textContent = t; }
+    });
+  }
+
+  /* 班級端送出 */
+  const bs = document.getElementById("btnSave");
+  if(bs){
+    bs.addEventListener("click", async ev => {
+      const b = ev.currentTarget;
+      b.disabled = true;
+      try{ await saveMine(); }finally{ b.disabled = !me; }
+    });
+    document.getElementById("btnCopy").addEventListener("click", () => {
+      if(!me) return;
+      const t = myText(me);
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(t).then(() => toast("已複製 " + me + " 班的填寫"),
+                                             () => toast("複製失敗，請手動選取"));
+      }else{ toast("這個瀏覽器不支援複製"); }
+    });
+    armed(document.getElementById("btnClearMine"), "清除我班的填寫", async () => {
+      if(!me) return;
+      const ok = await commit(d => { delete d.classes[me]; });
+      if(ok){ draft = newDraft(me); renderAll(); toast(me + " 班的填寫已清除"); }
+    });
+  }
+
+  /* 承辦：撤銷抽籤 */
+  const bu = document.getElementById("btnUndoDraw");
+  if(bu){
+    armed(bu, "撤銷最近一次抽籤", async () => {
+      const ok = await commit(d => {
+        if(!(d.draws || []).length) refuse("目前沒有抽籤紀錄");
+        d.draws = d.draws.slice(0, -1);
+      });
+      if(ok) toast("已撤銷最近一次抽籤，該色回到候補狀態");
+    });
+  }
+
+  /* 廠商：報價 */
+  const qn = document.getElementById("qName");
+  if(qn){
+    [["qName","name"], ["qContact","contact"], ["qValid","valid"], ["qNote","note"]].forEach(p => {
+      const e = document.getElementById(p[0]);
+      e.addEventListener("input", () => { quoteDraft()[p[1]] = e.value; renderQuote(); saveQuote(); });
+    });
+    const qb = document.getElementById("qBig");
+    qb.addEventListener("input", () => { quoteDraft().big = num(qb.value, 9999); renderQuote(); saveQuote(); });
+    document.getElementById("btnApplyBase").addEventListener("click", () => {
+      const v = num(document.getElementById("qBase").value, 99999);
+      if(!v){ toast("先填共同單價"); return; }
+      CFG.classes.forEach(c => { if(meta(c)) qItem(c).unit = v; });
+      renderQuote(); saveQuoteNow();
+      toast("已把 " + v + " 元帶入所有已填寫的班級");
+    });
+    armed(document.getElementById("btnClearQuote"), "清除我的報價", async () => {
+      const k = vendorId();
+      const ok = await commit(d => {
+        if(!d.quotes || !d.quotes[k]) refuse("你還沒有送出過報價");
+        delete d.quotes[k];
+      });
+      if(ok){ QD = null; QDat = ""; renderQuote(); toast("已清除這份報價"); }
+    });
+    document.getElementById("btnQuotePdf").addEventListener("click", async ev => {
+      const b = ev.currentTarget, t = b.textContent;
+      b.disabled = true; b.textContent = "產生中…";
+      try{
+        await offer(fileBase() + "_報價單_" + fileStamp() + ".pdf", await buildQuotePdf(), "application/pdf");
+      }catch(e){ toast("PDF 產生失敗：" + e.message); }
+      finally{ b.disabled = false; b.textContent = t; }
+    });
+  }
+
+  /* 匯出 */
+  const bx = document.getElementById("btnXlsx");
+  if(bx){
+    bx.addEventListener("click", async ev => {
+      const b = ev.currentTarget; b.disabled = true;
+      try{
+        await offer(fileBase() + "_" + fileStamp() + ".xlsx", buildXlsx(),
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      }finally{ b.disabled = false; }
+    });
+    document.getElementById("btnCsv").addEventListener("click", async ev => {
+      const b = ev.currentTarget; b.disabled = true;
+      try{ await offer(fileBase() + "_" + fileStamp() + ".csv", buildCsv(), "text/csv;charset=utf-8"); }
+      finally{ b.disabled = false; }
+    });
+    document.getElementById("btnPdf").addEventListener("click", async ev => {
+      const b = ev.currentTarget, t = b.textContent;
+      b.disabled = true; b.textContent = "產生中…";
+      try{ await offer(fileBase() + "_" + fileStamp() + ".pdf", await buildPdf(), "application/pdf"); }
+      catch(e){ toast("PDF 產生失敗：" + e.message); }
+      finally{ b.disabled = false; b.textContent = t; }
+    });
+    document.getElementById("btnPrint").addEventListener("click", () => {
+      try{ window.print(); }catch(e){ toast("此檢視無法直接列印，請改用匯出 PDF"); }
+    });
+  }
+
+  /* 放大檢視 */
+  const lb = document.getElementById("lightbox");
+  lb.addEventListener("click", () => lb.classList.remove("show"));
+  document.addEventListener("keydown", ev => { if(ev.key === "Escape") lb.classList.remove("show"); });
+}
+
+applyView();
+loadLocal();
+buildSizeGrid();
+renderStyleOptions();
+renderAll();
+wire();
+initRuntime();
+</script>
+<!--
+  ═══════════════════════════════════════════════════════════════
+  開啟即時共用（GitHub Pages 必要步驟）
+
+  1. 上面的 FIREBASE_CONFIG 填入 Firebase 專案設定
+     （主控台 → 專案設定 → 一般 → 網頁應用程式 → firebaseConfig）
+     目前沿用 banfu.html 那個專案，Firestore 資料庫已經建立過，
+     所以只差下面這一步規則。
+  2. Firestore → 規則，把下面這兩段「加進」現有規則最外層的
+       match /databases/{database}/documents { … }
+     大括號裡，其他既有 match 區塊（含 yearbookShirt）原封不動保留。
+     Firestore 規則逐路徑判斷、預設全部拒絕，新增這兩段不會影響同一
+     專案裡其他集合的權限。
+
+      match /classShirt/{docId} {
+        allow read:  if docId == '115-5';
+        allow write: if docId == '115-5'
+          && request.resource.data.keys().hasOnly(['classes', 'draws', 'quotes', 'updated', 'v'])
+          && request.resource.data.classes is map
+          && request.resource.data.classes.size() <= 20
+          && request.resource.data.draws is list
+          && request.resource.data.draws.size() <= 60
+          && request.resource.data.quotes is map
+          && request.resource.data.quotes.size() <= 20
+          && request.resource.data.updated is string
+          && request.resource.data.updated.size() <= 40;
+      }
+
+      match /classShirt/{docId}/art/{key} {
+        allow read:  if docId == '115-5';
+        allow write: if docId == '115-5'
+          && request.resource.data.keys().hasOnly(['full', 'thumb', 'at', 'by'])
+          && request.resource.data.full is string
+          && request.resource.data.full.size() <= 740000
+          && request.resource.data.thumb is string
+          && request.resource.data.thumb.size() <= 130000
+          && request.resource.data.at is string
+          && request.resource.data.at.size() <= 40;
+      }
+
+  三處的 classShirt / 115-5 要和程式裡的 FIRE_COL / FIRE_ID 一致。
+  下一屆換一個 FIRE_ID（例如 116-5），規則跟著改，舊資料留在原文件。
+
+  這份文件是公開可寫的（掃 QR 的導師與廠商都不需登入）。規則把範圍鎖在
+  單一文件、20 筆班級、60 筆抽籤、20 家報價以內，只有指定欄位，
+  單張圖案上限約 720KB，就算有人亂寫也只影響這張表，隨時可重填。
+  刪掉這兩段 match 即可關閉即時共用。
+
+  註一：抽籤紀錄是附加式的陣列，撤銷抽籤是「拿掉最後一筆」，
+  規則不區分新增與刪除，所以承辦端的撤銷鍵刻意加了二次確認。
+  註二：清除某班填寫時主文件紀錄會消失，子集合裡的舊圖案仍留著
+  （規則刻意不允許刪除，避免誤刪）。畫面只認主文件的 frontAt / backAt，
+  孤兒圖案不會顯示，該班重新上傳時會直接覆蓋。
+  ═══════════════════════════════════════════════════════════════
+-->
+</body>
+</html>

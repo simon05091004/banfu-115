@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>五年級班服共編　承辦檢視</title>
+<meta name="description" content="掃描 QR code 進入五年級班服共編（承辦檢視）">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#faf8f4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+<style>
+*{box-sizing:border-box}
+:root{
+  --paper:#faf8f4; --card:#ffffff; --ink:#1e1c19; --dim:#6d675e; --faint:#989185;
+  --line:#e4dfd5; --sunk:#f4f1ea;
+  --a1:#a1670f; --a1-bg:#fbf3e2; --a2:#1d5ba4; --a2-bg:#edf3fc; --a3:#1c7549; --a3-bg:#eaf6ef;
+  --a4:#7a3f8c; --a4-bg:#f8eefb;
+  --focus:#1d5ba4;
+  --sh:0 1px 2px rgba(40,32,18,.05), 0 10px 34px -14px rgba(40,32,18,.28);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#1a1815; --card:#232019; --ink:#ece6dc; --dim:#a09789; --faint:#7b7366;
+    --line:#35312a; --sunk:#1f1c17;
+    --a1:#e3a943; --a1-bg:#332a17; --a2:#7db0ef; --a2-bg:#1a2634; --a3:#5ec68e; --a3-bg:#172b20;
+    --a4:#cb99dc; --a4-bg:#2b1f31;
+    --focus:#7db0ef;
+    --sh:0 1px 2px rgba(0,0,0,.3), 0 10px 34px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1a1815; --card:#232019; --ink:#ece6dc; --dim:#a09789; --faint:#7b7366;
+  --line:#35312a; --sunk:#1f1c17;
+  --a1:#e3a943; --a1-bg:#332a17; --a2:#7db0ef; --a2-bg:#1a2634; --a3:#5ec68e; --a3-bg:#172b20;
+  --a4:#cb99dc; --a4-bg:#2b1f31;
+  --focus:#7db0ef;
+  --sh:0 1px 2px rgba(0,0,0,.3), 0 10px 34px -14px rgba(0,0,0,.7);
+}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:16px/1.65 "Noto Sans TC",-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:40px 20px 64px;display:flex;flex-direction:column;gap:24px}
+header{text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.eyebrow{margin:0;font-size:12.5px;letter-spacing:.14em;color:var(--dim);font-weight:500}
+.who{font-size:12px;font-weight:600;letter-spacing:.1em;padding:3px 12px;border-radius:999px}
+.who.p1{color:var(--a1);background:var(--a1-bg)} .who.p2{color:var(--a2);background:var(--a2-bg)}
+.who.p3{color:var(--a3);background:var(--a3-bg)} .who.p4{color:var(--a4);background:var(--a4-bg)}
+h1{margin:0;font-family:"Noto Serif TC",serif;font-weight:700;font-size:clamp(24px,5.6vw,31px);
+  line-height:1.32;text-wrap:balance}
+.lede{margin:0;color:var(--dim);font-size:15px}
+
+/* QR 卡片：不論深淺色主題都保持白底黑碼，確保掃得到 */
+.qrcard{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh);
+  padding:26px 26px 20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.qrcard svg{width:min(320px,72vw);height:auto;display:block;shape-rendering:crispEdges}
+.url{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:11.5px;color:#6d675e;
+  word-break:break-all;text-align:center;line-height:1.5;max-width:34ch}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{appearance:none;font:inherit;font-size:15px;font-weight:600;border-radius:11px;padding:12px 20px;
+  cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--paper);
+  text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:opacity .12s,transform .08s}
+.btn:hover{opacity:.87} .btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--dim);opacity:1}
+.btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:13px;align-items:flex-start;
+  background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px 15px}
+.steps li::before{content:counter(s);flex:0 0 24px;height:24px;border-radius:50%;
+  background:var(--sunk);color:var(--dim);font-family:"IBM Plex Mono",monospace;font-size:12.5px;
+  font-weight:500;display:grid;place-items:center;margin-top:1px}
+.steps b{display:block;font-size:15px;font-weight:600}
+.steps span{display:block;font-size:13.5px;color:var(--dim);margin-top:1px}
+
+.palette{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 17px;
+  display:flex;flex-direction:column;gap:10px}
+.palette h2,.when h2{margin:0;font-family:"Noto Serif TC",serif;font-size:15px;font-weight:600}
+.sws{display:flex;flex-wrap:wrap;gap:7px}
+.sw{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;color:var(--dim);
+  border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 4px}
+.sw i{width:15px;height:15px;border-radius:50%;border:1px solid rgba(0,0,0,.16);display:block}
+
+.when{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+  display:flex;flex-direction:column;gap:9px}
+.row{display:flex;align-items:baseline;gap:10px;font-size:14px}
+.row .k{flex:0 0 74px;font-size:12.5px;color:var(--dim);font-weight:600}
+.row em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-weight:600}
+.note{margin:0;font-size:13px;color:var(--dim);border-top:1px solid var(--line);padding-top:10px;line-height:1.7}
+footer{text-align:center;color:var(--faint);font-size:12.5px;line-height:1.8}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,14px);
+  background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:11px;font-size:14px;
+  box-shadow:0 10px 30px -8px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  body{background:#fff}
+  .wrap{max-width:none;padding:12mm 10mm}
+  .actions,#toast{display:none!important}
+  .qrcard{box-shadow:none;break-inside:avoid}
+  .qrcard svg{width:96mm}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">永福國小 · 115 學年度 · 五年級</p>
+    <span class="who p1">學務處承辦</span>
+    <h1>承辦檢視</h1>
+    <p class="lede">名額狀況、同色抽籤、尺寸總表與廠商比價</p>
+  </header>
+
+  <div class="qrcard">
+    <svg viewBox="-4 -4 49 49" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="共編表網址 QR code">
+      <rect x="-4" y="-4" width="49" height="49" fill="#ffffff"/>
+      <path fill="#1e1c19" d="M0 0h7v1h-7zM9 0h5v1h-5zM15 0h2v1h-2zM18 0h2v1h-2zM21 0h1v1h-1zM28 0h2v1h-2zM31 0h2v1h-2zM34 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM12 1h2v1h-2zM16 1h3v1h-3zM20 1h2v1h-2zM26 1h1v1h-1zM30 1h1v1h-1zM32 1h1v1h-1zM34 1h1v1h-1zM40 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h2v1h-2zM13 2h1v1h-1zM15 2h2v1h-2zM18 2h4v1h-4zM25 2h2v1h-2zM29 2h1v1h-1zM32 2h1v1h-1zM34 2h1v1h-1zM36 2h3v1h-3zM40 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM11 3h2v1h-2zM16 3h2v1h-2zM21 3h1v1h-1zM23 3h2v1h-2zM27 3h1v1h-1zM34 3h1v1h-1zM36 3h3v1h-3zM40 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM13 4h1v1h-1zM16 4h3v1h-3zM23 4h1v1h-1zM27 4h3v1h-3zM31 4h1v1h-1zM34 4h1v1h-1zM36 4h3v1h-3zM40 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM12 5h1v1h-1zM15 5h2v1h-2zM23 5h1v1h-1zM25 5h1v1h-1zM29 5h1v1h-1zM31 5h2v1h-2zM34 5h1v1h-1zM40 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM32 6h1v1h-1zM34 6h7v1h-7zM9 7h2v1h-2zM14 7h1v1h-1zM16 7h2v1h-2zM19 7h1v1h-1zM21 7h1v1h-1zM24 7h1v1h-1zM26 7h5v1h-5zM1 8h3v1h-3zM5 8h2v1h-2zM9 8h4v1h-4zM15 8h2v1h-2zM23 8h1v1h-1zM27 8h1v1h-1zM29 8h4v1h-4zM38 8h2v1h-2zM0 9h1v1h-1zM4 9h1v1h-1zM8 9h2v1h-2zM14 9h2v1h-2zM19 9h2v1h-2zM22 9h2v1h-2zM26 9h1v1h-1zM30 9h7v1h-7zM38 9h3v1h-3zM0 10h1v1h-1zM2 10h3v1h-3zM6 10h1v1h-1zM10 10h1v1h-1zM13 10h3v1h-3zM17 10h3v1h-3zM22 10h1v1h-1zM24 10h3v1h-3zM33 10h2v1h-2zM36 10h1v1h-1zM38 10h2v1h-2zM3 11h3v1h-3zM7 11h2v1h-2zM10 11h1v1h-1zM16 11h2v1h-2zM20 11h1v1h-1zM22 11h4v1h-4zM27 11h1v1h-1zM32 11h1v1h-1zM35 11h2v1h-2zM39 11h2v1h-2zM0 12h7v1h-7zM8 12h2v1h-2zM11 12h1v1h-1zM13 12h2v1h-2zM17 12h2v1h-2zM21 12h2v1h-2zM25 12h2v1h-2zM29 12h5v1h-5zM37 12h3v1h-3zM0 13h1v1h-1zM3 13h2v1h-2zM8 13h5v1h-5zM14 13h2v1h-2zM17 13h5v1h-5zM23 13h1v1h-1zM25 13h2v1h-2zM28 13h2v1h-2zM32 13h1v1h-1zM38 13h3v1h-3zM1 14h1v1h-1zM6 14h1v1h-1zM11 14h1v1h-1zM14 14h1v1h-1zM20 14h3v1h-3zM24 14h5v1h-5zM30 14h3v1h-3zM34 14h4v1h-4zM40 14h1v1h-1zM0 15h1v1h-1zM2 15h4v1h-4zM9 15h1v1h-1zM13 15h2v1h-2zM17 15h1v1h-1zM24 15h1v1h-1zM26 15h1v1h-1zM28 15h1v1h-1zM34 15h3v1h-3zM1 16h1v1h-1zM3 16h6v1h-6zM11 16h1v1h-1zM13 16h1v1h-1zM16 16h1v1h-1zM19 16h1v1h-1zM23 16h3v1h-3zM27 16h2v1h-2zM32 16h1v1h-1zM36 16h2v1h-2zM39 16h2v1h-2zM0 17h2v1h-2zM3 17h1v1h-1zM5 17h1v1h-1zM10 17h2v1h-2zM13 17h1v1h-1zM15 17h1v1h-1zM17 17h5v1h-5zM23 17h1v1h-1zM27 17h1v1h-1zM30 17h1v1h-1zM32 17h2v1h-2zM35 17h1v1h-1zM37 17h1v1h-1zM39 17h1v1h-1zM0 18h1v1h-1zM2 18h3v1h-3zM6 18h4v1h-4zM12 18h3v1h-3zM18 18h1v1h-1zM20 18h3v1h-3zM24 18h4v1h-4zM30 18h1v1h-1zM33 18h2v1h-2zM36 18h2v1h-2zM39 18h1v1h-1zM1 19h4v1h-4zM8 19h2v1h-2zM12 19h1v1h-1zM15 19h1v1h-1zM17 19h1v1h-1zM19 19h1v1h-1zM21 19h2v1h-2zM24 19h3v1h-3zM29 19h3v1h-3zM33 19h1v1h-1zM35 19h1v1h-1zM38 19h1v1h-1zM1 20h2v1h-2zM6 20h1v1h-1zM8 20h2v1h-2zM11 20h2v1h-2zM14 20h6v1h-6zM21 20h1v1h-1zM24 20h5v1h-5zM32 20h3v1h-3zM36 20h1v1h-1zM38 20h1v1h-1zM40 20h1v1h-1zM3 21h3v1h-3zM8 21h1v1h-1zM10 21h4v1h-4zM15 21h3v1h-3zM20 21h1v1h-1zM23 21h1v1h-1zM29 21h1v1h-1zM31 21h2v1h-2zM34 21h4v1h-4zM39 21h2v1h-2zM6 22h7v1h-7zM14 22h6v1h-6zM22 22h2v1h-2zM28 22h2v1h-2zM32 22h1v1h-1zM38 22h2v1h-2zM3 23h2v1h-2zM7 23h1v1h-1zM12 23h1v1h-1zM15 23h1v1h-1zM19 23h2v1h-2zM23 23h5v1h-5zM30 23h2v1h-2zM36 23h1v1h-1zM39 23h2v1h-2zM0 24h2v1h-2zM3 24h1v1h-1zM5 24h3v1h-3zM9 24h3v1h-3zM14 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h2v1h-2zM25 24h1v1h-1zM29 24h1v1h-1zM31 24h1v1h-1zM38 24h1v1h-1zM40 24h1v1h-1zM0 25h2v1h-2zM3 25h1v1h-1zM7 25h2v1h-2zM10 25h1v1h-1zM12 25h1v1h-1zM15 25h1v1h-1zM17 25h1v1h-1zM21 25h2v1h-2zM27 25h2v1h-2zM31 25h2v1h-2zM34 25h2v1h-2zM37 25h2v1h-2zM40 25h1v1h-1zM1 26h2v1h-2zM4 26h1v1h-1zM6 26h5v1h-5zM13 26h2v1h-2zM16 26h1v1h-1zM19 26h2v1h-2zM24 26h2v1h-2zM29 26h4v1h-4zM34 26h2v1h-2zM37 26h1v1h-1zM39 26h2v1h-2zM0 27h2v1h-2zM8 27h4v1h-4zM13 27h2v1h-2zM18 27h5v1h-5zM24 27h1v1h-1zM26 27h1v1h-1zM28 27h1v1h-1zM30 27h4v1h-4zM35 27h3v1h-3zM0 28h3v1h-3zM5 28h3v1h-3zM9 28h1v1h-1zM11 28h2v1h-2zM14 28h4v1h-4zM22 28h1v1h-1zM25 28h1v1h-1zM27 28h2v1h-2zM30 28h3v1h-3zM35 28h3v1h-3zM39 28h2v1h-2zM1 29h1v1h-1zM3 29h1v1h-1zM5 29h1v1h-1zM11 29h1v1h-1zM13 29h1v1h-1zM16 29h3v1h-3zM24 29h1v1h-1zM28 29h1v1h-1zM31 29h2v1h-2zM34 29h2v1h-2zM0 30h1v1h-1zM2 30h3v1h-3zM6 30h1v1h-1zM13 30h3v1h-3zM17 30h2v1h-2zM23 30h2v1h-2zM26 30h3v1h-3zM31 30h1v1h-1zM33 30h2v1h-2zM39 30h1v1h-1zM3 31h2v1h-2zM7 31h3v1h-3zM13 31h2v1h-2zM16 31h2v1h-2zM20 31h1v1h-1zM24 31h1v1h-1zM26 31h1v1h-1zM29 31h3v1h-3zM34 31h1v1h-1zM36 31h1v1h-1zM38 31h2v1h-2zM1 32h2v1h-2zM6 32h2v1h-2zM9 32h2v1h-2zM15 32h1v1h-1zM17 32h2v1h-2zM21 32h1v1h-1zM23 32h2v1h-2zM28 32h2v1h-2zM32 32h9v1h-9zM8 33h2v1h-2zM12 33h1v1h-1zM17 33h2v1h-2zM21 33h3v1h-3zM26 33h1v1h-1zM28 33h3v1h-3zM32 33h1v1h-1zM36 33h1v1h-1zM40 33h1v1h-1zM0 34h7v1h-7zM9 34h1v1h-1zM14 34h2v1h-2zM17 34h1v1h-1zM19 34h3v1h-3zM23 34h2v1h-2zM26 34h1v1h-1zM30 34h3v1h-3zM34 34h1v1h-1zM36 34h3v1h-3zM0 35h1v1h-1zM6 35h1v1h-1zM8 35h2v1h-2zM11 35h1v1h-1zM14 35h1v1h-1zM19 35h1v1h-1zM23 35h5v1h-5zM29 35h1v1h-1zM32 35h1v1h-1zM36 35h2v1h-2zM39 35h2v1h-2zM0 36h1v1h-1zM2 36h3v1h-3zM6 36h1v1h-1zM10 36h2v1h-2zM15 36h3v1h-3zM19 36h1v1h-1zM22 36h3v1h-3zM32 36h8v1h-8zM0 37h1v1h-1zM2 37h3v1h-3zM6 37h1v1h-1zM8 37h2v1h-2zM11 37h1v1h-1zM16 37h4v1h-4zM22 37h1v1h-1zM24 37h1v1h-1zM27 37h2v1h-2zM31 37h2v1h-2zM36 37h2v1h-2zM39 37h2v1h-2zM0 38h1v1h-1zM2 38h3v1h-3zM6 38h1v1h-1zM8 38h5v1h-5zM15 38h1v1h-1zM20 38h1v1h-1zM22 38h1v1h-1zM25 38h1v1h-1zM30 38h2v1h-2zM35 38h1v1h-1zM40 38h1v1h-1zM0 39h1v1h-1zM6 39h1v1h-1zM8 39h5v1h-5zM14 39h3v1h-3zM20 39h1v1h-1zM23 39h1v1h-1zM27 39h1v1h-1zM32 39h1v1h-1zM36 39h2v1h-2zM39 39h1v1h-1zM0 40h7v1h-7zM11 40h1v1h-1zM13 40h1v1h-1zM15 40h1v1h-1zM20 40h1v1h-1zM22 40h1v1h-1zM24 40h4v1h-4zM30 40h3v1h-3zM39 40h1v1h-1z"/>
+    </svg>
+    <p class="url" id="url">https://simon05091004.github.io/banfu-115/banfu5.html?v=admin</p>
+  </div>
+
+  <div class="actions">
+    <a class="btn" id="open" href="https://simon05091004.github.io/banfu-115/banfu5.html?v=admin">開啟共編表</a>
+    <button class="btn ghost" id="copy" type="button">複製連結</button>
+  </div>
+
+  <ol class="steps">
+    <li><div><b>看名額與繳交狀況</b><span>誰還沒填、誰要改選、哪個顏色卡住了，一頁看完</span></div></li>
+    <li><div><b>主持同色第 3 席抽籤</b><span>亂數種子與抽籤順序都會留紀錄，可以公開查驗</span></div></li>
+    <li><div><b>匯出與比價</b><span>Excel 四個工作表、PDF 一頁；多家廠商報價自動排序</span></div></li>
+  </ol>
+
+  <section class="palette" hidden>
+    <h2>可選色票</h2>
+    <div class="sws"></div>
+  </section>
+
+  <section class="when">
+    <div class="row"><span class="k">繳交期限</span><em>115/10/15</em></div>
+    <div class="row"><span class="k">適用班級</span><em>501–511</em>　共 11 班</div>
+    <div class="row"><span class="k">承辦</span>學務處</div>
+    <p class="note">除了主持抽籤，此檢視不會更動各班填的內容。<br>要改內容請通知該班導師自己改，責任才清楚。</p>
+  </section>
+
+  <footer>資料與各班填寫頁即時同步</footer>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  var URL_ = document.getElementById("url").textContent.trim();
+  var t = document.getElementById("toast");
+  function toast(m){ t.textContent = m; t.classList.add("show"); clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ t.classList.remove("show"); }, 2400); }
+  document.getElementById("copy").addEventListener("click", async function(){
+    try{
+      if(navigator.share){ await navigator.share({title:document.title, url:URL_}); return; }
+      await navigator.clipboard.writeText(URL_);
+      toast("連結已複製");
+    }catch(e){
+      if(e && e.name === "AbortError") return;
+      try{ await navigator.clipboard.writeText(URL_); toast("連結已複製"); }
+      catch(e2){ toast("請長按上方網址手動複製"); }
+    }
+  });
+})();
+</script>
+</body>
+</html>
