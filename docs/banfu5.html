@@ -1286,8 +1286,8 @@ function applyView(){
 }
 
 /* ---------- 班級端 ---------- */
-function newDraft(cls){
-  const m = meta(cls);
+function newDraft(cls, blank){
+  const m = blank ? null : meta(cls);
   const sz = {};
   CFG.sizes.forEach(k => { sz[k] = (m && m.sizes && m.sizes[k]) || 0; });
   const a = blankArt();
@@ -2086,6 +2086,7 @@ async function saveMine(){
                by:me, updated:new Date().toISOString()};
   if(frontAt) rec.frontAt = frontAt;
   if(backAt) rec.backAt = backAt;
+  let after = "none";
   const ok = await commit(d => {
     const mine = d.classes[me];
     delete d.classes[me];
@@ -2095,13 +2096,14 @@ async function saveMine(){
     if(s.seated.length >= CFG.perColor) refuse("慢了一步 —— 這個顏色剛剛被其他班選滿了，請改選其他顏色");
     rec.at = (mine && sameHex(mine.hex, hex) && mine.at) ? mine.at : new Date().toISOString();
     d.classes[me] = rec;
+    /* 交易回來時快照還沒到，state 仍是舊的 —— 名額狀態要用剛寫進去的這份算 */
+    after = withState(d, () => statusOf(me));
   });
   if(ok){
     draft.imgs = {front:null, back:null};
     draft.drop = {front:false, back:false};
-    const st = statusOf(me);
     renderAll();
-    toast(me + " 班已送出　·　" + STATUS[st].txt
+    toast(me + " 班已送出　·　" + STATUS[after].txt
       + (SYNC.mode === "fire" ? "" : "（目前僅存在這台裝置）"));
   }
 }
@@ -2946,7 +2948,7 @@ function wire(){
     armed(document.getElementById("btnClearMine"), "清除我班的填寫", async () => {
       if(!me) return;
       const ok = await commit(d => { delete d.classes[me]; });
-      if(ok){ draft = newDraft(me); renderAll(); toast(me + " 班的填寫已清除"); }
+      if(ok){ draft = newDraft(me, true); renderAll(); toast(me + " 班的填寫已清除"); }
     });
   }
 
@@ -2984,7 +2986,12 @@ function wire(){
         if(!d.quotes || !d.quotes[k]) refuse("你還沒有送出過報價");
         delete d.quotes[k];
       });
-      if(ok){ QD = null; QDat = ""; renderQuote(); toast("已清除這份報價"); }
+      if(ok){
+        QD = {name:"", contact:"", valid:"", big:0, note:"", items:{}};
+        QDat = "";
+        renderQuote();
+        toast("已清除這份報價");
+      }
     });
     document.getElementById("btnQuotePdf").addEventListener("click", async ev => {
       const b = ev.currentTarget, t = b.textContent;
