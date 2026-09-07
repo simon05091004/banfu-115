@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>短除法闖關</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#F4F8F2; --paper-2:#FFFFFF; --paper-3:#EAF1E8;
+  --grid:#D6E6D8; --line:#C4D6C7;
+  --ink:#1C2B30; --ink-soft:#56686D; --ink-faint:#8A9A9C;
+  --red:#CE3E2E; --red-bg:#FBE6E1;
+  --blue:#2A6B8C; --blue-bg:#DCEAF1;
+  --leaf:#3B8A58; --leaf-bg:#DFEFE3;
+  --gold:#D99A12;
+  --btn-shadow: 0 2px 0 var(--line);
+  --grid-size:28px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --paper:#1D2823; --paper-2:#25322C; --paper-3:#2C3A33;
+    --grid:#33443B; --line:#3C4E45;
+    --ink:#E8EFE5; --ink-soft:#A9BCB1; --ink-faint:#7C9086;
+    --red:#F1897A; --red-bg:#3C2A28;
+    --blue:#7CC2DD; --blue-bg:#233841;
+    --leaf:#7FD3A1; --leaf-bg:#22382C;
+    --gold:#EFC463;
+    --btn-shadow: 0 2px 0 rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --paper:#1D2823; --paper-2:#25322C; --paper-3:#2C3A33;
+  --grid:#33443B; --line:#3C4E45;
+  --ink:#E8EFE5; --ink-soft:#A9BCB1; --ink-faint:#7C9086;
+  --red:#F1897A; --red-bg:#3C2A28;
+  --blue:#7CC2DD; --blue-bg:#233841;
+  --leaf:#7FD3A1; --leaf-bg:#22382C;
+  --gold:#EFC463;
+  --btn-shadow: 0 2px 0 rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background-color:var(--paper); color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Heiti TC",sans-serif;
+  font-size:17px; line-height:1.75;
+  background-image:
+    repeating-linear-gradient(to right, var(--grid) 0 1px, transparent 1px var(--grid-size)),
+    repeating-linear-gradient(to bottom, var(--grid) 0 1px, transparent 1px var(--grid-size));
+  -webkit-text-size-adjust:100%;
+}
+button{font:inherit; color:inherit; touch-action:manipulation; -webkit-tap-highlight-color:transparent; -webkit-user-select:none; user-select:none}
+main.settling{pointer-events:none}
+:focus-visible{outline:3px solid var(--blue); outline-offset:2px}
+.num{font-family:"IBM Plex Mono","SF Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.app{max-width:760px; margin:0 auto; padding:0 16px 56px}
+
+.bar{display:flex; align-items:center; gap:12px; padding:14px 0 12px; border-bottom:1px solid var(--line); margin-bottom:8px}
+.brand{font-family:"Noto Serif TC",serif; font-weight:900; font-size:19px; letter-spacing:.04em; margin-right:auto}
+.brand span{color:var(--red)}
+.who{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:15px; color:var(--blue); background:var(--blue-bg); border:1.5px solid var(--blue); padding:2px 9px; border-radius:4px}
+.icon-btn{border:1px solid var(--line); background:var(--paper-2); border-radius:8px; min-width:44px; min-height:38px; cursor:pointer; font-size:15px; color:var(--ink-soft)}
+.icon-btn[aria-pressed="true"]{color:var(--blue); border-color:var(--blue); background:var(--blue-bg)}
+
+.sync{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-soft); margin-bottom:16px; min-height:20px}
+.dot{width:8px; height:8px; border-radius:50%; background:var(--ink-faint); flex:none}
+.dot.ok{background:var(--leaf)} .dot.warn{background:var(--gold)} .dot.err{background:var(--red)}
+
+.rail{display:flex; gap:6px; margin:0 0 24px; list-style:none; padding:0}
+.rail li{flex:1; font-size:11.5px; letter-spacing:.08em; color:var(--ink-faint); border-top:3px solid var(--line); padding-top:6px; text-align:center; transition:color .25s, border-color .25s}
+.rail li b{display:block; font-weight:500}
+.rail li.on{color:var(--red); border-top-color:var(--red)}
+.rail li.done{color:var(--ink-soft); border-top-color:var(--leaf)}
+
+h1{font-family:"Noto Serif TC",serif; font-weight:900; font-size:clamp(30px,7vw,42px); line-height:1.25; margin:0 0 6px; text-wrap:balance; letter-spacing:.02em}
+h2{font-family:"Noto Serif TC",serif; font-weight:700; font-size:clamp(21px,4.4vw,26px); margin:0 0 12px; text-wrap:balance}
+h3{font-size:16px; font-weight:700; margin:0 0 6px}
+p{margin:0 0 14px; max-width:60ch}
+.eyebrow{font-size:12px; letter-spacing:.22em; color:var(--ink-soft); margin:0 0 10px; font-weight:500}
+.lead{font-size:18px}
+.muted{color:var(--ink-soft)}
+.small{font-size:14.5px; line-height:1.7}
+
+.sheet{background:var(--paper-2); border:1px solid var(--line); padding:20px; margin:0 0 20px}
+.sheet.tint{background:var(--paper-3)}
+.story{background:var(--paper-2); border:1px solid var(--line); border-left:5px solid var(--red); padding:18px 20px; margin:0 0 22px}
+.story h3{color:var(--red); font-size:13px; letter-spacing:.12em; font-weight:700}
+
+.actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:20px}
+.btn{border:1.5px solid var(--ink); background:var(--ink); color:var(--paper-2); padding:13px 24px; font-weight:700; font-size:16.5px; cursor:pointer; border-radius:4px; min-height:50px; box-shadow:var(--btn-shadow); transition:transform .08s}
+.btn:active{transform:translateY(2px); box-shadow:none}
+.btn.ghost{background:transparent; color:var(--ink); border-color:var(--line)}
+.btn.red{background:var(--red); border-color:var(--red); color:#fff}
+.btn:disabled{opacity:.35; cursor:not-allowed}
+
+/* 班級與座號 */
+.pick-label{font-size:13px; letter-spacing:.1em; color:var(--ink-soft); margin:0 0 9px; font-weight:500}
+.classes{display:grid; grid-template-columns:repeat(auto-fit,minmax(84px,1fr)); gap:8px; margin-bottom:22px}
+.cls{min-height:56px; font-family:"IBM Plex Mono",monospace; font-size:21px; font-weight:700; cursor:pointer; border:2px solid var(--line); background:var(--paper-2); color:var(--ink); border-radius:6px; box-shadow:var(--btn-shadow)}
+.cls:active{transform:translateY(2px); box-shadow:none}
+.cls[aria-pressed="true"]{background:var(--red); border-color:var(--red); color:#fff}
+.seats{display:grid; grid-template-columns:repeat(8,1fr); gap:6px}
+.seat{min-height:46px; font-family:"IBM Plex Mono",monospace; font-size:16px; font-weight:600; cursor:pointer; border:1.5px solid var(--line); background:var(--paper-2); color:var(--ink-soft); border-radius:5px; padding:0}
+.seat[aria-pressed="true"]{background:var(--blue); border-color:var(--blue); color:#fff; font-size:18px}
+
+.factor-line{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:12px}
+.factor-line .lbl{font-weight:700; min-width:8.5em; font-size:15px}
+.chips{display:flex; flex-wrap:wrap; gap:7px}
+.chip{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-weight:600; min-width:44px; text-align:center; padding:6px 10px; font-size:16px; border:1.5px solid var(--line); background:var(--paper-2); color:var(--ink-soft); border-radius:4px}
+.chip.common{border-color:var(--red); color:var(--red); background:var(--red-bg); transform:translateY(-2px)}
+.chip.best{border-width:3px; box-shadow:0 0 0 3px var(--red-bg)}
+
+.sd-wrap{display:flex; justify-content:center; padding:8px 0 4px}
+.sd{display:inline-block; min-width:min(300px,86vw)}
+.sd-row{display:grid; grid-template-columns:3.4ch 1fr; align-items:start}
+.sd-div{text-align:right; padding:6px 8px 0 0; font-size:clamp(20px,5vw,25px); font-weight:600; color:var(--red); font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.sd-nums{border-left:2.5px solid var(--red); border-top:2.5px solid var(--red); padding:6px 4px 4px; display:grid; grid-template-columns:1fr 1fr}
+.sd-nums span{text-align:center; font-size:clamp(20px,5vw,25px); font-weight:600; color:var(--ink); font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.sd-row.is-final .sd-nums{border:0; padding-top:8px}
+.sd-row.is-final .sd-nums span{color:var(--blue)}
+.sd-row.fresh{animation:drop .3s ease-out}
+@keyframes drop{from{opacity:0; transform:translateY(-8px)}to{opacity:1; transform:none}}
+.sd-note{display:inline-block; margin:10px 0 0; font-size:13.5px; font-weight:700; color:var(--red); border:1.5px solid var(--red); background:var(--red-bg); padding:3px 10px; transform:rotate(-1.5deg)}
+.sd-mult{margin-top:14px; font-size:clamp(17px,4vw,20px); font-weight:700; color:var(--leaf); text-align:center}
+.sd-mult .num{font-size:1.15em}
+
+.picker{margin-top:18px}
+.picker-label{font-size:13px; letter-spacing:.1em; color:var(--ink-soft); margin-bottom:8px; font-weight:500}
+.divisors{display:flex; flex-wrap:wrap; gap:9px}
+.dv{min-width:60px; min-height:56px; font-size:22px; font-weight:700; cursor:pointer; font-family:"IBM Plex Mono",monospace; border:2px solid var(--line); background:var(--paper-2); color:var(--ink); border-radius:6px; box-shadow:var(--btn-shadow); transition:transform .08s}
+.dv:active{transform:translateY(2px); box-shadow:none}
+.dv.bad{animation:shake .32s; border-color:var(--red); color:var(--red); background:var(--red-bg)}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.answer-box{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:16px 0 12px}
+.answer-box .q{font-weight:700}
+.entry{font-family:"IBM Plex Mono",monospace; font-size:28px; font-weight:700; letter-spacing:.06em; min-width:5ch; text-align:center; padding:6px 12px; color:var(--blue); border:2px solid var(--blue); background:var(--blue-bg); border-radius:6px}
+.pad{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; max-width:330px}
+.key{min-height:58px; font-size:23px; font-weight:700; font-family:"IBM Plex Mono",monospace; cursor:pointer; border:2px solid var(--line); background:var(--paper-2); border-radius:6px; box-shadow:var(--btn-shadow); transition:transform .08s}
+.key:active{transform:translateY(2px); box-shadow:none}
+.key.go{background:var(--leaf); border-color:var(--leaf); color:#fff; font-size:18px; font-family:inherit}
+.key.del{color:var(--red); font-size:19px}
+
+.feedback{min-height:30px; margin-top:12px; font-weight:700; font-size:15.5px}
+.feedback.ok{color:var(--leaf)}
+.feedback.no{color:var(--red)}
+
+.hud{display:flex; align-items:center; gap:10px; flex-wrap:wrap; border-bottom:2px solid var(--line); padding-bottom:10px; margin-bottom:16px}
+.hud .stage{font-family:"Noto Serif TC",serif; font-weight:700; font-size:17px}
+.hud .pips{display:flex; gap:4px; margin-right:auto}
+.pip{width:11px; height:11px; border:2px solid var(--line); border-radius:50%}
+.pip.on{background:var(--red); border-color:var(--red)}
+.stat{font-size:13px; color:var(--ink-soft); letter-spacing:.04em}
+.stat b{font-family:"IBM Plex Mono",monospace; font-size:19px; color:var(--ink); font-variant-numeric:tabular-nums; margin-left:3px}
+.combo{color:var(--gold); font-weight:700; font-size:14px}
+.bonusbar{height:5px; background:var(--line); margin:-6px 0 16px; overflow:hidden}
+.bonusbar i{display:block; height:100%; width:100%; background:var(--gold); transform-origin:left; transition:transform 1s linear}
+
+.stars{display:flex; gap:8px; justify-content:center; margin:6px 0 18px}
+.star{width:52px; height:52px; color:var(--line)}
+.star.lit{color:var(--gold); animation:pop .4s ease-out backwards}
+@keyframes pop{from{transform:scale(.4); opacity:0}to{transform:none; opacity:1}}
+.scoreline{text-align:center; margin-bottom:22px}
+.scoreline .big{font-family:"IBM Plex Mono",monospace; font-size:52px; font-weight:700; line-height:1; display:block; color:var(--red)}
+.scoreline .cap{font-size:13px; letter-spacing:.18em; color:var(--ink-soft)}
+.summary{display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:22px}
+.summary div{background:var(--paper-2); padding:12px 14px}
+.summary dt{font-size:12px; letter-spacing:.1em; color:var(--ink-soft); margin-bottom:2px}
+.summary dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:22px; font-weight:700}
+.review{border-top:1px solid var(--line); padding-top:8px}
+.review li{padding:9px 0; border-bottom:1px dashed var(--line); font-size:15px}
+.review ul{list-style:none; padding:0; margin:0}
+.review .work{font-family:"IBM Plex Mono",monospace; color:var(--ink-soft); font-size:14px; display:block; margin-top:2px}
+.reveal{border:2px solid var(--leaf); background:var(--leaf-bg); padding:16px 18px; margin:0 0 20px}
+.reveal h3{color:var(--leaf); letter-spacing:.1em; font-size:13px}
+.saved{border:2px solid var(--line); padding:14px 16px; margin:0 0 20px; font-size:15px; display:flex; gap:10px; align-items:flex-start}
+.saved.ok{border-color:var(--leaf); background:var(--leaf-bg)}
+.saved.err{border-color:var(--gold); background:var(--paper-2)}
+
+.steps-list{counter-reset:s; list-style:none; padding:0; margin:0 0 4px}
+.steps-list li{counter-increment:s; position:relative; padding-left:34px; margin-bottom:10px; font-size:15.5px}
+.steps-list li::before{content:counter(s); position:absolute; left:0; top:2px; width:24px; height:24px; line-height:22px; text-align:center; font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:700; color:var(--red); border:1.5px solid var(--red); border-radius:50%}
+dl.terms{margin:0}
+dl.terms dt{font-weight:700; color:var(--red); font-size:15px; margin-top:12px}
+dl.terms dt:first-child{margin-top:0}
+dl.terms dd{margin:2px 0 0; font-size:15.5px; color:var(--ink-soft)}
+
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms !important; transition-duration:.01ms !important} }
+@media (max-width:420px){ .app{padding:0 12px 44px} .rail li{font-size:10.5px} .seats{grid-template-columns:repeat(6,1fr)} }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <div class="brand">短除法<span>闖關</span></div>
+    <span class="who" id="who" hidden></span>
+    <button class="icon-btn" id="sound" aria-pressed="false" title="音效開關">♪</button>
+    <button class="icon-btn" id="theme" title="切換亮／暗">◐</button>
+  </header>
+  <div class="sync"><span class="dot" id="sync-dot"></span><span id="sync-text">連線中…</span></div>
+
+  <ol class="rail" id="rail">
+    <li class="on"><b>開場</b></li><li><b>觀念</b></li><li><b>示範</b></li><li><b>練習</b></li><li><b>闖關</b></li>
+  </ol>
+
+  <main>
+  <section id="s-intro">
+    <p class="eyebrow">六年級 · 因數與倍數</p>
+    <h1>用短除法<br>找出最大公因數</h1>
+    <p class="lead muted">大約 10 分鐘：先看懂，再跟著做一題，最後闖三關。</p>
+
+    <div class="story">
+      <h3>先看一個問題</h3>
+      <p>一條紅彩帶長 <b class="num">24</b> 公分，一條藍彩帶長 <b class="num">36</b> 公分。要把兩條都剪成<b>一樣長</b>的小段，而且<b>都不可以剩下</b>。每一段最長可以是幾公分？</p>
+      <p class="small muted" style="margin:0">先不要急著算。等一下學會短除法，這一題你會在十秒內解決。</p>
+    </div>
+
+    <div class="sheet">
+      <p class="pick-label">① 點你的班級</p>
+      <div class="classes" id="classes"></div>
+      <p class="pick-label">② 點你的座號</p>
+      <div class="seats" id="seats"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="go-lesson" disabled>開始上課</button>
+      <button class="btn ghost" id="go-game" disabled>直接闖關</button>
+    </div>
+    <p class="small muted" id="pick-hint" style="margin-top:12px">選好班級和座號才能開始。成績會存到雲端給導師看，不用填姓名。</p>
+  </section>
+
+  <section id="s-concept" hidden>
+    <h2>先把三個詞分清楚</h2>
+    <div class="sheet">
+      <dl class="terms">
+        <dt>因數</dt><dd>可以把一個數<b>整除</b>（除完沒有餘數）的數。</dd>
+        <dt>公因數</dt><dd>兩個數<b>共同</b>擁有的因數。</dd>
+        <dt>最大公因數</dt><dd>所有公因數裡面<b>最大</b>的那一個。</dd>
+      </dl>
+    </div>
+    <div class="sheet tint">
+      <div class="factor-line"><span class="lbl">12 的因數</span><div class="chips" id="f12"></div></div>
+      <div class="factor-line"><span class="lbl">18 的因數</span><div class="chips" id="f18"></div></div>
+      <p class="small" style="margin:14px 0 0">紅色的 <b class="num">1、2、3、6</b> 是它們的公因數，其中最大的是 <b class="num" style="color:var(--red)">6</b>。<br>所以 12 和 18 的最大公因數是 6。</p>
+    </div>
+    <p>這樣一個一個列出來，數字小的時候很好用。可是如果題目是 <b class="num">96</b> 和 <b class="num">144</b> 呢？光是把因數列完，手就痠了。</p>
+    <p><b>短除法</b>就是為了這種時候發明的。</p>
+    <div class="actions">
+      <button class="btn" data-go="demo">看短除法怎麼寫</button>
+      <button class="btn ghost" data-go="intro">回上一頁</button>
+    </div>
+  </section>
+
+  <section id="s-demo" hidden>
+    <h2>短除法，只有三個動作</h2>
+    <ol class="steps-list">
+      <li>把兩個數並排寫好，左邊畫一個角，找一個能<b>同時整除</b>兩個數的數當除數。</li>
+      <li>把兩個商寫在下一列，繼續找除數，一直除下去。</li>
+      <li>除到兩個商<b>只剩 1 這個公因數</b>就停，把左邊所有除數<b>乘起來</b>。</li>
+    </ol>
+    <div class="sheet">
+      <p class="eyebrow" style="margin-bottom:14px">示範：36 和 48</p>
+      <div class="sd-wrap"><div class="sd" id="demo-sd"></div></div>
+      <p id="demo-say" class="small" style="margin:18px 0 0; min-height:3.4em; border-top:1px dashed var(--line); padding-top:14px"></p>
+      <div class="actions" style="margin-top:14px">
+        <button class="btn" id="demo-next">下一步</button>
+        <button class="btn ghost" id="demo-again">從頭再看</button>
+      </div>
+    </div>
+    <div class="actions"><button class="btn red" data-go="guided">換我試試看</button></div>
+  </section>
+
+  <section id="s-guided" hidden>
+    <h2>跟我做一題：24 和 60</h2>
+    <p class="small muted">從下面挑一個除數按下去。挑錯了不扣分，再挑一次就好。</p>
+    <div class="sheet">
+      <div class="sd-wrap"><div class="sd" id="g-sd"></div></div>
+      <div id="g-picker" class="picker">
+        <div class="picker-label">挑一個能同時整除的除數</div>
+        <div class="divisors" id="g-divisors"></div>
+      </div>
+      <div id="g-answer" hidden>
+        <div class="answer-box"><span class="q">把左邊的除數乘起來，最大公因數是</span><span class="entry num" id="g-entry" aria-live="polite">_</span></div>
+        <div class="pad" id="g-pad"></div>
+      </div>
+      <p class="feedback" id="g-feedback"></p>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" id="g-hint">給我提示</button>
+      <button class="btn red" id="g-go" hidden>開始闖關</button>
+    </div>
+  </section>
+
+  <section id="s-game" hidden>
+    <div class="hud">
+      <span class="stage" id="hud-stage">第一關 暖身</span>
+      <span class="pips" id="hud-pips"></span>
+      <span class="combo" id="hud-combo"></span>
+      <span class="stat">分數<b id="hud-score">0</b></span>
+    </div>
+    <div class="bonusbar"><i id="hud-bonus"></i></div>
+    <div class="sheet">
+      <p class="eyebrow" id="game-title" style="margin-bottom:14px">求最大公因數</p>
+      <div class="sd-wrap"><div class="sd" id="p-sd"></div></div>
+      <div id="p-picker" class="picker">
+        <div class="picker-label">挑一個能同時整除的除數</div>
+        <div class="divisors" id="p-divisors"></div>
+      </div>
+      <div id="p-answer" hidden>
+        <div class="answer-box"><span class="q">最大公因數是</span><span class="entry num" id="p-entry" aria-live="polite">_</span></div>
+        <div class="pad" id="p-pad"></div>
+      </div>
+      <p class="feedback" id="p-feedback"></p>
+    </div>
+  </section>
+
+  <section id="s-result" hidden>
+    <h2 id="r-head">闖關完成</h2>
+    <div class="stars" id="r-stars"></div>
+    <div class="scoreline"><span class="big num" id="r-score">0</span><span class="cap">總分</span></div>
+    <div class="saved" id="r-saved"></div>
+    <dl class="summary" id="r-summary"></dl>
+    <div class="reveal">
+      <h3>回到一開始的彩帶問題</h3>
+      <p style="margin:0">24 和 36 的最大公因數是 <b class="num">12</b>，所以每一段最長 <b class="num">12</b> 公分。紅彩帶剪成 <b class="num">2</b> 段、藍彩帶剪成 <b class="num">3</b> 段，剛剛好都不剩。</p>
+    </div>
+    <div class="review" id="r-review"></div>
+    <div class="actions">
+      <button class="btn red" data-go="game">再闖一次</button>
+      <button class="btn ghost" data-go="demo">回去看示範</button>
+    </div>
+    <p class="small muted" style="margin-top:18px">學會短除法之後，同一張圖也可以找<b>最小公倍數</b>：把左邊的除數和最下面兩個商全部乘起來就是了。那是下一堂課的事。</p>
+  </section>
+  </main>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ================= 設定 ================= */
+const CLASSES = ["601","602","603","604","605","606","607","608","609","610","611"];
+const SEAT_MAX = 40;
+
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyAFh8Dmf25j1D9rCpBpCpcxKLVBNsAF4m4",
+  authDomain:        "chinese-50d0c.firebaseapp.com",
+  projectId:         "chinese-50d0c",
+  storageBucket:     "chinese-50d0c.firebasestorage.app",
+  messagingSenderId: "1044608618028",
+  appId:             "1:1044608618028:web:d95f2811e0dd61bbe30b89"
+};
+const FIRE_COL = "mathGcd6";
+const FIRE_SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
+
+/* ================= 工具 ================= */
+var DIVISORS = [2,3,5,7,11,13];
+var $ = function(id){ return document.getElementById(id); };
+function gcd(a,b){ while(b){ var t=a%b; a=b; b=t; } return a; }
+function factorsOf(n){ var r=[]; for(var i=1;i<=n;i++){ if(n%i===0) r.push(i); } return r; }
+function canonSteps(a,b){
+  var steps=[], x=a, y=b, i;
+  while(gcd(x,y)>1){
+    for(i=0;i<DIVISORS.length;i++){ var d=DIVISORS[i]; if(x%d===0 && y%d===0){ steps.push(d); x/=d; y/=d; break; } }
+    if(i===DIVISORS.length) break;
+  }
+  return steps;
+}
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+
+/* ================= 雲端 ================= */
+var SYNC = {db:null, mode:"connecting", note:""};
+function loadScript(src){
+  return new Promise(function(res,rej){
+    var s=document.createElement("script"); s.src=src; s.onload=res; s.onerror=function(){ rej(new Error(src)); };
+    document.head.appendChild(s);
+  });
+}
+function renderSync(){
+  var dot=$('sync-dot'), txt=$('sync-text');
+  var map = {
+    connecting:["", "連線中…"],
+    fire:["ok", "已連上雲端，做完會自動交卷"],
+    local:["warn", SYNC.note || "沒有連上雲端，成績只留在這台平板"]
+  };
+  var m = map[SYNC.mode] || map.local;
+  dot.className = "dot " + m[0];
+  txt.textContent = m[1];
+}
+async function initFirebase(){
+  SYNC.mode="connecting"; renderSync();
+  try{
+    await loadScript(FIRE_SDK + "firebase-app-compat.js");
+    await loadScript(FIRE_SDK + "firebase-firestore-compat.js");
+    firebase.initializeApp(FIREBASE_CONFIG);
+    SYNC.db = firebase.firestore();
+    SYNC.mode="fire"; SYNC.note="";
+  }catch(e){
+    SYNC.mode="local"; SYNC.note="載入不到雲端元件，成績只留在這台平板";
+  }
+  renderSync();
+}
+function pendingKey(){ return "gcd_pending"; }
+function queueLocal(rec){
+  try{
+    var q = JSON.parse(store(pendingKey()) || "[]");
+    q.push(rec); if(q.length>20) q = q.slice(-20);
+    store(pendingKey(), JSON.stringify(q));
+  }catch(e){}
+}
+async function flushPending(){
+  if(SYNC.mode!=="fire") return;
+  var q;
+  try{ q = JSON.parse(store(pendingKey()) || "[]"); }catch(e){ return; }
+  if(!q.length) return;
+  var left=[];
+  for(var i=0;i<q.length;i++){
+    try{ await SYNC.db.collection(FIRE_COL).doc(q[i]._id).set(q[i].rec); }
+    catch(e){ left.push(q[i]); }
+  }
+  store(pendingKey(), JSON.stringify(left));
+}
+async function uploadResult(rec){
+  var id = rec.cls + "-" + String(rec.seat).padStart(2,"0") + "-" + Date.now().toString(36);
+  if(SYNC.mode!=="fire"){
+    queueLocal({_id:id, rec:rec});
+    return {ok:false, why:"沒有連上雲端，成績暫時留在這台平板，下次連上會自動補送"};
+  }
+  try{
+    await SYNC.db.collection(FIRE_COL).doc(id).set(rec);
+    return {ok:true};
+  }catch(e){
+    queueLocal({_id:id, rec:rec});
+    var why = (e && e.code==="permission-denied")
+      ? "雲端規則還沒開放，成績暫時留在這台平板，請告訴老師"
+      : "交卷失敗，成績暫時留在這台平板，下次連上會自動補送";
+    return {ok:false, why:why};
+  }
+}
+
+/* ================= 音效 ================= */
+var soundOn = store('sd_sound')==='1', ac=null;
+function beep(freq,dur,type){
+  if(!soundOn) return;
+  try{
+    if(!ac) ac = new (window.AudioContext||window.webkitAudioContext)();
+    var o=ac.createOscillator(), g=ac.createGain();
+    o.type=type||'sine'; o.frequency.value=freq;
+    g.gain.setValueAtTime(.0001, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(.14, ac.currentTime+.01);
+    g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime+dur);
+    o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime+dur+.02);
+  }catch(e){}
+}
+var sGood=function(){ beep(660,.12); setTimeout(function(){beep(990,.16);},95); };
+var sBad =function(){ beep(190,.18,'square'); };
+var sTap =function(){ beep(520,.05,'triangle'); };
+var sWin =function(){ [523,659,784,1047].forEach(function(f,i){ setTimeout(function(){beep(f,.2);}, i*120); }); };
+var soundBtn=$('sound');
+soundBtn.setAttribute('aria-pressed', soundOn?'true':'false');
+soundBtn.onclick=function(){ soundOn=!soundOn; store('sd_sound', soundOn?'1':'0'); soundBtn.setAttribute('aria-pressed', soundOn?'true':'false'); if(soundOn) sTap(); };
+$('theme').onclick=function(){
+  var cur=document.documentElement.getAttribute('data-theme');
+  var dark = cur ? cur==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', dark?'light':'dark');
+};
+
+/* ================= 身分：班級＋座號 ================= */
+var ID = {cls:store('gcd_cls')||null, seat:Number(store('gcd_seat'))||null};
+function renderWho(){
+  var ok = ID.cls && ID.seat;
+  $('who').hidden = !ok;
+  if(ok) $('who').textContent = ID.cls + " " + String(ID.seat).padStart(2,"0") + " 號";
+  $('go-lesson').disabled = !ok;
+  $('go-game').disabled = !ok;
+  $('pick-hint').textContent = ok
+    ? ("已選 " + ID.cls + " " + ID.seat + " 號。點錯可以直接改。成績會存到雲端給導師看，不用填姓名。")
+    : "選好班級和座號才能開始。成績會存到雲端給導師看，不用填姓名。";
+}
+(function buildIdPickers(){
+  var cbox=$('classes');
+  CLASSES.forEach(function(c){
+    var b=document.createElement('button');
+    b.type='button'; b.className='cls'; b.textContent=c;
+    b.setAttribute('aria-pressed', ID.cls===c ? 'true':'false');
+    b.onclick=function(){
+      ID.cls=c; store('gcd_cls', c); sTap();
+      Array.prototype.forEach.call(cbox.children, function(x){ x.setAttribute('aria-pressed', x===b?'true':'false'); });
+      renderWho();
+    };
+    cbox.appendChild(b);
+  });
+  var sbox=$('seats');
+  for(var n=1;n<=SEAT_MAX;n++){
+    (function(n){
+      var b=document.createElement('button');
+      b.type='button'; b.className='seat'; b.textContent=n;
+      b.setAttribute('aria-pressed', ID.seat===n ? 'true':'false');
+      b.onclick=function(){
+        ID.seat=n; store('gcd_seat', String(n)); sTap();
+        Array.prototype.forEach.call(sbox.children, function(x){ x.setAttribute('aria-pressed', x===b?'true':'false'); });
+        renderWho();
+      };
+      sbox.appendChild(b);
+    })(n);
+  }
+})();
+renderWho();
+
+/* ================= 畫面切換 ================= */
+var SCREENS=['intro','concept','demo','guided','game','result'];
+var RAIL_OF={intro:0, concept:1, demo:2, guided:3, game:4, result:4};
+function show(name){
+  if(name!=='game') clearInterval(bonusTimer);
+  SCREENS.forEach(function(s){ $('s-'+s).hidden = (s!==name); });
+  var m=document.querySelector('main');
+  m.classList.add('settling');
+  setTimeout(function(){ m.classList.remove('settling'); }, 380);
+  var idx=RAIL_OF[name], items=$('rail').children;
+  for(var i=0;i<items.length;i++){ items[i].className = i<idx ? 'done' : (i===idx ? 'on' : ''); }
+  window.scrollTo(0,0);
+  if(name==='demo') resetDemo();
+  if(name==='guided') startGuided();
+  if(name==='game') startGame();
+}
+document.addEventListener('click', function(e){
+  var t=e.target.closest('[data-go]');
+  if(!t) return;
+  sTap(); show(t.getAttribute('data-go'));
+});
+$('go-lesson').onclick=function(){ if(ID.cls&&ID.seat){ sTap(); show('concept'); } };
+$('go-game').onclick  =function(){ if(ID.cls&&ID.seat){ sTap(); show('game'); } };
+
+/* ================= 觀念 ================= */
+(function(){
+  var common={1:1,2:1,3:1,6:1};
+  [[12,'f12'],[18,'f18']].forEach(function(pair){
+    var box=$(pair[1]);
+    factorsOf(pair[0]).forEach(function(f){
+      var c=document.createElement('span');
+      c.className='chip'+(common[f]?' common':'')+(f===6?' best':'');
+      c.textContent=f; box.appendChild(c);
+    });
+  });
+})();
+
+/* ================= 短除法畫布 ================= */
+function rowsOf(a,b,steps){
+  var rows=[], x=a, y=b;
+  steps.forEach(function(d){ rows.push({d:d,x:x,y:y}); x/=d; y/=d; });
+  rows.push({d:null,x:x,y:y});
+  return rows;
+}
+function renderSD(el,a,b,steps,opts){
+  opts=opts||{};
+  var rows=rowsOf(a,b,steps), html='';
+  rows.forEach(function(r,i){
+    var last=(i===rows.length-1), fresh=(opts.freshIndex===i)?' fresh':'';
+    html += '<div class="sd-row'+(last?' is-final':'')+fresh+'">'
+          + '<div class="sd-div">'+(r.d===null?'':r.d)+'</div>'
+          + '<div class="sd-nums"><span>'+r.x+'</span><span>'+r.y+'</span></div></div>';
+  });
+  if(opts.note) html += '<div class="sd-note">'+opts.note+'</div>';
+  if(opts.mult) html += '<div class="sd-mult">'+steps.join(' × ')+' = <span class="num">'+steps.reduce(function(p,c){return p*c;},1)+'</span></div>';
+  el.innerHTML=html;
+}
+
+/* ================= 示範 ================= */
+var DEMO={a:36,b:48,steps:[2,2,3]}, demoStage=0;
+var DEMO_SAY=[
+  '把 36 和 48 並排寫好，左邊畫一個角。現在要找一個能同時整除這兩個數的除數。',
+  '2 可以整除 36，也可以整除 48。36 ÷ 2 = 18，48 ÷ 2 = 24，把兩個商寫在下面。',
+  '18 和 24 都還是偶數，再用 2 除一次：得到 9 和 12。',
+  '9 不是偶數了，換 3 試試看。9 ÷ 3 = 3，12 ÷ 3 = 4。',
+  '3 和 4 除了 1 以外沒有別的公因數了，停！把左邊的 2、2、3 乘起來。',
+  '2 × 2 × 3 = 12。36 和 48 的最大公因數就是 12。左邊那一直行，就是答案的零件。'
+];
+function paintDemo(){
+  var n=Math.min(demoStage, DEMO.steps.length);
+  renderSD($('demo-sd'), DEMO.a, DEMO.b, DEMO.steps.slice(0,n), {
+    freshIndex:(demoStage>0 && demoStage<=DEMO.steps.length)?n-1:-1,
+    note: demoStage>=4 ? '互質了，停！' : '',
+    mult: demoStage>=5
+  });
+  $('demo-say').textContent = DEMO_SAY[Math.min(demoStage, DEMO_SAY.length-1)];
+  $('demo-next').disabled = demoStage>=5;
+  $('demo-next').textContent = demoStage>=5 ? '示範結束' : '下一步';
+}
+function resetDemo(){ demoStage=0; paintDemo(); }
+$('demo-next').onclick=function(){ if(demoStage<5){ demoStage++; sTap(); paintDemo(); } };
+$('demo-again').onclick=function(){ sTap(); resetDemo(); };
+
+/* ================= 共用元件 ================= */
+function buildDivisors(el,onPick){
+  el.innerHTML='';
+  DIVISORS.forEach(function(d){
+    var b=document.createElement('button');
+    b.className='dv'; b.type='button'; b.textContent=d;
+    b.onclick=function(){ onPick(d,b); };
+    el.appendChild(b);
+  });
+}
+var PAD_KEYS=['7','8','9','4','5','6','1','2','3','⌫','0','確定'];
+function buildPad(el,onKey){
+  el.innerHTML='';
+  PAD_KEYS.forEach(function(k){
+    var b=document.createElement('button');
+    b.type='button'; b.className='key'+(k==='確定'?' go':'')+(k==='⌫'?' del':'');
+    b.textContent=k; b.onclick=function(){ onKey(k); };
+    el.appendChild(b);
+  });
+}
+function say(id,cls,text){ var el=$(id); el.className='feedback '+(cls||''); el.textContent=text; }
+
+/* ================= 引導練習 ================= */
+var G={a:24,b:60,steps:[],entry:'',phase:'divide'};
+function paintGuided(){
+  var x=G.a,y=G.b;
+  G.steps.forEach(function(d){ x/=d; y/=d; });
+  var coprime = gcd(x,y)===1;
+  renderSD($('g-sd'), G.a, G.b, G.steps, {freshIndex:G.steps.length-1, note:(coprime&&G.steps.length)?'互質了，停！':''});
+  $('g-picker').hidden = coprime && G.steps.length>0;
+  $('g-answer').hidden = !(coprime && G.steps.length>0);
+  $('g-entry').textContent = G.entry || '_';
+  if(coprime && G.steps.length>0 && G.phase==='divide'){
+    G.phase='answer'; say('g-feedback','ok','兩個商互質了。把左邊的除數乘起來就是答案。');
+  }
+}
+function startGuided(){
+  G={a:24,b:60,steps:[],entry:'',phase:'divide'};
+  $('g-go').hidden=true; $('g-hint').hidden=false; say('g-feedback','','');
+  buildDivisors($('g-divisors'), function(d,btn){
+    var x=G.a,y=G.b; G.steps.forEach(function(s){ x/=s; y/=s; });
+    if(x%d===0 && y%d===0){
+      G.steps.push(d); sTap();
+      say('g-feedback','ok', x+' ÷ '+d+' = '+(x/d)+'，'+y+' ÷ '+d+' = '+(y/d)+'。繼續。');
+      paintGuided();
+    }else{
+      sBad(); btn.classList.remove('bad'); void btn.offsetWidth; btn.classList.add('bad');
+      say('g-feedback','no', d+' 沒辦法整除 '+((x%d!==0)?x:y)+' 喔，換一個試試看。');
+    }
+  });
+  buildPad($('g-pad'), function(k){
+    if(k==='⌫'){ G.entry=G.entry.slice(0,-1); }
+    else if(k==='確定'){
+      var want=G.steps.reduce(function(p,c){return p*c;},1);
+      if(Number(G.entry)===want){
+        sWin();
+        renderSD($('g-sd'), G.a, G.b, G.steps, {note:'互質了，停！', mult:true});
+        $('g-answer').hidden=true;
+        say('g-feedback','ok','答對了！24 和 60 的最大公因數是 '+want+'。你已經會短除法了。');
+        $('g-go').hidden=false; $('g-hint').hidden=true;
+      }else{
+        sBad(); say('g-feedback','no','再算一次：把左邊的 '+G.steps.join('、')+' 乘起來。'); G.entry='';
+      }
+      $('g-entry').textContent=G.entry||'_'; return;
+    }
+    else if(G.entry.length<4){ G.entry+=k; sTap(); }
+    $('g-entry').textContent=G.entry||'_';
+  });
+  paintGuided();
+}
+$('g-hint').onclick=function(){
+  sTap();
+  var x=G.a,y=G.b; G.steps.forEach(function(s){ x/=s; y/=s; });
+  if(gcd(x,y)===1 && G.steps.length){ say('g-feedback','', '提示：'+G.steps.join(' × ')+' 等於多少？'); }
+  else{ var next=canonSteps(x,y)[0]; say('g-feedback','', '提示：'+x+' 和 '+y+' 都是 '+next+' 的倍數，試試看 '+next+'。'); }
+};
+$('g-go').onclick=function(){ sTap(); show('game'); };
+
+/* ================= 闖關 ================= */
+var LEVELS=[
+  {name:'第一關 暖身', qs:[[12,18],[20,30],[16,24]]},
+  {name:'第二關 進階', qs:[[36,48],[45,60],[42,70]]},
+  {name:'第三關 魔王', qs:[[84,126],[72,120],[96,144]]}
+];
+var P=null, bonusTimer=null;
+function startGame(){
+  P={li:0,qi:0,score:0,combo:0,log:[],steps:[],entry:'',mistakes:0,t0:0,startedAt:Date.now()};
+  loadQuestion();
+}
+function curPair(){ return LEVELS[P.li].qs[P.qi]; }
+function loadQuestion(){
+  var pair=curPair();
+  P.steps=[]; P.entry=''; P.mistakes=0; P.t0=Date.now();
+  $('game-title').textContent='求 '+pair[0]+' 和 '+pair[1]+' 的最大公因數';
+  say('p-feedback','',''); updateHUD(); startBonusBar();
+  buildDivisors($('p-divisors'), onGameDivisor);
+  buildPad($('p-pad'), onGameKey);
+  paintGame();
+}
+function startBonusBar(){
+  clearInterval(bonusTimer);
+  var bar=$('hud-bonus');
+  bar.style.transition='none'; bar.style.transform='scaleX(1)';
+  void bar.offsetWidth; bar.style.transition='transform 1s linear';
+  bonusTimer=setInterval(function(){
+    var s=(Date.now()-P.t0)/1000, left=Math.max(0, 1 - s/40);
+    bar.style.transform='scaleX('+left+')';
+    if(left<=0) clearInterval(bonusTimer);
+  },1000);
+}
+function updateHUD(){
+  $('hud-stage').textContent=LEVELS[P.li].name;
+  var pips='';
+  for(var i=0;i<3;i++) pips+='<span class="pip'+(i<=P.qi?' on':'')+'"></span>';
+  $('hud-pips').innerHTML=pips;
+  $('hud-score').textContent=P.score;
+  $('hud-combo').textContent = P.combo>=2 ? ('連擊 ×'+P.combo) : '';
+}
+function paintGame(){
+  var pair=curPair(), x=pair[0], y=pair[1];
+  P.steps.forEach(function(d){ x/=d; y/=d; });
+  var coprime = gcd(x,y)===1 && P.steps.length>0;
+  renderSD($('p-sd'), pair[0], pair[1], P.steps, {freshIndex:P.steps.length-1, note:coprime?'互質了，停！':''});
+  $('p-picker').hidden=coprime; $('p-answer').hidden=!coprime;
+  $('p-entry').textContent=P.entry||'_';
+}
+function onGameDivisor(d,btn){
+  var pair=curPair(), x=pair[0], y=pair[1];
+  P.steps.forEach(function(s){ x/=s; y/=s; });
+  if(x%d===0 && y%d===0){
+    P.steps.push(d); sTap(); say('p-feedback','',''); paintGame();
+    if(gcd(x/d,y/d)===1) say('p-feedback','ok','互質了！把左邊的除數乘起來。');
+  }else{
+    P.mistakes++; sBad();
+    btn.classList.remove('bad'); void btn.offsetWidth; btn.classList.add('bad');
+    say('p-feedback','no', d+' 不能整除 '+((x%d!==0)?x:y)+'，換一個。');
+  }
+}
+function onGameKey(k){
+  if(k==='⌫'){ P.entry=P.entry.slice(0,-1); }
+  else if(k==='確定'){ submitAnswer(); return; }
+  else if(P.entry.length<4){ P.entry+=k; sTap(); }
+  $('p-entry').textContent=P.entry||'_';
+}
+function submitAnswer(){
+  var pair=curPair(), want=P.steps.reduce(function(p,c){return p*c;},1);
+  if(Number(P.entry)!==want){
+    P.mistakes++; sBad();
+    say('p-feedback','no','再算一次：'+P.steps.join(' × ')+' 是多少？');
+    P.entry=''; $('p-entry').textContent='_'; return;
+  }
+  clearInterval(bonusTimer);
+  var secs=Math.round((Date.now()-P.t0)/1000);
+  var base=Math.max(40, 100 - P.mistakes*20);
+  var speed = secs<=20 ? 30 : (secs<=40 ? 15 : 0);
+  P.combo = P.mistakes===0 ? P.combo+1 : 0;
+  var comboPts = P.combo>=2 ? Math.min(50,(P.combo-1)*10) : 0;
+  var got = base+speed+comboPts;
+  P.score += got;
+  P.log.push({a:pair[0], b:pair[1], g:want, m:P.mistakes, s:secs, p:got});
+  sWin();
+  renderSD($('p-sd'), pair[0], pair[1], P.steps, {note:'互質了，停！', mult:true});
+  $('p-answer').hidden=true;
+  var extra=[];
+  if(speed) extra.push('速度 +'+speed);
+  if(comboPts) extra.push('連擊 +'+comboPts);
+  say('p-feedback','ok','答對！'+pair[0]+' 和 '+pair[1]+' 的最大公因數是 '+want+'　+'+got+' 分'+(extra.length?'（'+extra.join('、')+'）':''));
+  updateHUD();
+  setTimeout(nextQuestion, 1500);
+}
+function nextQuestion(){
+  P.qi++;
+  if(P.qi>=LEVELS[P.li].qs.length){ P.qi=0; P.li++; }
+  if(P.li>=LEVELS.length){ finish(); return; }
+  loadQuestion();
+}
+
+/* ================= 結算與交卷 ================= */
+async function finish(){
+  clearInterval(bonusTimer);
+  var perfect=P.log.filter(function(q){ return q.m===0; }).length;
+  var fastest=P.log.reduce(function(m,q){ return Math.min(m,q.s); }, 999);
+  var totalSecs=P.log.reduce(function(m,q){ return m+q.s; }, 0);
+  var stars = P.score>=1300 ? 3 : (P.score>=900 ? 2 : 1);
+  var prev=Number(store('gcd_best')||0);
+  if(P.score>prev) store('gcd_best', String(P.score));
+
+  $('r-head').textContent = ID.cls + " " + ID.seat + " 號，闖關完成";
+  var svg='<svg class="star STAR" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5L12 17.4 6.2 20.45l1.1-6.5-4.7-4.6 6.5-.95z"/></svg>';
+  var sHtml='';
+  for(var i=0;i<3;i++){ sHtml += svg.replace('STAR', i<stars?'lit':'').replace('<svg ', '<svg style="animation-delay:'+(i*.18)+'s" '); }
+  $('r-stars').innerHTML=sHtml;
+  $('r-score').textContent=P.score;
+  $('r-summary').innerHTML =
+      '<div><dt>全對題數</dt><dd>'+perfect+' / 9</dd></div>'
+    + '<div><dt>最快一題</dt><dd>'+fastest+' 秒</dd></div>'
+    + '<div><dt>總共用時</dt><dd>'+Math.round(totalSecs/60)+' 分</dd></div>';
+
+  var wrong=P.log.filter(function(q){ return q.m>0; });
+  var html;
+  if(wrong.length===0){
+    html='<p class="small" style="margin:12px 0 0"><b style="color:var(--leaf)">九題全部一次答對，太厲害了。</b></p>';
+  }else{
+    html='<h3 style="margin-top:14px">這幾題再看一次</h3><ul>';
+    wrong.forEach(function(q){
+      var st=canonSteps(q.a,q.b);
+      html+='<li><b class="num">'+q.a+'</b> 和 <b class="num">'+q.b+'</b>，最大公因數 <b class="num" style="color:var(--red)">'+q.g+'</b>'
+          + '<span class="work">'+st.map(function(d){return d+')';}).join(' ')+' → '+st.join(' × ')+' = '+q.g+'</span></li>';
+    });
+    html+='</ul>';
+  }
+  $('r-review').innerHTML=html;
+
+  var box=$('r-saved');
+  box.className='saved'; box.textContent='交卷中…';
+  show('result');
+
+  var rec = {
+    cls: ID.cls, seat: Number(ID.seat), ts: new Date().toISOString(),
+    score: P.score, stars: stars, perfect: perfect, secs: totalSecs, detail: P.log
+  };
+  var r = await uploadResult(rec);
+  if(r.ok){
+    box.className='saved ok';
+    box.innerHTML='<span>✓</span><span>已交卷。'+ID.cls+' '+ID.seat+' 號的成績已經存到雲端，導師看得到。</span>';
+    flushPending();
+  }else{
+    box.className='saved err';
+    box.innerHTML='<span>!</span><span>'+r.why+'</span>';
+  }
+}
+
+/* ================= 啟動 ================= */
+paintDemo();
+initFirebase().then(flushPending);
+})();
+</script>
+</body>
+</html>
+
+<!--
+================================================================
+Firestore 安全性規則（加在既有規則裡，不要整份取代）
+================================================================
+把下面這段 match 併進 firestore.rules 的 /databases/{database}/documents 區塊：
+
+    match /mathGcd6/{docId} {
+      // 只有登入的老師讀得到；學生端完全不需要讀
+      allow read, delete: if request.auth != null;
+
+      // 學生交卷：只能新增，不能改別人的紀錄
+      allow create: if request.resource.data.keys().hasOnly(
+                         ['cls','seat','ts','score','stars','perfect','secs','detail'])
+        && request.resource.data.cls in ['601','602','603','604','605','606',
+                                         '607','608','609','610','611']
+        && request.resource.data.seat is int
+        && request.resource.data.seat >= 1 && request.resource.data.seat <= 40
+        && request.resource.data.ts is string && request.resource.data.ts.size() <= 30
+        && request.resource.data.score is int
+        && request.resource.data.score >= 0 && request.resource.data.score <= 5000
+        && request.resource.data.stars is int
+        && request.resource.data.perfect is int
+        && request.resource.data.secs is int && request.resource.data.secs <= 36000
+        && request.resource.data.detail is list
+        && request.resource.data.detail.size() <= 12;
+
+      allow update: if false;
+    }
+
+規則在擋什麼：
+  - 只能「新增」不能「覆寫」，所以學生沒辦法改掉別人已經交的卷
+  - 欄位、班級代號、座號範圍、分數上限都鎖死，擋掉灌爆資料庫
+  - 讀取一律要登入，學生就算知道網址也讀不到全班成績
+
+另外要在 Firebase 主控台做一次：
+  Authentication → 開始使用 → 啟用「電子郵件/密碼」→ 使用者 → 新增使用者
+  建立一組共用的教師帳號，密碼發給 11 位導師。
+
+活動結束想關掉：把整段 match 刪掉即可，其他集合不受影響。
+-->
