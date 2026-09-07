@@ -126,6 +126,10 @@ tr.detail td{background:var(--paper-3); padding:0; border-bottom:2px solid var(-
 .qcard b{font-family:"IBM Plex Mono",monospace; font-size:15px; display:block}
 .qcard span{font-size:11.5px; color:var(--ink-soft); display:block; line-height:1.5}
 .attempts{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
+.delrow{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:14px; padding-top:12px; border-top:1px dashed var(--line)}
+.del-rec{border:1.5px solid var(--red); background:transparent; color:var(--red); font-size:13.5px; font-weight:700; padding:7px 14px; min-height:38px; border-radius:4px; cursor:pointer}
+.del-rec:hover{background:var(--red-bg)}
+.del-rec:disabled{opacity:.5; cursor:not-allowed}
 .att{border:1.5px solid var(--line); background:var(--paper-2); padding:4px 10px; border-radius:4px; font-size:12.5px; cursor:pointer}
 .att[aria-pressed="true"]{border-color:var(--blue); background:var(--blue-bg); color:var(--blue); font-weight:700}
 
@@ -277,6 +281,7 @@ async function load(){
       if(!d || !d.cls || !DATA[d.cls]) return;
       var seat=Number(d.seat);
       if(!(seat>=1)) return;
+      d._id = doc.id;
       (DATA[d.cls][seat] = DATA[d.cls][seat] || []).push(d);
     });
     Object.keys(DATA).forEach(function(c){
@@ -387,9 +392,13 @@ function render(){
              + '<span>第 '+(i+1)+' 題　答案 '+q.g+'</span>'
              + '<span>'+(q.m>0?('錯 '+q.m+' 次'):'一次答對')+'　'+q.s+' 秒　'+q.p+' 分</span></div>';
       }).join('');
+      var pickLabel = CUR+' '+r.seat+' 號　'+fmtStamp(new Date(pick.ts));
       h += '<tr class="detail"><td colspan="9"><div class="detailbox">'
          + '<b>'+CUR+' '+r.seat+' 號</b>　<span class="small muted">'+fmtStamp(new Date(pick.ts))+'　共 '+pick.score+' 分</span>'
-         + att + '<div class="qgrid">'+cards+'</div></div></td></tr>';
+         + att + '<div class="qgrid">'+cards+'</div>'
+         + '<div class="delrow"><button type="button" class="del-rec" data-id="'+pick._id+'" data-label="'+pickLabel+'">刪除這筆紀錄</button>'
+         + '<span class="small muted">誤填座號或測試資料才刪，刪除後無法復原。</span></div>'
+         + '</div></td></tr>';
     }
   });
   h+='</tbody></table></div>';
@@ -406,6 +415,25 @@ function render(){
   });
   host.querySelectorAll('.att').forEach(function(b){
     b.onclick=function(e){ e.stopPropagation(); OPENATT=Number(b.getAttribute('data-att')); render(); };
+  });
+  host.querySelectorAll('.del-rec').forEach(function(b){
+    b.onclick=async function(e){
+      e.stopPropagation();
+      var id=b.getAttribute('data-id'), label=b.getAttribute('data-label');
+      if(!id){ toast('這筆紀錄沒有 id，請重新整理後再試'); return; }
+      if(!confirm('確定刪除「'+label+'」這筆紀錄嗎？\n刪除後無法復原。')) return;
+      b.disabled=true; b.textContent='刪除中…';
+      try{
+        await DB.collection(FIRE_COL).doc(id).delete();
+        OPEN=null; OPENATT=0;
+        await load();
+        toast('已刪除 '+label);
+      }catch(err){
+        var c=err && err.code;
+        toast(c==='permission-denied' ? '刪除被拒，請確認仍在登入狀態' : ('刪除失敗：'+(err && err.message || err)));
+        b.disabled=false; b.textContent='刪除這筆紀錄';
+      }
+    };
   });
 }
 $('size').onchange=function(){
