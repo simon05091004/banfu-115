@@ -106,6 +106,7 @@ p{margin:0 0 14px; max-width:60ch}
 .cls:active{transform:translateY(2px); box-shadow:none}
 .cls[aria-pressed="true"]{background:var(--red); border-color:var(--red); color:#fff}
 .seats{display:grid; grid-template-columns:repeat(8,1fr); gap:6px}
+.seat-hint{grid-column:1/-1; margin:0; font-size:14.5px; color:var(--ink-faint)}
 .seat{min-height:46px; font-family:"IBM Plex Mono",monospace; font-size:16px; font-weight:600; cursor:pointer; border:1.5px solid var(--line); background:var(--paper-2); color:var(--ink-soft); border-radius:5px; padding:0}
 .seat[aria-pressed="true"]{background:var(--blue); border-color:var(--blue); color:#fff; font-size:18px}
 
@@ -346,7 +347,9 @@ dl.terms dd{margin:2px 0 0; font-size:15.5px; color:var(--ink-soft)}
 
 /* ================= 設定 ================= */
 const CLASSES = ["601","602","603","604","605","606","607","608","609","610","611"];
-const SEAT_MAX = 40;
+/* 各班實際人數，座號格會依照這個數字產生 */
+const CLASS_SIZE = {"601":26,"602":24,"603":25,"604":25,"605":24,"606":25,
+                    "607":24,"608":25,"609":25,"610":26,"611":25};
 
 const FIREBASE_CONFIG = {
   apiKey:            "AIzaSyAFh8Dmf25j1D9rCpBpCpcxKLVBNsAF4m4",
@@ -483,6 +486,32 @@ function renderWho(){
     ? ("已選 " + ID.cls + " " + ID.seat + " 號。點錯可以直接改。成績會存到雲端給導師看，不用填姓名。")
     : "選好班級和座號才能開始。成績會存到雲端給導師看，不用填姓名。";
 }
+function seatMax(cls){ return CLASS_SIZE[cls] || 30; }
+function buildSeats(){
+  var sbox=$('seats');
+  sbox.innerHTML='';
+  if(!ID.cls){
+    sbox.innerHTML='<p class="seat-hint">先點上面的班級，你們班的座號才會出現。</p>';
+    return;
+  }
+  var max=seatMax(ID.cls);
+  if(ID.seat && ID.seat>max){ ID.seat=null; store('gcd_seat',''); }
+  for(var n=1;n<=max;n++){
+    (function(n){
+      var b=document.createElement('button');
+      b.type='button'; b.className='seat'; b.textContent=n;
+      b.setAttribute('aria-pressed', ID.seat===n ? 'true':'false');
+      b.onclick=function(){
+        ID.seat=n; store('gcd_seat', String(n)); sTap();
+        Array.prototype.forEach.call(sbox.children, function(x){
+          if(x.setAttribute) x.setAttribute('aria-pressed', x===b?'true':'false');
+        });
+        renderWho();
+      };
+      sbox.appendChild(b);
+    })(n);
+  }
+}
 (function buildIdPickers(){
   var cbox=$('classes');
   CLASSES.forEach(function(c){
@@ -492,24 +521,11 @@ function renderWho(){
     b.onclick=function(){
       ID.cls=c; store('gcd_cls', c); sTap();
       Array.prototype.forEach.call(cbox.children, function(x){ x.setAttribute('aria-pressed', x===b?'true':'false'); });
-      renderWho();
+      buildSeats(); renderWho();
     };
     cbox.appendChild(b);
   });
-  var sbox=$('seats');
-  for(var n=1;n<=SEAT_MAX;n++){
-    (function(n){
-      var b=document.createElement('button');
-      b.type='button'; b.className='seat'; b.textContent=n;
-      b.setAttribute('aria-pressed', ID.seat===n ? 'true':'false');
-      b.onclick=function(){
-        ID.seat=n; store('gcd_seat', String(n)); sTap();
-        Array.prototype.forEach.call(sbox.children, function(x){ x.setAttribute('aria-pressed', x===b?'true':'false'); });
-        renderWho();
-      };
-      sbox.appendChild(b);
-    })(n);
-  }
+  buildSeats();
 })();
 renderWho();
 

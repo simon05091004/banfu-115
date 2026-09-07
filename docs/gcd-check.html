@@ -185,6 +185,9 @@ tr.detail td{background:var(--paper-3); padding:0; border-bottom:2px solid var(-
 const SCHOOL  = "永福國小";
 const TITLE   = "六年級 短除法求最大公因數 闖關紀錄";
 const CLASSES = ["601","602","603","604","605","606","607","608","609","610","611"];
+/* 各班實際人數；導師仍可在畫面上臨時調整，調整值只存在該導師自己的瀏覽器 */
+const CLASS_SIZE = {"601":26,"602":24,"603":25,"604":25,"605":24,"606":25,
+                    "607":24,"608":25,"609":25,"610":26,"611":25};
 const FIREBASE_CONFIG = {
   apiKey:            "AIzaSyAFh8Dmf25j1D9rCpBpCpcxKLVBNsAF4m4",
   authDomain:        "chinese-50d0c.firebaseapp.com",
@@ -206,7 +209,7 @@ function toast(msg){
 }
 function classSize(cls){
   var v = Number(localStorage.getItem('gcdsize_'+cls));
-  return (v>=1 && v<=40) ? v : 30;
+  return (v>=1 && v<=40) ? v : (CLASS_SIZE[cls] || 30);
 }
 function setClassSize(cls,n){ try{ localStorage.setItem('gcdsize_'+cls, String(n)); }catch(e){} }
 function fmtStamp(d){
