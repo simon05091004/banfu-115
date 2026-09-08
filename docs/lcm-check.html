@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>短除法闖關 導師檢核</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#F4F8F2; --paper-2:#FFFFFF; --paper-3:#EAF1E8;
+  --grid:#D6E6D8; --line:#C4D6C7; --hair:#DFEADF;
+  --ink:#1C2B30; --ink-soft:#56686D; --ink-faint:#8A9A9C;
+  --red:#CE3E2E; --red-bg:#FBE6E1;
+  --blue:#2A6B8C; --blue-bg:#DCEAF1;
+  --leaf:#3B8A58; --leaf-bg:#DFEFE3;
+  --gold:#D99A12; --gold-bg:#FBF0D8;
+  --btn-shadow:0 2px 0 var(--line);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --paper:#1D2823; --paper-2:#25322C; --paper-3:#2C3A33;
+    --grid:#33443B; --line:#3C4E45; --hair:#334138;
+    --ink:#E8EFE5; --ink-soft:#A9BCB1; --ink-faint:#7C9086;
+    --red:#F1897A; --red-bg:#3C2A28;
+    --blue:#7CC2DD; --blue-bg:#233841;
+    --leaf:#7FD3A1; --leaf-bg:#22382C;
+    --gold:#EFC463; --gold-bg:#3A3222;
+    --btn-shadow:0 2px 0 rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --paper:#1D2823; --paper-2:#25322C; --paper-3:#2C3A33;
+  --grid:#33443B; --line:#3C4E45; --hair:#334138;
+  --ink:#E8EFE5; --ink-soft:#A9BCB1; --ink-faint:#7C9086;
+  --red:#F1897A; --red-bg:#3C2A28;
+  --blue:#7CC2DD; --blue-bg:#233841;
+  --leaf:#7FD3A1; --leaf-bg:#22382C;
+  --gold:#EFC463; --gold-bg:#3A3222;
+  --btn-shadow:0 2px 0 rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background-color:var(--paper); color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Heiti TC",sans-serif;
+  font-size:15px; line-height:1.7; -webkit-text-size-adjust:100%;
+  background-image:
+    repeating-linear-gradient(to right, var(--grid) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(to bottom, var(--grid) 0 1px, transparent 1px 28px);
+}
+button{font:inherit; color:inherit; touch-action:manipulation}
+:focus-visible{outline:3px solid var(--blue); outline-offset:2px}
+.num{font-family:"IBM Plex Mono","SF Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.app{max-width:1080px; margin:0 auto; padding:0 18px 60px}
+
+.bar{display:flex; align-items:center; gap:12px; padding:16px 0 12px; border-bottom:1px solid var(--line); margin-bottom:18px; flex-wrap:wrap}
+.brand{font-family:"Noto Serif TC",serif; font-weight:900; font-size:19px; letter-spacing:.04em}
+.brand span{color:var(--red)}
+.brand em{font-style:normal; font-family:"Noto Sans TC",sans-serif; font-weight:500; font-size:13px; color:var(--ink-soft); letter-spacing:.14em; margin-left:10px}
+.bar .sp{margin-left:auto}
+.icon-btn{border:1px solid var(--line); background:var(--paper-2); border-radius:8px; min-height:38px; padding:0 12px; cursor:pointer; font-size:14px; color:var(--ink-soft)}
+
+h1{font-family:"Noto Serif TC",serif; font-weight:900; font-size:28px; margin:0 0 8px}
+h2{font-family:"Noto Serif TC",serif; font-weight:700; font-size:20px; margin:0 0 10px}
+p{margin:0 0 12px}
+.muted{color:var(--ink-soft)}
+.small{font-size:13.5px}
+.eyebrow{font-size:12px; letter-spacing:.2em; color:var(--ink-soft); margin:0 0 8px; font-weight:500}
+
+.btn{border:1.5px solid var(--ink); background:var(--ink); color:var(--paper-2); padding:10px 18px; font-weight:700; font-size:15px; cursor:pointer; border-radius:4px; min-height:44px; box-shadow:var(--btn-shadow)}
+.btn:active{transform:translateY(2px); box-shadow:none}
+.btn.ghost{background:transparent; color:var(--ink); border-color:var(--line)}
+.btn.red{background:var(--red); border-color:var(--red); color:#fff}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+
+/* 登入 */
+.gate{max-width:400px; margin:8vh auto 0; background:var(--paper-2); border:1px solid var(--line); border-top:5px solid var(--red); padding:28px}
+.gate label{display:block; font-size:13px; letter-spacing:.08em; color:var(--ink-soft); margin:14px 0 5px}
+.gate input{width:100%; font:inherit; font-size:16px; padding:11px 13px; min-height:46px; border:2px solid var(--line); background:var(--paper); color:var(--ink); border-radius:4px}
+.gate input:focus{border-color:var(--blue); outline:none}
+.gate .btn{width:100%; margin-top:20px}
+.err{color:var(--red); font-size:13.5px; font-weight:700; min-height:22px; margin-top:10px}
+
+/* 班級頁籤 */
+.tabs{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px}
+.tab{font-family:"IBM Plex Mono",monospace; font-weight:700; font-size:16px; min-height:46px; padding:0 14px; cursor:pointer; border:1.5px solid var(--line); background:var(--paper-2); color:var(--ink-soft); border-radius:5px; position:relative}
+.tab[aria-selected="true"]{background:var(--red); border-color:var(--red); color:#fff}
+.tab i{display:block; font-style:normal; font-family:"Noto Sans TC",sans-serif; font-size:10.5px; font-weight:500; letter-spacing:.04em; opacity:.85}
+
+/* 摘要 */
+.tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:20px}
+.tiles div{background:var(--paper-2); padding:14px 16px}
+.tiles dt{font-size:11.5px; letter-spacing:.14em; color:var(--ink-soft); margin-bottom:3px}
+.tiles dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:27px; font-weight:700; line-height:1.15}
+.tiles dd small{font-size:14px; color:var(--ink-faint); font-weight:500}
+
+/* 表格 */
+.qbars{border:1px solid var(--line); background:var(--paper-2); padding:14px 16px; margin-bottom:20px}
+.qbars h3{font-size:12px; letter-spacing:.14em; color:var(--ink-soft); margin:0 0 10px; font-weight:700}
+.qbars .worst{color:var(--red); font-weight:700; font-size:14px; margin:0 0 12px}
+.qbars ol{list-style:none; margin:0; padding:0; display:grid; gap:6px}
+.qbars li{display:grid; grid-template-columns:2.4em 1fr 4.5em; align-items:center; gap:10px; font-size:12.5px}
+.qbars .qn{font-family:"IBM Plex Mono",monospace; color:var(--ink-soft); text-align:right}
+.qbars .track{height:15px; background:var(--paper-3); border-radius:3px; overflow:hidden}
+.qbars .fill{display:block; height:100%; background:var(--red); opacity:.8; min-width:3px}
+.qbars .fill.zero{background:var(--leaf); opacity:.35}
+.qbars .cnt{font-family:"IBM Plex Mono",monospace; color:var(--ink-soft); font-variant-numeric:tabular-nums}
+.qbars .qlabel{font-size:11px; color:var(--ink-faint)}
+.tablewrap{overflow-x:auto; border:1px solid var(--line); background:var(--paper-2); margin-bottom:18px}
+table{border-collapse:collapse; width:100%; min-width:760px}
+th,td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--hair); white-space:nowrap}
+th{background:var(--paper-3); font-size:12px; letter-spacing:.1em; color:var(--ink-soft); font-weight:700; position:sticky; top:0}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+tr.row{cursor:pointer}
+tr.row:hover td{background:var(--paper-3)}
+tr.miss td{color:var(--ink-faint)}
+.seatcell{font-family:"IBM Plex Mono",monospace; font-weight:700; font-size:17px}
+.pill{display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.05em; padding:2px 8px; border-radius:10px; border:1.5px solid}
+.pill.done{color:var(--leaf); border-color:var(--leaf); background:var(--leaf-bg)}
+.pill.none{color:var(--ink-faint); border-color:var(--line); background:transparent}
+.pill.warn{color:var(--gold); border-color:var(--gold); background:var(--gold-bg)}
+.stars-mini{color:var(--gold); letter-spacing:2px; font-size:15px}
+.stars-mini u{color:var(--line); text-decoration:none}
+.wrongq{color:var(--red); font-weight:700}
+
+/* 明細 */
+tr.detail td{background:var(--paper-3); padding:0; border-bottom:2px solid var(--line)}
+.detailbox{padding:14px 18px}
+.qgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:8px; margin-top:10px}
+.qcard{border:1.5px solid var(--line); background:var(--paper-2); padding:8px 10px; border-radius:5px;
+       white-space:normal; word-break:break-word}
+.detailbox{white-space:normal}
+.qcard.bad{border-color:var(--red)}
+.qcard b{font-family:"IBM Plex Mono",monospace; font-size:15px; display:block}
+.qcard span{font-size:11.5px; color:var(--ink-soft); display:block; line-height:1.5}
+.attempts{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
+.delrow{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:14px; padding-top:12px; border-top:1px dashed var(--line)}
+.del-rec{border:1.5px solid var(--red); background:transparent; color:var(--red); font-size:13.5px; font-weight:700; padding:7px 14px; min-height:38px; border-radius:4px; cursor:pointer}
+.del-rec:hover{background:var(--red-bg)}
+.del-rec:disabled{opacity:.5; cursor:not-allowed}
+.att{border:1.5px solid var(--line); background:var(--paper-2); padding:4px 10px; border-radius:4px; font-size:12.5px; cursor:pointer}
+.att[aria-pressed="true"]{border-color:var(--blue); background:var(--blue-bg); color:var(--blue); font-weight:700}
+
+.toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:20px}
+.sizefield{display:flex; align-items:center; gap:7px; font-size:13.5px; color:var(--ink-soft)}
+.sizefield input{width:64px; font:inherit; font-family:"IBM Plex Mono",monospace; font-size:15px; padding:8px 10px; min-height:42px; text-align:center; border:1.5px solid var(--line); background:var(--paper-2); color:var(--ink); border-radius:4px}
+.status{font-size:13px; color:var(--ink-soft); min-height:22px; margin-bottom:14px}
+.empty{padding:44px 20px; text-align:center; color:var(--ink-faint); background:var(--paper-2); border:1px dashed var(--line)}
+#toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:var(--ink); color:var(--paper-2); padding:11px 20px; border-radius:6px; font-size:14px; font-weight:500; opacity:0; pointer-events:none; transition:opacity .25s; z-index:9}
+#toast.on{opacity:1}
+@media (max-width:520px){ .app{padding:0 12px 44px} }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <div class="brand">短除法<span>闖關</span><em>導師檢核</em></div>
+    <span class="sp"></span>
+    <button class="icon-btn" id="theme" title="切換亮／暗">◐</button>
+    <button class="icon-btn" id="signout" hidden>登出</button>
+  </header>
+
+  <!-- 登入 -->
+  <section id="gate" class="gate" hidden>
+    <p class="eyebrow">教師專用</p>
+    <h1 style="font-size:24px">請先登入</h1>
+    <p class="small muted">學生的成績只有登入後才看得到。帳號密碼請向 603 導師索取。</p>
+    <label for="em">教師帳號</label>
+    <input id="em" type="email" autocomplete="username" placeholder="teacher@banfu.local">
+    <label for="pw">密碼</label>
+    <input id="pw" type="password" autocomplete="current-password">
+    <button class="btn" id="signin">登入</button>
+    <p class="err" id="gate-err"></p>
+  </section>
+
+  <!-- 主畫面 -->
+  <section id="board" hidden>
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <dl class="tiles" id="tiles"></dl>
+    <div class="toolbar">
+      <button class="btn" id="pdf-class">匯出本班 PDF</button>
+      <button class="btn ghost" id="pdf-all">匯出全年級 PDF</button>
+      <button class="btn ghost" id="reload">重新整理</button>
+      <span class="sizefield"><label for="size">班級人數</label><input id="size" type="number" min="1" max="40" value="30"></span>
+    </div>
+    <p class="status" id="status"></p>
+    <div class="qbars" id="qbars" hidden></div>
+    <div id="table-host"></div>
+  </section>
+</div>
+<div id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ================= 設定 ================= */
+/* ============================================================
+   設定區：要和 quiz-game.html 的設定對應，尤其是 classes 和 FIRE_COL
+   ============================================================ */
+const SCHOOL  = "永福國小";
+const TITLE   = "六年級 短除法求最小公倍數 闖關紀錄";
+
+/* 班級 → 人數。導師仍可在畫面上臨時調整，調整值只存在該導師的瀏覽器 */
+const CLASS_SIZE = {"601":26,"602":24,"603":25,"604":25,"605":24,"606":25,
+                    "607":24,"608":25,"609":25,"610":26,"611":25};
+const CLASSES = Object.keys(CLASS_SIZE);
+
+/* 題數：資料還沒進來時的預設值，有資料後會自動用實際題數 */
+const QUESTION_COUNT = 9;
+
+/* PDF 頁尾的題目一覽；留空字串就不印 */
+const QUESTION_NOTE = "九題分別為 6·8、9·12、10·12、12·20、18·30、21·28、36·48、45·60、72·96";
+
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyAFh8Dmf25j1D9rCpBpCpcxKLVBNsAF4m4",
+  authDomain:        "chinese-50d0c.firebaseapp.com",
+  projectId:         "chinese-50d0c",
+  storageBucket:     "chinese-50d0c.firebasestorage.app",
+  messagingSenderId: "1044608618028",
+  appId:             "1:1044608618028:web:d95f2811e0dd61bbe30b89"
+};
+const FIRE_COL = "mathLcm6";
+const FIRE_SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
+const KEEP     = 3;   /* 每位學生最多顯示最近幾次 */
+
+var $ = function(id){ return document.getElementById(id); };
+var DB=null, AUTH=null, DATA={}, CUR=CLASSES[0], OPEN=null, OPENATT=0;
+
+function toast(msg){
+  var t=$('toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(toast._t); toast._t=setTimeout(function(){ t.classList.remove('on'); }, 2400);
+}
+function classSize(cls){
+  var v = Number(localStorage.getItem('gcdsize_'+cls));
+  return (v>=1 && v<=40) ? v : (CLASS_SIZE[cls] || 30);
+}
+function setClassSize(cls,n){ try{ localStorage.setItem('gcdsize_'+cls, String(n)); }catch(e){} }
+function fmtStamp(d){
+  var p=function(n){ return String(n).padStart(2,'0'); };
+  return d.getFullYear()+'/'+p(d.getMonth()+1)+'/'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
+}
+$('theme').onclick=function(){
+  var cur=document.documentElement.getAttribute('data-theme');
+  var dark = cur ? cur==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', dark?'light':'dark');
+};
+
+/* ================= Firebase ================= */
+function loadScript(src){
+  return new Promise(function(res,rej){
+    var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=function(){ rej(new Error(src)); };
+    document.head.appendChild(s);
+  });
+}
+async function boot(){
+  try{
+    await loadScript(FIRE_SDK+'firebase-app-compat.js');
+    await loadScript(FIRE_SDK+'firebase-auth-compat.js');
+    await loadScript(FIRE_SDK+'firebase-firestore-compat.js');
+  }catch(e){
+    $('gate').hidden=false;
+    $('gate-err').textContent='載入不到 Firebase 元件，請檢查網路。';
+    return;
+  }
+  firebase.initializeApp(FIREBASE_CONFIG);
+  AUTH=firebase.auth(); DB=firebase.firestore();
+  AUTH.onAuthStateChanged(function(u){
+    if(u){ $('gate').hidden=true; $('board').hidden=false; $('signout').hidden=false; load(); }
+    else { $('gate').hidden=false; $('board').hidden=true; $('signout').hidden=true; }
+  });
+}
+$('signin').onclick=async function(){
+  var em=$('em').value.trim(), pw=$('pw').value;
+  if(!em || !pw){ $('gate-err').textContent='帳號和密碼都要填。'; return; }
+  $('gate-err').textContent=''; $('signin').disabled=true; $('signin').textContent='登入中…';
+  try{ await AUTH.signInWithEmailAndPassword(em,pw); }
+  catch(e){
+    var c=e && e.code, msg='登入失敗，請再試一次。';
+    if(c==='auth/invalid-email') msg='帳號格式不對。';
+    else if(c==='auth/invalid-credential'||c==='auth/wrong-password'||c==='auth/user-not-found') msg='帳號或密碼不對。';
+    else if(c==='auth/too-many-requests') msg='嘗試太多次，請等幾分鐘再試。';
+    else if(c==='auth/operation-not-allowed') msg='Firebase 尚未啟用「電子郵件/密碼」登入方式。';
+    else if(c==='auth/network-request-failed') msg='連不到網路。';
+    $('gate-err').textContent=msg;
+  }
+  $('signin').disabled=false; $('signin').textContent='登入';
+};
+$('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') $('signin').click(); });
+$('signout').onclick=function(){ AUTH.signOut(); };
+
+/* ================= 讀資料 ================= */
+async function load(){
+  $('status').textContent='讀取中…';
+  try{
+    var snap = await DB.collection(FIRE_COL).get();
+    DATA={};
+    CLASSES.forEach(function(c){ DATA[c]={}; });
+    snap.forEach(function(doc){
+      var d=doc.data();
+      if(!d || !d.cls || !DATA[d.cls]) return;
+      var seat=Number(d.seat);
+      if(!(seat>=1)) return;
+      d._id = doc.id;
+      (DATA[d.cls][seat] = DATA[d.cls][seat] || []).push(d);
+    });
+    Object.keys(DATA).forEach(function(c){
+      Object.keys(DATA[c]).forEach(function(s){
+        DATA[c][s].sort(function(a,b){ return String(b.ts).localeCompare(String(a.ts)); });
+        DATA[c][s] = DATA[c][s].slice(0, KEEP);
+      });
+    });
+    $('status').textContent='資料時間 '+fmtStamp(new Date());
+    render();
+  }catch(e){
+    $('status').textContent = (e && e.code==='permission-denied')
+      ? '讀取被拒。Firestore 規則還沒開放給登入的老師讀 '+FIRE_COL+'。'
+      : '讀取失敗：'+(e && e.message || e);
+  }
+}
+$('reload').onclick=load;
+
+/* ================= 統計 ================= */
+function rowsFor(cls){
+  var size=classSize(cls), out=[];
+  for(var s=1;s<=size;s++){
+    var att = (DATA[cls] && DATA[cls][s]) || [];
+    var best = att.reduce(function(m,a){ return (!m || a.score>m.score) ? a : m; }, null);
+    out.push({seat:s, att:att, best:best, latest:att[0]||null});
+  }
+  /* 座號超出設定人數但有作答的，補在後面 */
+  Object.keys((DATA[cls]||{})).map(Number).filter(function(s){ return s>size; }).sort(function(a,b){return a-b;})
+    .forEach(function(s){
+      var att=DATA[cls][s];
+      var best=att.reduce(function(m,a){ return (!m||a.score>m.score)?a:m; }, null);
+      out.push({seat:s, att:att, best:best, latest:att[0]||null, extra:true});
+    });
+  return out;
+}
+function statsFor(cls){
+  var rows=rowsFor(cls);
+  var done=rows.filter(function(r){ return r.att.length; });
+  var avg = done.length ? Math.round(done.reduce(function(m,r){ return m+r.best.score; },0)/done.length) : 0;
+  var perf= done.length ? Math.round(done.reduce(function(m,r){ return m+r.best.perfect; },0)/done.length*10)/10 : 0;
+  /* 各題答錯人數：導師要的不只是「誰不會」，更是「全班哪一題最卡」，
+     那決定下一節課要重講什麼 */
+  var qs=[];
+  done.forEach(function(r){
+    (r.best.detail||[]).forEach(function(d,i){
+      qs[i] = qs[i] || {i:i+1, q:d.q, wrong:0};
+      if(d.m>0) qs[i].wrong++;
+    });
+  });
+  var worst = qs.slice().sort(function(a,b){ return b.wrong-a.wrong; })[0] || null;
+  if(worst && worst.wrong===0) worst=null;
+  return {rows:rows, size:rows.filter(function(r){return !r.extra;}).length, done:done.length, avg:avg, perf:perf,
+          qs:qs, worst:worst,
+          missing:rows.filter(function(r){ return !r.att.length; }).map(function(r){ return r.seat; })};
+}
+function starText(n){ return '★'.repeat(n) + '<u>' + '★'.repeat(3-n) + '</u>'; }
+function wrongList(rec){
+  if(!rec || !rec.detail) return [];
+  var out=[];
+  rec.detail.forEach(function(d,i){ if(d.m>0) out.push(i+1); });
+  return out;
+}
+function qTotal(){
+  var n=0;
+  CLASSES.forEach(function(c){
+    Object.keys(DATA[c]||{}).forEach(function(s){
+      (DATA[c][s]||[]).forEach(function(a){ n=Math.max(n,(a.detail||[]).length); });
+    });
+  });
+  return n||QUESTION_COUNT;
+}
+
+/* ================= 畫面 ================= */
+function renderTabs(){
+  var box=$('tabs'); box.innerHTML='';
+  CLASSES.forEach(function(c){
+    var st=statsFor(c);
+    var b=document.createElement('button');
+    b.className='tab'; b.type='button'; b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', c===CUR ? 'true':'false');
+    b.innerHTML = c + '<i>' + st.done + '/' + st.size + '</i>';
+    b.onclick=function(){ CUR=c; OPEN=null; render(); };
+    box.appendChild(b);
+  });
+}
+function render(){
+  renderTabs();
+  var st=statsFor(CUR);
+  $('size').value = classSize(CUR);
+  $('tiles').innerHTML =
+      '<div><dt>已完成</dt><dd>'+st.done+'<small> / '+st.size+' 人</small></dd></div>'
+    + '<div><dt>平均分數</dt><dd>'+st.avg+'</dd></div>'
+    + '<div><dt>平均全對題數</dt><dd>'+st.perf+'<small> / '+qTotal()+'</small></dd></div>'
+    + '<div><dt>尚未作答</dt><dd>'+st.missing.length+'<small> 人</small></dd></div>';
+
+  var qb=$('qbars');
+  if(st.done && st.qs.length){
+    var mx=Math.max.apply(null, st.qs.map(function(q){ return q.wrong; })) || 1;
+    qb.hidden=false;
+    qb.innerHTML = '<h3>各題答錯人數（'+st.done+' 人已作答）</h3>'
+      + (st.worst ? '<p class="worst">錯最多：第 '+st.worst.i+' 題　'+st.worst.q+'　'+st.worst.wrong+' 人錯過</p>'
+                  : '<p class="worst" style="color:var(--leaf)">每一題都沒有人答錯。</p>')
+      + '<ol>' + st.qs.map(function(q){
+          return '<li><span class="qn">'+q.i+'.</span>'
+               + '<span class="track"><span class="fill'+(q.wrong?'':' zero')+'" style="width:'
+               + Math.round(q.wrong/mx*100) + '%"></span></span>'
+               + '<span class="cnt">'+q.wrong+' 人</span></li>';
+        }).join('') + '</ol>';
+  }else{ qb.hidden=true; qb.innerHTML=''; }
+
+  var host=$('table-host');
+  if(!st.rows.length){ host.innerHTML='<div class="empty">這個班級還沒有任何紀錄。</div>'; return; }
+
+  var h='<div class="tablewrap"><table><thead><tr>'
+      + '<th>座號</th><th>狀態</th><th>次數</th><th>最佳分數</th><th>星等</th><th>全對</th><th>用時</th><th>答錯題號</th><th>最近完成</th>'
+      + '</tr></thead><tbody>';
+  st.rows.forEach(function(r){
+    if(!r.att.length){
+      h += '<tr class="miss"><td class="seatcell">'+r.seat+'</td><td><span class="pill none">未作答</span></td>'
+         + '<td colspan="7" class="muted small">—</td></tr>';
+      return;
+    }
+    var b=r.best, wl=wrongList(b);
+    h += '<tr class="row" data-seat="'+r.seat+'">'
+       + '<td class="seatcell">'+r.seat+(r.extra?' <span class="pill warn">超出名冊</span>':'')+'</td>'
+       + '<td><span class="pill done">已完成</span></td>'
+       + '<td class="n">'+r.att.length+'</td>'
+       + '<td class="n"><b>'+b.score+'</b></td>'
+       + '<td><span class="stars-mini">'+starText(b.stars)+'</span></td>'
+       + '<td class="n">'+b.perfect+' / '+qTotal()+'</td>'
+       + '<td class="n">'+Math.round(b.secs/60)+' 分</td>'
+       + '<td class="'+(wl.length?'wrongq':'muted')+'">'+(wl.length?wl.join('、'):'無')+'</td>'
+       + '<td class="n small muted">'+fmtStamp(new Date(r.latest.ts))+'</td></tr>';
+    if(OPEN===r.seat){
+      var pick = r.att[Math.min(OPENATT, r.att.length-1)];
+      var att='';
+      if(r.att.length>1){
+        att='<div class="attempts">'+r.att.map(function(a,i){
+          return '<button class="att" type="button" data-att="'+i+'" aria-pressed="'+(i===Math.min(OPENATT,r.att.length-1))+'">第 '+(r.att.length-i)+' 次　'+a.score+' 分</button>';
+        }).join('')+'</div>';
+      }
+      var cards = (pick.detail||[]).map(function(d,i){
+        return '<div class="qcard'+(d.m>0?' bad':'')+'"><b>'+d.q+'</b>'
+             + '<span>第 '+(i+1)+' 題　答案 '+d.a+'</span>'
+             + '<span>'+(d.m>0?('錯 '+d.m+' 次'):'一次答對')+'　'+d.s+' 秒　'+d.p+' 分</span></div>';
+      }).join('');
+      var pickLabel = CUR+' '+r.seat+' 號　'+fmtStamp(new Date(pick.ts));
+      h += '<tr class="detail"><td colspan="9"><div class="detailbox">'
+         + '<b>'+CUR+' '+r.seat+' 號</b>　<span class="small muted">'+fmtStamp(new Date(pick.ts))+'　共 '+pick.score+' 分</span>'
+         + att + '<div class="qgrid">'+cards+'</div>'
+         + '<div class="delrow"><button type="button" class="del-rec" data-id="'+pick._id+'" data-label="'+pickLabel+'">刪除這筆紀錄</button>'
+         + '<span class="small muted">誤填座號或測試資料才刪，刪除後無法復原。</span></div>'
+         + '</div></td></tr>';
+    }
+  });
+  h+='</tbody></table></div>';
+  if(st.missing.length){
+    h += '<p class="small muted">尚未作答：<b class="num">'+st.missing.join('、')+'</b></p>';
+  }
+  host.innerHTML=h;
+
+  host.querySelectorAll('tr.row').forEach(function(tr){
+    tr.onclick=function(){
+      var s=Number(tr.getAttribute('data-seat'));
+      OPEN = (OPEN===s) ? null : s; OPENATT=0; render();
+    };
+  });
+  host.querySelectorAll('.att').forEach(function(b){
+    b.onclick=function(e){ e.stopPropagation(); OPENATT=Number(b.getAttribute('data-att')); render(); };
+  });
+  host.querySelectorAll('.del-rec').forEach(function(b){
+    b.onclick=async function(e){
+      e.stopPropagation();
+      var id=b.getAttribute('data-id'), label=b.getAttribute('data-label');
+      if(!id){ toast('這筆紀錄沒有 id，請重新整理後再試'); return; }
+      if(!confirm('確定刪除「'+label+'」這筆紀錄嗎？\n刪除後無法復原。')) return;
+      b.disabled=true; b.textContent='刪除中…';
+      try{
+        await DB.collection(FIRE_COL).doc(id).delete();
+        OPEN=null; OPENATT=0;
+        await load();
+        toast('已刪除 '+label);
+      }catch(err){
+        var c=err && err.code;
+        toast(c==='permission-denied' ? '刪除被拒，請確認仍在登入狀態' : ('刪除失敗：'+(err && err.message || err)));
+        b.disabled=false; b.textContent='刪除這筆紀錄';
+      }
+    };
+  });
+}
+$('size').onchange=function(){
+  var n=Math.max(1, Math.min(40, Number($('size').value)||30));
+  $('size').value=n; setClassSize(CUR,n); render();
+};
+
+/* ================= PDF：畫 A4 直式表格 ================= */
+const PC={ ink:"#1e2b30", dim:"#56686d", faint:"#96a4a6", line:"#b9cbbd", hair:"#dbe6dc",
+           head:"#eaf1e8", red:"#ce3e2e", leaf:"#3b8a58" };
+const FS='"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+const FM='"IBM Plex Mono",ui-monospace,Menlo,monospace';
+const ROWS_PER_PAGE = 30;
+
+function classPages(cls){
+  var st=statsFor(cls), rows=st.rows, pages=[], i;
+  for(i=0;i<rows.length;i+=ROWS_PER_PAGE) pages.push(rows.slice(i,i+ROWS_PER_PAGE));
+  if(!pages.length) pages.push([]);
+  return pages.map(function(chunk,idx){ return {cls:cls, st:st, rows:chunk, page:idx+1, pages:pages.length}; });
+}
+function drawPage(spec, scale){
+  var W=595, H=842, PAD=38;
+  var cv=document.createElement('canvas');
+  cv.width=Math.round(W*scale); cv.height=Math.round(H*scale);
+  var g=cv.getContext('2d');
+  g.setTransform(scale,0,0,scale,0,0);
+  g.fillStyle="#ffffff"; g.fillRect(0,0,W,H);
+  function txt(t,x,y,font,color,align){
+    g.font=font; g.fillStyle=color; g.textAlign=align||'left'; g.textBaseline='middle';
+    g.fillText(String(t),x,y);
+  }
+  function line(x1,y1,x2,y2,c,w){ g.strokeStyle=c; g.lineWidth=w||.7; g.beginPath(); g.moveTo(x1,y1); g.lineTo(x2,y2); g.stroke(); }
+
+  txt(SCHOOL, PAD, PAD+2, '500 10px '+FS, PC.dim);
+  txt(spec.cls+' 班', W-PAD, PAD+2, '700 15px '+FM, PC.red, 'right');
+  txt(TITLE, PAD, PAD+26, '700 17px '+FS, PC.ink);
+  line(PAD, PAD+42, W-PAD, PAD+42, PC.line, 1.2);
+
+  var st=spec.st;
+  txt('已完成 '+st.done+' / '+st.size+' 人　　平均 '+st.avg+' 分　　平均全對 '+st.perf+' / '+qTotal()+' 題　　產出 '+fmtStamp(new Date()),
+      PAD, PAD+57, '400 9.5px '+FS, PC.dim);
+
+  var cols=[
+    {k:'seat',  t:'座號', w:38, a:'center'},
+    {k:'state', t:'狀態', w:44, a:'center'},
+    {k:'n',     t:'次數', w:34, a:'center'},
+    {k:'score', t:'最佳分數', w:56, a:'center'},
+    {k:'stars', t:'星等', w:44, a:'center'},
+    {k:'perf',  t:'全對', w:46, a:'center'},
+    {k:'secs',  t:'用時', w:40, a:'center'},
+    {k:'wrong', t:'答錯題號', w:88, a:'left'},
+    {k:'when',  t:'最近完成', w:0,  a:'left'}
+  ];
+  var tableW=W-PAD*2, used=cols.reduce(function(m,c){ return m+c.w; },0);
+  cols[cols.length-1].w = tableW-used;
+  var xs=[], x=PAD;
+  cols.forEach(function(c){ xs.push(x); x+=c.w; });
+
+  var top=PAD+72, RH=21;
+  g.fillStyle=PC.head; g.fillRect(PAD, top, tableW, RH);
+  cols.forEach(function(c,i){
+    var cx = c.a==='center' ? xs[i]+c.w/2 : xs[i]+7;
+    txt(c.t, cx, top+RH/2, '700 9.5px '+FS, PC.dim, c.a==='center'?'center':'left');
+  });
+
+  spec.rows.forEach(function(r,ri){
+    var y=top+RH+ri*RH, mid=y+RH/2;
+    if(ri%2===1){ g.fillStyle="#fafcf9"; g.fillRect(PAD,y,tableW,RH); }
+    var b=r.best, has=r.att.length>0, wl=wrongList(b);
+    var vals = has ? {
+      seat:r.seat, state:'已完成', n:r.att.length, score:b.score,
+      stars:'★'.repeat(b.stars), perf:b.perfect+'/'+qTotal(), secs:Math.round(b.secs/60)+' 分',
+      wrong: wl.length?wl.join('、'):'無', when:fmtStamp(new Date(r.latest.ts))
+    } : { seat:r.seat, state:'未作答', n:'—', score:'—', stars:'—', perf:'—', secs:'—', wrong:'—', when:'—' };
+    cols.forEach(function(c,i){
+      var cx = c.a==='center' ? xs[i]+c.w/2 : xs[i]+7;
+      var color = !has ? PC.faint
+                : c.k==='stars' ? "#d99a12"
+                : c.k==='wrong' ? (wl.length?PC.red:PC.faint)
+                : c.k==='score' ? PC.ink : PC.dim;
+      var font = (c.k==='seat') ? '700 11px '+FM
+               : (c.k==='score') ? '700 11px '+FM
+               : (c.k==='when') ? '400 8.5px '+FM
+               : (['n','perf','secs'].indexOf(c.k)>=0) ? '500 10px '+FM
+               : '400 9.5px '+FS;
+      txt(vals[c.k], cx, mid, font, color, c.a==='center'?'center':'left');
+    });
+    line(PAD, y+RH, PAD+tableW, y+RH, PC.hair);
+  });
+
+  var tableH=RH+spec.rows.length*RH;
+  g.strokeStyle=PC.line; g.lineWidth=1; g.strokeRect(PAD, top, tableW, tableH);
+  for(var i=1;i<cols.length;i++) line(xs[i], top, xs[i], top+tableH, PC.hair);
+
+  var fy=top+tableH+18;
+  if(spec.page===spec.pages && st.qs && st.qs.length){
+    txt('各題答錯人數：'+st.qs.map(function(q){ return q.i+'.'+q.wrong; }).join('　'),
+        PAD, fy, '400 9.5px '+FS, PC.dim);
+    fy+=15;
+    if(st.worst){
+      txt('錯最多：第 '+st.worst.i+' 題（'+st.worst.q+'）'+st.worst.wrong+' 人錯過',
+          PAD, fy, '700 9.5px '+FS, PC.red);
+      fy+=15;
+    }
+  }
+  if(spec.page===spec.pages && st.missing.length){
+    txt('尚未作答座號：'+st.missing.join('、'), PAD, fy, '400 9.5px '+FS, PC.red);
+    fy+=15;
+  }
+  txt('第 '+spec.page+' / '+spec.pages+' 頁', W-PAD, H-PAD, '400 9px '+FS, PC.faint, 'right');
+  if(QUESTION_NOTE) txt(QUESTION_NOTE, PAD, H-PAD, '400 8.5px '+FS, PC.faint);
+  return cv;
+}
+
+async function canvasImage(cv){
+  try{
+    if(typeof CompressionStream==='function'){
+      var px=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data;
+      var rgb=new Uint8Array(cv.width*cv.height*3);
+      for(var i=0,j=0;i<px.length;i+=4){ rgb[j++]=px[i]; rgb[j++]=px[i+1]; rgb[j++]=px[i+2]; }
+      var st=new Blob([rgb]).stream().pipeThrough(new CompressionStream('deflate'));
+      var buf=new Uint8Array(await new Response(st).arrayBuffer());
+      return {data:buf, filter:'/FlateDecode'};
+    }
+  }catch(e){}
+  var b64=cv.toDataURL('image/jpeg',0.94).split(',')[1];
+  var bin=atob(b64), u=new Uint8Array(bin.length);
+  for(var k=0;k<bin.length;k++) u[k]=bin.charCodeAt(k);
+  return {data:u, filter:'/DCTDecode'};
+}
+
+async function buildPdf(canvases){
+  var PW=595, PH=842, M=0;
+  var imgs=[];
+  for(var i=0;i<canvases.length;i++) imgs.push(await canvasImage(canvases[i]));
+
+  var parts=[], len=0, off=[];
+  var lat=function(s){ var a=new Uint8Array(s.length); for(var i=0;i<s.length;i++) a[i]=s.charCodeAt(i)&0xFF; return a; };
+  var put=function(u){ parts.push(u); len+=u.length; };
+  var obj=function(n,head,stream){
+    off[n]=len;
+    put(lat(n+' 0 obj\n'+head+'\n'));
+    if(stream){ put(lat('stream\n')); put(stream); put(lat('\nendstream\n')); }
+    put(lat('endobj\n'));
+  };
+  var enc=new TextEncoder();
+  put(lat('%PDF-1.4\n%âãÏÓ\n'));
+
+  var N=canvases.length, kids=[];
+  for(var p=0;p<N;p++) kids.push((3+p*3)+' 0 R');
+  obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
+  obj(2,'<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+N+' >>');
+  for(var p2=0;p2<N;p2++){
+    var pg=3+p2*3, ct=pg+1, im=pg+2;
+    var content='q '+PW+' 0 0 '+PH+' '+M+' '+M+' cm /Im0 Do Q\n';
+    obj(pg,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+']'
+        +' /Resources << /ProcSet [/PDF /ImageC] /XObject << /Im0 '+im+' 0 R >> >> /Contents '+ct+' 0 R >>');
+    var cs=enc.encode(content);
+    obj(ct,'<< /Length '+cs.length+' >>', cs);
+    obj(im,'<< /Type /XObject /Subtype /Image /Width '+canvases[p2].width+' /Height '+canvases[p2].height
+        +' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter '+imgs[p2].filter
+        +' /Length '+imgs[p2].data.length+' >>', imgs[p2].data);
+  }
+  var total=2+N*3, xref=len;
+  var x2='xref\n0 '+(total+1)+'\n0000000000 65535 f \n';
+  for(var q=1;q<=total;q++) x2 += String(off[q]||0).padStart(10,'0')+' 00000 n \n';
+  x2 += 'trailer\n<< /Size '+(total+1)+' /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF\n';
+  put(lat(x2));
+  var out=new Uint8Array(len), pos=0;
+  parts.forEach(function(c){ out.set(c,pos); pos+=c.length; });
+  return out;
+}
+
+function download(filename, data){
+  var blob=new Blob([data],{type:'application/pdf'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url; a.download=filename; a.style.display='none';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 2000);
+  toast('已下載 '+filename);
+}
+async function exportPdf(classList, filename, btn){
+  var old=btn.textContent; btn.disabled=true; btn.textContent='產生中…';
+  try{
+    if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+    var specs=[];
+    classList.forEach(function(c){ specs=specs.concat(classPages(c)); });
+    var canvases=specs.map(function(s){ return drawPage(s, 2.4); });
+    var pdf=await buildPdf(canvases);
+    download(filename, pdf);
+  }catch(e){
+    toast('PDF 產生失敗：'+(e && e.message || e));
+  }
+  btn.disabled=false; btn.textContent=old;
+}
+$('pdf-class').onclick=function(){ exportPdf([CUR], '短除法闖關_'+CUR+'.pdf', this); };
+$('pdf-all').onclick  =function(){ exportPdf(CLASSES, '短除法闖關_六年級全部.pdf', this); };
+
+boot();
+})();
+</script>
+</body>
+</html>
