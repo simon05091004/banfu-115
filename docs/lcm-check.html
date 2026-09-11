@@ -185,6 +185,7 @@ tr.detail td{background:var(--paper-3); padding:0; border-bottom:2px solid var(-
     <div class="toolbar">
       <button class="btn" id="pdf-class">匯出本班 PDF</button>
       <button class="btn ghost" id="pdf-all">匯出全年級 PDF</button>
+      <button class="btn ghost" id="pdf-paper">匯出紙本練習題</button>
       <button class="btn ghost" id="reload">重新整理</button>
       <span class="sizefield"><label for="size">班級人數</label><input id="size" type="number" min="1" max="40" value="30"></span>
     </div>
@@ -216,6 +217,15 @@ const QUESTION_COUNT = 9;
 
 /* PDF 頁尾的題目一覽；留空字串就不印 */
 const QUESTION_NOTE = "九題分別為 6·8、9·12、10·12、12·20、18·30、21·28、36·48、45·60、72·96";
+
+
+/* 紙本練習題用的題目。空陣列時會自動從學生已交的資料推導，
+   但補考單通常要在還沒人作答前就印，所以建議照抄活動的題目填在這裡。 */
+const PAPER_QS = [
+  {q:"6 和 8", a:"24"},   {q:"9 和 12", a:"36"},  {q:"10 和 12", a:"60"},
+  {q:"12 和 20", a:"60"}, {q:"18 和 30", a:"90"}, {q:"21 和 28", a:"84"},
+  {q:"36 和 48", a:"144"},{q:"45 和 60", a:"180"},{q:"72 和 96", a:"288"}
+];
 
 const FIREBASE_CONFIG = {
   apiKey:            "AIzaSyAFh8Dmf25j1D9rCpBpCpcxKLVBNsAF4m4",
@@ -668,6 +678,138 @@ async function buildPdf(canvases){
   return out;
 }
 
+
+/* ================= 紙本練習題（補考用） ================= */
+/* 沿用同一套 canvas → 點陣 → PDF，中文不必嵌字型，學校任何一台印表機都印得出來 */
+
+function paperQuestions(){
+  if(PAPER_QS && PAPER_QS.length) return PAPER_QS.slice();
+  /* 沒填設定就從已交的資料推導，取題數最多的那一份當範本 */
+  var best=null;
+  CLASSES.forEach(function(c){
+    Object.keys(DATA[c]||{}).forEach(function(s){
+      (DATA[c][s]||[]).forEach(function(a){
+        if(a.detail && (!best || a.detail.length>best.length)) best=a.detail;
+      });
+    });
+  });
+  return best ? best.map(function(d){ return {q:d.q, a:d.a}; }) : [];
+}
+
+/* 題目長得像「A 和 B」時，順便把短除法的除數算出來放進答案頁 */
+function paperSteps(qtext){
+  var m=/^\s*(\d+)\s*和\s*(\d+)\s*$/.exec(qtext||"");
+  if(!m) return null;
+  var x=+m[1], y=+m[2], steps=[], D=[2,3,5,7,11,13], i;
+  function g(a,b){ while(b){ var t=a%b; a=b; b=t; } return a; }
+  while(g(x,y)>1){
+    for(i=0;i<D.length;i++){ if(x%D[i]===0 && y%D[i]===0){ steps.push(D[i]); x/=D[i]; y/=D[i]; break; } }
+    if(i===D.length) break;
+  }
+  return {steps:steps, bottom:[x,y]};
+}
+
+function drawPracticeSheet(qs, cls, page, pages, scale){
+  var W=595, H=842, PAD=36;
+  var cv=document.createElement('canvas');
+  cv.width=Math.round(W*scale); cv.height=Math.round(H*scale);
+  var g=cv.getContext('2d'); g.setTransform(scale,0,0,scale,0,0);
+  g.fillStyle="#ffffff"; g.fillRect(0,0,W,H);
+  function txt(t,x,y,font,color,align){
+    g.font=font; g.fillStyle=color; g.textAlign=align||'left'; g.textBaseline='middle';
+    g.fillText(String(t),x,y);
+  }
+  function line(x1,y1,x2,y2,c,w,dash){
+    g.save(); if(dash) g.setLineDash(dash);
+    g.strokeStyle=c; g.lineWidth=w||.7; g.beginPath(); g.moveTo(x1,y1); g.lineTo(x2,y2); g.stroke(); g.restore();
+  }
+  txt(SCHOOL, PAD, PAD, '500 10px '+FS, PC.dim);
+  txt('紙本練習題', W-PAD, PAD, '700 11px '+FS, PC.red, 'right');
+  txt(TITLE.replace(' 闖關紀錄',''), PAD, PAD+24, '700 17px '+FS, PC.ink);
+  line(PAD, PAD+40, W-PAD, PAD+40, PC.line, 1.2);
+
+  /* 讓學生自己填，不預先印座號——同一張可以影印給任何一個要補考的人 */
+  var fy=PAD+58;
+  txt('班級', PAD, fy, '400 10px '+FS, PC.dim);
+  line(PAD+26, fy+6, PAD+86, fy+6, PC.line, .8);
+  if(cls) txt(cls, PAD+40, fy, '600 11px '+FM, PC.dim);
+  txt('座號', PAD+100, fy, '400 10px '+FS, PC.dim);
+  line(PAD+126, fy+6, PAD+176, fy+6, PC.line, .8);
+  txt('姓名', PAD+190, fy, '400 10px '+FS, PC.dim);
+  line(PAD+216, fy+6, PAD+336, fy+6, PC.line, .8);
+  txt('日期', PAD+350, fy, '400 10px '+FS, PC.dim);
+  line(PAD+376, fy+6, W-PAD, fy+6, PC.line, .8);
+
+  txt('用短除法計算，把過程寫在格子裡，答案寫在下面的橫線上。',
+      PAD, fy+26, '400 9.5px '+FS, PC.faint);
+
+  var top=fy+42, avail=H-PAD-16-top;
+  var cols=2, rows=Math.ceil(qs.length/cols);
+  var cw=(W-PAD*2-14)/cols, ch=Math.min(avail/rows, 150);
+  qs.forEach(function(q,i){
+    var r=Math.floor(i/cols), c=i%cols;
+    var x=PAD+c*(cw+14), y=top+r*ch;
+    g.strokeStyle=PC.hair; g.lineWidth=.9; g.strokeRect(x, y, cw, ch-10);
+    txt((page-1)*10+i+1+'.', x+9, y+16, '700 11px '+FM, PC.red);
+    txt(q.q, x+26, y+16, '600 12.5px '+FS, PC.ink);
+    line(x+9, y+ch-32, x+cw-9, y+ch-32, PC.hair, .6, [3,3]);
+    txt('答：', x+9, y+ch-20, '400 10px '+FS, PC.dim);
+    line(x+34, y+ch-15, x+cw-9, y+ch-15, PC.line, .8);
+  });
+  txt('第 '+page+' / '+pages+' 頁', W-PAD, H-PAD+4, '400 9px '+FS, PC.faint, 'right');
+  return cv;
+}
+
+function drawAnswerKey(qs, scale){
+  var W=595, H=842, PAD=36;
+  var cv=document.createElement('canvas');
+  cv.width=Math.round(W*scale); cv.height=Math.round(H*scale);
+  var g=cv.getContext('2d'); g.setTransform(scale,0,0,scale,0,0);
+  g.fillStyle="#ffffff"; g.fillRect(0,0,W,H);
+  function txt(t,x,y,font,color,align){
+    g.font=font; g.fillStyle=color; g.textAlign=align||'left'; g.textBaseline='middle';
+    g.fillText(String(t),x,y);
+  }
+  function line(x1,y1,x2,y2,c,w){ g.strokeStyle=c; g.lineWidth=w||.7; g.beginPath(); g.moveTo(x1,y1); g.lineTo(x2,y2); g.stroke(); }
+
+  txt(SCHOOL, PAD, PAD, '500 10px '+FS, PC.dim);
+  txt('教師用 · 請勿發給學生', W-PAD, PAD, '700 11px '+FS, PC.red, 'right');
+  txt(TITLE.replace(' 闖關紀錄','')+'　答案', PAD, PAD+24, '700 17px '+FS, PC.ink);
+  line(PAD, PAD+40, W-PAD, PAD+40, PC.line, 1.2);
+
+  var y=PAD+62, RH=30;
+  qs.forEach(function(q,i){
+    txt(i+1+'.', PAD+4, y, '700 11px '+FM, PC.red);
+    txt(q.q, PAD+26, y, '600 12px '+FS, PC.ink);
+    txt(q.a, PAD+200, y, '700 13px '+FM, PC.leaf);
+    var st=paperSteps(q.q);
+    if(st && st.steps.length){
+      txt('短除法：'+st.steps.join(' × ')+'　最下面兩個商：'+st.bottom.join('、'),
+          PAD+260, y, '400 9.5px '+FS, PC.dim);
+    }
+    line(PAD, y+13, W-PAD, y+13, PC.hair, .6);
+    y+=RH;
+  });
+  txt('此頁為教師對答用，影印給學生時請抽掉。', PAD, H-PAD, '400 9px '+FS, PC.faint);
+  return cv;
+}
+
+async function exportPaper(btn){
+  var qs=paperQuestions();
+  if(!qs.length){ toast('還沒有題目可以印。請在 PAPER_QS 填入題目，或等有人交卷後再試'); return; }
+  var old=btn.textContent; btn.disabled=true; btn.textContent='產生中…';
+  try{
+    if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+    var per=10, pages=Math.ceil(qs.length/per), cvs=[];
+    for(var p=0;p<pages;p++){
+      cvs.push(drawPracticeSheet(qs.slice(p*per,(p+1)*per), CUR, p+1, pages, 2.4));
+    }
+    cvs.push(drawAnswerKey(qs, 2.4));
+    download(TITLE.replace(' 闖關紀錄','')+'_紙本練習題.pdf', await buildPdf(cvs));
+  }catch(e){ toast('PDF 產生失敗：'+(e && e.message || e)); }
+  btn.disabled=false; btn.textContent=old;
+}
+
 function download(filename, data){
   var blob=new Blob([data],{type:'application/pdf'});
   var url=URL.createObjectURL(blob);
@@ -693,6 +835,8 @@ async function exportPdf(classList, filename, btn){
 }
 $('pdf-class').onclick=function(){ exportPdf([CUR], '短除法闖關_'+CUR+'.pdf', this); };
 $('pdf-all').onclick  =function(){ exportPdf(CLASSES, '短除法闖關_六年級全部.pdf', this); };
+
+$('pdf-paper').onclick =function(){ exportPaper(this); };
 
 boot();
 })();
