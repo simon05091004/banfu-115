@@ -221,6 +221,10 @@ const QUESTION_NOTE = "選擇題 10 題（每題 3 分）、計算題 10 題（�
 
 /* 紙本練習題用的題目。空陣列時會自動從學生已交的資料推導，
    但補考單通常要在還沒人作答前就印，所以建議照抄活動的題目填在這裡。 */
+const PAPER_SECTIONS = {0:"一、選擇題（每題 3 分，共 30 分）",
+                        10:"二、計算題（每題 4 分，共 40 分）",
+                        20:"三、應用題（每題 6 分，共 30 分）"};
+
 const PAPER_QS = [
   {q:"下列哪一個數是質數？\n（A）51　（B）57　（C）61　（D）63", a:"（C）61"},
   {q:"下列敘述何者正確？\n（A）1 是最小的質數\n（B）所有的質數都是奇數\n（C）2 是唯一的偶數質數\n（D）合數一定是偶數", a:"（C）"},
@@ -542,8 +546,6 @@ const PC={ ink:"#1e2b30", dim:"#56686d", faint:"#96a4a6", line:"#b9cbbd", hair:"
 const FS='"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
 const FM='"IBM Plex Mono",ui-monospace,Menlo,monospace';
 const ROWS_PER_PAGE = 30;
-/* 紙本練習題每頁題數。題目是整句中文時放 5 題才寫得下 */
-const PAPER_PER_PAGE = 5;
 
 function classPages(cls){
   var st=statsFor(cls), rows=st.rows, pages=[], i;
@@ -663,7 +665,7 @@ async function canvasImage(cv){
 }
 
 async function buildPdf(canvases){
-  var PW=595, PH=842, M=0;
+  var M=0;
   var imgs=[];
   for(var i=0;i<canvases.length;i++) imgs.push(await canvasImage(canvases[i]));
 
@@ -685,6 +687,7 @@ async function buildPdf(canvases){
   obj(2,'<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+N+' >>');
   for(var p2=0;p2<N;p2++){
     var pg=3+p2*3, ct=pg+1, im=pg+2;
+    var PW=canvases[p2]._pw||595, PH=canvases[p2]._ph||842;
     var content='q '+PW+' 0 0 '+PH+' '+M+' '+M+' cm /Im0 Do Q\n';
     obj(pg,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+']'
         +' /Resources << /ProcSet [/PDF /ImageC] /XObject << /Im0 '+im+' 0 R >> >> /Contents '+ct+' 0 R >>');
@@ -735,10 +738,69 @@ function paperSteps(qtext){
   return {steps:steps, bottom:[x,y]};
 }
 
-function drawPracticeSheet(qs, cls, page, pages, scale){
-  var W=595, H=842, PAD=36;
+/* ── 紙本練習題：B4 雙面、兩欄流動排版 ───────────────────
+   固定格子遇到長題目會壓到作答線，所以改成每題先量出實際行數，
+   再依需要的高度往下排，排滿一欄換下一欄，排滿兩欄換頁。      */
+var B4W=709, B4H=1001, PPAD=32, PCOLS=2, PGAP=18;
+var PCOLW=Math.floor((B4W-PPAD*2-PGAP*(PCOLS-1))/PCOLS);
+var PAVAIL1=B4H-PPAD-20-(PPAD+112);   /* 第 1 面要放卷頭 */
+var PAVAIL2=B4H-PPAD-20-(PPAD+44);    /* 第 2 面只放窄頁眉 */
+var PSTEM_F='600 12.5px ', POPT_F='400 11.5px ';
+
+function paperWrap(g, text, maxW, font){
+  g.font=font; var out=[];
+  String(text).split('\n').forEach(function(para){
+    var cur='';
+    for(var k=0;k<para.length;k++){
+      var t=cur+para.charAt(k);
+      if(cur && g.measureText(t).width>maxW){ out.push(cur); cur=para.charAt(k); }
+      else cur=t;
+    }
+    out.push(cur);
+  });
+  return out;
+}
+
+/* 拆成可排版區塊並算高度。選擇題不必寫過程，只留一點空隙；
+   計算題和應用題留 54pt 給短除法。 */
+function paperBlocks(qs){
+  var g=document.createElement('canvas').getContext('2d');
+  var tw=PCOLW-40, out=[];
+  qs.forEach(function(q,i){
+    if(PAPER_SECTIONS[i]) out.push({type:'head', text:PAPER_SECTIONS[i], h:32});
+    var lines=[];
+    String(q.q).split('\n').forEach(function(para,pi){
+      var f=(pi===0?PSTEM_F:POPT_F)+FS;
+      paperWrap(g,para,tw,f).forEach(function(ln){ lines.push({t:ln,f:f}); });
+    });
+    var work = (String(q.q).indexOf('（A）')>=0) ? 10 : 54;
+    out.push({type:'q', n:i+1, lines:lines, work:work,
+              h:16 + lines.length*15 + work + 30});
+  });
+  return out;
+}
+
+function paperPack(blocks){
+  var pages=[], cols=[], cur=[], used=0;
+  function avail(){ return pages.length===0 ? PAVAIL1 : PAVAIL2; }
+  function pushCol(){ cols.push(cur); cur=[]; used=0;
+    if(cols.length===PCOLS){ pages.push(cols); cols=[]; } }
+  blocks.forEach(function(b){
+    /* 大題標頭不要落在欄底變成孤行 */
+    var need = b.h + (b.type==='head' ? 70 : 0);
+    if(used>0 && used+need>avail()) pushCol();
+    cur.push(b); used+=b.h;
+  });
+  if(cur.length) pushCol();
+  if(cols.length){ while(cols.length<PCOLS) cols.push([]); pages.push(cols); }
+  return pages;
+}
+
+function drawPracticeB4(cols, cls, page, pages, scale){
+  var W=B4W, H=B4H, PAD=PPAD;
   var cv=document.createElement('canvas');
   cv.width=Math.round(W*scale); cv.height=Math.round(H*scale);
+  cv._pw=W; cv._ph=H;                       /* 告訴 buildPdf 這頁是 B4 */
   var g=cv.getContext('2d'); g.setTransform(scale,0,0,scale,0,0);
   g.fillStyle="#ffffff"; g.fillRect(0,0,W,H);
   function txt(t,x,y,font,color,align){
@@ -749,58 +811,53 @@ function drawPracticeSheet(qs, cls, page, pages, scale){
     g.save(); if(dash) g.setLineDash(dash);
     g.strokeStyle=c; g.lineWidth=w||.7; g.beginPath(); g.moveTo(x1,y1); g.lineTo(x2,y2); g.stroke(); g.restore();
   }
-  txt(SCHOOL, PAD, PAD, '500 10px '+FS, PC.dim);
-  txt('紙本練習題', W-PAD, PAD, '700 11px '+FS, PC.red, 'right');
-  txt(TITLE.replace(' 闖關紀錄',''), PAD, PAD+24, '700 17px '+FS, PC.ink);
-  line(PAD, PAD+40, W-PAD, PAD+40, PC.line, 1.2);
-
-  /* 讓學生自己填，不預先印座號——同一張可以影印給任何一個要補考的人 */
-  var fy=PAD+58;
-  txt('班級', PAD, fy, '400 10px '+FS, PC.dim);
-  line(PAD+26, fy+6, PAD+86, fy+6, PC.line, .8);
-  if(cls) txt(cls, PAD+40, fy, '600 11px '+FM, PC.dim);
-  txt('座號', PAD+100, fy, '400 10px '+FS, PC.dim);
-  line(PAD+126, fy+6, PAD+176, fy+6, PC.line, .8);
-  txt('姓名', PAD+190, fy, '400 10px '+FS, PC.dim);
-  line(PAD+216, fy+6, PAD+336, fy+6, PC.line, .8);
-  txt('日期', PAD+350, fy, '400 10px '+FS, PC.dim);
-  line(PAD+376, fy+6, W-PAD, fy+6, PC.line, .8);
-
-  txt('把計算過程寫在格子裡，答案寫在下面的橫線上。',
-      PAD, fy+26, '400 9.5px '+FS, PC.faint);
-
-  /* 中文沒有空白可斷行，逐字量寬度自己折。先依 \n 分段，段內再折。*/
-  function wrapLines(text, maxW, font){
-    g.font=font;
-    var out=[];
-    String(text).split('\n').forEach(function(para){
-      var cur='';
-      for(var k=0;k<para.length;k++){
-        var t=cur+para.charAt(k);
-        if(cur && g.measureText(t).width>maxW){ out.push(cur); cur=para.charAt(k); }
-        else cur=t;
-      }
-      out.push(cur);
-    });
-    return out;
+  var top;
+  if(page===1){
+    txt(SCHOOL, PAD, PAD, '500 10px '+FS, PC.dim);
+    txt('紙本練習題', W-PAD, PAD, '700 11px '+FS, PC.red, 'right');
+    txt(TITLE.replace(' 檢核卷紀錄',''), PAD, PAD+26, '700 19px '+FS, PC.ink);
+    line(PAD, PAD+44, W-PAD, PAD+44, PC.line, 1.2);
+    var fy=PAD+64;
+    txt('班級', PAD, fy, '400 10px '+FS, PC.dim);
+    line(PAD+26, fy+6, PAD+96, fy+6, PC.line, .8);
+    if(cls) txt(cls, PAD+44, fy, '600 11px '+FM, PC.dim);
+    txt('座號', PAD+112, fy, '400 10px '+FS, PC.dim);
+    line(PAD+138, fy+6, PAD+198, fy+6, PC.line, .8);
+    txt('姓名', PAD+214, fy, '400 10px '+FS, PC.dim);
+    line(PAD+240, fy+6, PAD+390, fy+6, PC.line, .8);
+    txt('分數', PAD+406, fy, '400 10px '+FS, PC.red);
+    line(PAD+432, fy+6, PAD+532, fy+6, PC.line, .8);
+    txt('日期', PAD+548, fy, '400 10px '+FS, PC.dim);
+    line(PAD+574, fy+6, W-PAD, fy+6, PC.line, .8);
+    txt('每題的答案都寫在下面的「答」橫線上。計算題和應用題請把計算過程寫在格子裡。',
+        PAD, fy+28, '400 9.5px '+FS, PC.faint);
+    top=PAD+112;
+  }else{
+    txt(TITLE.replace(' 檢核卷紀錄','')+'　紙本練習題', PAD, PAD+6, '700 12px '+FS, PC.dim);
+    txt('班級 __________　座號 ______　姓名 ____________', W-PAD, PAD+6, '400 10px '+FS, PC.dim, 'right');
+    line(PAD, PAD+20, W-PAD, PAD+20, PC.line, 1);
+    top=PAD+44;
   }
-  var top=fy+42, avail=H-PAD-16-top;
-  var cw=W-PAD*2, ch=avail/PAPER_PER_PAGE;
-  qs.forEach(function(q,i){
-    var x=PAD, y=top+i*ch;
-    g.strokeStyle=PC.hair; g.lineWidth=.9; g.strokeRect(x, y, cw, ch-12);
-    txt(PAPER_PER_PAGE*(page-1)+i+1+'.', x+9, y+16, '700 12px '+FM, PC.red);
-    /* 第一段是題幹，後面幾段是選項，選項用小一級字才塞得下四個長敘述 */
-    var STEMF='600 12.5px '+FS, OPTF='400 11.5px '+FS, ty=y+16;
-    String(q.q).split('\n').forEach(function(para, pi){
-      var f = pi===0 ? STEMF : OPTF;
-      wrapLines(para, cw-46, f).forEach(function(ln){ txt(ln, x+30, ty, f, PC.ink); ty+=15; });
+  cols.forEach(function(col,ci){
+    var x=PAD+ci*(PCOLW+PGAP), y=top;
+    col.forEach(function(b){
+      if(b.type==='head'){
+        txt(b.text, x, y+15, '700 12.5px '+FS, PC.ink);
+        line(x, y+26, x+PCOLW, y+26, PC.ink, 1.1);
+      }else{
+        g.strokeStyle=PC.hair; g.lineWidth=.9; g.strokeRect(x, y, PCOLW, b.h-10);
+        txt(b.n+'.', x+8, y+16, '700 11.5px '+FM, PC.red);
+        var ty=y+16;
+        b.lines.forEach(function(L){ txt(L.t, x+30, ty, L.f, PC.ink); ty+=15; });
+        var bb=y+b.h-10;
+        line(x+8, bb-26, x+PCOLW-8, bb-26, PC.hair, .6, [3,3]);
+        txt('答：', x+8, bb-13, '400 10px '+FS, PC.dim);
+        line(x+34, bb-8, x+PCOLW-8, bb-8, PC.line, .8);
+      }
+      y+=b.h;
     });
-    line(x+9, y+ch-34, x+cw-9, y+ch-34, PC.hair, .6, [3,3]);
-    txt('答：', x+9, y+ch-22, '400 10px '+FS, PC.dim);
-    line(x+34, y+ch-17, x+cw-9, y+ch-17, PC.line, .8);
   });
-  txt('第 '+page+' / '+pages+' 頁', W-PAD, H-PAD+4, '400 9px '+FS, PC.faint, 'right');
+  txt('第 '+page+' / '+pages+' 面　（B4 雙面）', W-PAD, H-PAD+4, '400 9px '+FS, PC.faint, 'right');
   return cv;
 }
 
@@ -852,11 +909,11 @@ async function exportPaper(btn){
   var old=btn.textContent; btn.disabled=true; btn.textContent='產生中…';
   try{
     if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
-    var per=PAPER_PER_PAGE, pages=Math.ceil(qs.length/per), cvs=[];
-    for(var p=0;p<pages;p++){
-      cvs.push(drawPracticeSheet(qs.slice(p*per,(p+1)*per), CUR, p+1, pages, 2.4));
+    var pgs=paperPack(paperBlocks(qs)), cvs=[];
+    for(var p=0;p<pgs.length;p++){
+      cvs.push(drawPracticeB4(pgs[p], CUR, p+1, pgs.length, 2.2));   /* B4 */
     }
-    cvs.push(drawAnswerKey(qs, 2.4));
+    cvs.push(drawAnswerKey(qs, 2.4));                                 /* 解答另外 A4 一張 */
     download(TITLE.replace(' 闖關紀錄','')+'_紙本練習題.pdf', await buildPdf(cvs));
   }catch(e){ toast('PDF 產生失敗：'+(e && e.message || e)); }
   btn.disabled=false; btn.textContent=old;
