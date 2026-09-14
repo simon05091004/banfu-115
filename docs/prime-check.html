@@ -216,12 +216,40 @@ const CLASSES = Object.keys(CLASS_SIZE);
 const QUESTION_COUNT = 25;
 
 /* PDF 頁尾的題目一覽；留空字串就不印 */
-const QUESTION_NOTE = "九題分別為 12·18、20·30、16·24、36·48、45·60、42·70、84·126、72·120、96·144";
+const QUESTION_NOTE = "選擇題 10 題（每題 3 分）、計算題 10 題（每題 4 分）、應用題 5 題（每題 6 分），滿分 100 分";
 
 
 /* 紙本練習題用的題目。空陣列時會自動從學生已交的資料推導，
    但補考單通常要在還沒人作答前就印，所以建議照抄活動的題目填在這裡。 */
-const PAPER_QS = [/* 例如 {q:"36 和 48", a:"12"} */];
+const PAPER_QS = [
+  {q:"下列哪一個數是質數？\n（A）51　（B）57　（C）61　（D）63", a:"（C）61"},
+  {q:"下列敘述何者正確？\n（A）1 是最小的質數\n（B）所有的質數都是奇數\n（C）2 是唯一的偶數質數\n（D）合數一定是偶數", a:"（C）"},
+  {q:"把 126 做質因數分解，正確的是哪一個？\n（A）2×3×3×7　（B）2×7×9　（C）3×6×7　（D）2×3×21", a:"（A）2×3×3×7"},
+  {q:"下列哪一個數不是 90 的質因數？\n（A）2　（B）3　（C）5　（D）9", a:"（D）9"},
+  {q:"下列哪一組數互質？\n（A）12 和 18　（B）14 和 21　（C）15 和 28　（D）20 和 24", a:"（C）15 和 28"},
+  {q:"下列敘述何者正確？\n（A）兩個互質的數一定都是質數\n（B）兩個不同的質數一定互質\n（C）兩個合數一定不互質\n（D）相鄰的兩個整數一定不互質", a:"（B）"},
+  {q:"甲數＝2×2×3×5，乙數＝2×3×3×5，甲、乙兩數的最大公因數是多少？\n（A）15　（B）30　（C）60　（D）90", a:"（B）30"},
+  {q:"48 和 72 的公因數共有幾個？\n（A）6 個　（B）7 個　（C）8 個　（D）10 個", a:"（C）8 個"},
+  {q:"甲數＝2×2×3×5，乙數＝2×3×3×5，甲、乙兩數的最小公倍數是多少？\n（A）90　（B）180　（C）360　（D）5400", a:"（B）180"},
+  {q:"兩個數的最大公因數是 6，最小公倍數是 36。如果其中一個數是 12，另一個數是多少？\n（A）9　（B）18　（C）24　（D）30", a:"（B）18"},
+
+  {q:"在 20 和 40 之間（不包含 20 和 40）的質數共有幾個？", a:"4 個"},
+  {q:"把 180 分解質因數後，共有幾個質因數相乘？（相同的質因數要重複計算）", a:"5 個"},
+  {q:"252 ＝ 2×2×3×3×□，□ 裡應該填入多少？", a:"7"},
+  {q:"在 1 到 20 的整數中，與 9 互質的數共有幾個？", a:"14 個"},
+  {q:"用短除法求 36 和 54 的最大公因數。", a:"18"},
+  {q:"用短除法求 8、12 和 20 的最大公因數。", a:"4"},
+  {q:"用短除法求 48 和 84 的最大公因數。", a:"12"},
+  {q:"用短除法求 12 和 20 的最小公倍數。", a:"60"},
+  {q:"用短除法求 6、8 和 9 的最小公倍數。", a:"72"},
+  {q:"兩個數的最大公因數是 8，最小公倍數是 48。其中一個數是 16，另一個數是多少？", a:"24"},
+
+  {q:"有色紙 48 張、彩帶 60 條，要平分給全班同學，兩樣都剛好分完沒有剩下。最多可以分給幾個同學？", a:"12 個同學"},
+  {q:"一塊長 72 公分、寬 54 公分的長方形紙板，要剪成大小相同的正方形而且不能有剩餘。正方形的邊長最長是多少公分？", a:"18 公分"},
+  {q:"甲燈每 12 秒閃一次，乙燈每 18 秒閃一次。兩燈同時閃過一次之後，至少要再過多少秒才會再一次同時閃？", a:"36 秒"},
+  {q:"A 路公車每 15 分鐘發車一次，B 路公車每 20 分鐘發車一次。上午 8 時兩路公車同時發車後，至少要再過多少分鐘才會再一次同時發車？", a:"60 分鐘"},
+  {q:"一袋糖果，每 4 顆裝一包、每 6 顆裝一包、每 10 顆裝一包，都剛好分完沒有剩下。這袋糖果最少有幾顆？", a:"60 顆"}
+];
 
 const FIREBASE_CONFIG = {
   apiKey:            "AIzaSyAFh8Dmf25j1D9rCpBpCpcxKLVBNsAF4m4",
@@ -514,6 +542,8 @@ const PC={ ink:"#1e2b30", dim:"#56686d", faint:"#96a4a6", line:"#b9cbbd", hair:"
 const FS='"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
 const FM='"IBM Plex Mono",ui-monospace,Menlo,monospace';
 const ROWS_PER_PAGE = 30;
+/* 紙本練習題每頁題數。題目是整句中文時放 5 題才寫得下 */
+const PAPER_PER_PAGE = 5;
 
 function classPages(cls){
   var st=statsFor(cls), rows=st.rows, pages=[], i;
@@ -739,18 +769,36 @@ function drawPracticeSheet(qs, cls, page, pages, scale){
   txt('把計算過程寫在格子裡，答案寫在下面的橫線上。',
       PAD, fy+26, '400 9.5px '+FS, PC.faint);
 
+  /* 中文沒有空白可斷行，逐字量寬度自己折。先依 \n 分段，段內再折。*/
+  function wrapLines(text, maxW, font){
+    g.font=font;
+    var out=[];
+    String(text).split('\n').forEach(function(para){
+      var cur='';
+      for(var k=0;k<para.length;k++){
+        var t=cur+para.charAt(k);
+        if(cur && g.measureText(t).width>maxW){ out.push(cur); cur=para.charAt(k); }
+        else cur=t;
+      }
+      out.push(cur);
+    });
+    return out;
+  }
   var top=fy+42, avail=H-PAD-16-top;
-  var cols=2, rows=Math.ceil(qs.length/cols);
-  var cw=(W-PAD*2-14)/cols, ch=Math.min(avail/rows, 150);
+  var cw=W-PAD*2, ch=avail/PAPER_PER_PAGE;
   qs.forEach(function(q,i){
-    var r=Math.floor(i/cols), c=i%cols;
-    var x=PAD+c*(cw+14), y=top+r*ch;
-    g.strokeStyle=PC.hair; g.lineWidth=.9; g.strokeRect(x, y, cw, ch-10);
-    txt((page-1)*10+i+1+'.', x+9, y+16, '700 11px '+FM, PC.red);
-    txt(q.q, x+26, y+16, '600 12.5px '+FS, PC.ink);
-    line(x+9, y+ch-32, x+cw-9, y+ch-32, PC.hair, .6, [3,3]);
-    txt('答：', x+9, y+ch-20, '400 10px '+FS, PC.dim);
-    line(x+34, y+ch-15, x+cw-9, y+ch-15, PC.line, .8);
+    var x=PAD, y=top+i*ch;
+    g.strokeStyle=PC.hair; g.lineWidth=.9; g.strokeRect(x, y, cw, ch-12);
+    txt(PAPER_PER_PAGE*(page-1)+i+1+'.', x+9, y+16, '700 12px '+FM, PC.red);
+    /* 第一段是題幹，後面幾段是選項，選項用小一級字才塞得下四個長敘述 */
+    var STEMF='600 12.5px '+FS, OPTF='400 11.5px '+FS, ty=y+16;
+    String(q.q).split('\n').forEach(function(para, pi){
+      var f = pi===0 ? STEMF : OPTF;
+      wrapLines(para, cw-46, f).forEach(function(ln){ txt(ln, x+30, ty, f, PC.ink); ty+=15; });
+    });
+    line(x+9, y+ch-34, x+cw-9, y+ch-34, PC.hair, .6, [3,3]);
+    txt('答：', x+9, y+ch-22, '400 10px '+FS, PC.dim);
+    line(x+34, y+ch-17, x+cw-9, y+ch-17, PC.line, .8);
   });
   txt('第 '+page+' / '+pages+' 頁', W-PAD, H-PAD+4, '400 9px '+FS, PC.faint, 'right');
   return cv;
@@ -773,15 +821,23 @@ function drawAnswerKey(qs, scale){
   txt(TITLE.replace(' 闖關紀錄','')+'　答案', PAD, PAD+24, '700 17px '+FS, PC.ink);
   line(PAD, PAD+40, W-PAD, PAD+40, PC.line, 1.2);
 
-  var y=PAD+62, RH=30;
+  var y=PAD+62, RH=Math.min(28, (H-PAD-70-(PAD+62))/Math.max(1,qs.length)+6);
+  var ANSX=PAD+330;
+  function fit(text, maxW, font){
+    g.font=font;
+    var t=String(text).split('\n')[0];
+    if(g.measureText(t).width<=maxW) return t;
+    while(t.length>1 && g.measureText(t+'…').width>maxW) t=t.slice(0,-1);
+    return t+'…';
+  }
   qs.forEach(function(q,i){
     txt(i+1+'.', PAD+4, y, '700 11px '+FM, PC.red);
-    txt(q.q, PAD+26, y, '600 12px '+FS, PC.ink);
-    txt(q.a, PAD+200, y, '700 13px '+FM, PC.leaf);
+    txt(fit(q.q, ANSX-(PAD+26)-10, '600 11px '+FS), PAD+26, y, '600 11px '+FS, PC.ink);
+    txt(q.a, ANSX, y, '700 12px '+FM, PC.leaf);
     var st=paperSteps(q.q);
     if(st && st.steps.length){
       txt('短除法：'+st.steps.join(' × ')+'　最下面兩個商：'+st.bottom.join('、'),
-          PAD+260, y, '400 9.5px '+FS, PC.dim);
+          ANSX+90, y, '400 9px '+FS, PC.dim);
     }
     line(PAD, y+13, W-PAD, y+13, PC.hair, .6);
     y+=RH;
@@ -796,7 +852,7 @@ async function exportPaper(btn){
   var old=btn.textContent; btn.disabled=true; btn.textContent='產生中…';
   try{
     if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
-    var per=10, pages=Math.ceil(qs.length/per), cvs=[];
+    var per=PAPER_PER_PAGE, pages=Math.ceil(qs.length/per), cvs=[];
     for(var p=0;p<pages;p++){
       cvs.push(drawPracticeSheet(qs.slice(p*per,(p+1)*per), CUR, p+1, pages, 2.4));
     }
