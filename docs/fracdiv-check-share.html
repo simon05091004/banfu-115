@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>分數除法檢核卷　導師檢核</title>
+<meta name="description" content="分數除法檢核卷　導師檢核">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#faf8f4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+<style>
+*{box-sizing:border-box}
+:root{
+  --paper:#faf8f4; --card:#ffffff; --ink:#1e1c19; --dim:#6d675e; --faint:#989185;
+  --line:#e4dfd5; --sunk:#f4f1ea;
+  --a1:#a1670f; --a1-bg:#fbf3e2; --a2:#1d5ba4; --a2-bg:#edf3fc; --a3:#1c7549; --a3-bg:#eaf6ef;
+  --a4:#7a3f8c; --a4-bg:#f8eefb;
+  --focus:#1d5ba4;
+  --sh:0 1px 2px rgba(40,32,18,.05), 0 10px 34px -14px rgba(40,32,18,.28);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#1a1815; --card:#232019; --ink:#ece6dc; --dim:#a09789; --faint:#7b7366;
+    --line:#35312a; --sunk:#1f1c17;
+    --a1:#e3a943; --a1-bg:#332a17; --a2:#7db0ef; --a2-bg:#1a2634; --a3:#5ec68e; --a3-bg:#172b20;
+    --a4:#cb99dc; --a4-bg:#2b1f31;
+    --focus:#7db0ef;
+    --sh:0 1px 2px rgba(0,0,0,.3), 0 10px 34px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1a1815; --card:#232019; --ink:#ece6dc; --dim:#a09789; --faint:#7b7366;
+  --line:#35312a; --sunk:#1f1c17;
+  --a1:#e3a943; --a1-bg:#332a17; --a2:#7db0ef; --a2-bg:#1a2634; --a3:#5ec68e; --a3-bg:#172b20;
+  --a4:#cb99dc; --a4-bg:#2b1f31;
+  --focus:#7db0ef;
+  --sh:0 1px 2px rgba(0,0,0,.3), 0 10px 34px -14px rgba(0,0,0,.7);
+}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:16px/1.65 "Noto Sans TC",-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:40px 20px 64px;display:flex;flex-direction:column;gap:24px}
+header{text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.eyebrow{margin:0;font-size:12.5px;letter-spacing:.14em;color:var(--dim);font-weight:500}
+.who{font-size:12px;font-weight:600;letter-spacing:.1em;padding:3px 12px;border-radius:999px}
+.who.p1{color:var(--a1);background:var(--a1-bg)} .who.p2{color:var(--a2);background:var(--a2-bg)}
+.who.p3{color:var(--a3);background:var(--a3-bg)} .who.p4{color:var(--a4);background:var(--a4-bg)}
+h1{margin:0;font-family:"Noto Serif TC",serif;font-weight:700;font-size:clamp(24px,5.6vw,31px);
+  line-height:1.32;text-wrap:balance}
+.lede{margin:0;color:var(--dim);font-size:15px}
+
+/* QR 卡片：不論深淺色主題都保持白底黑碼，確保掃得到 */
+.qrcard{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh);
+  padding:26px 26px 20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.qrcard svg{width:min(320px,72vw);height:auto;display:block;shape-rendering:crispEdges}
+.url{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:11.5px;color:#6d675e;
+  word-break:break-all;text-align:center;line-height:1.5;max-width:34ch}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{appearance:none;font:inherit;font-size:15px;font-weight:600;border-radius:11px;padding:12px 20px;
+  cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--paper);
+  text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:opacity .12s,transform .08s}
+.btn:hover{opacity:.87} .btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--dim);opacity:1}
+.btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:13px;align-items:flex-start;
+  background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px 15px}
+.steps li::before{content:counter(s);flex:0 0 24px;height:24px;border-radius:50%;
+  background:var(--sunk);color:var(--dim);font-family:"IBM Plex Mono",monospace;font-size:12.5px;
+  font-weight:500;display:grid;place-items:center;margin-top:1px}
+.steps b{display:block;font-size:15px;font-weight:600}
+.steps span{display:block;font-size:13.5px;color:var(--dim);margin-top:1px}
+
+.palette{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 17px;
+  display:flex;flex-direction:column;gap:10px}
+.palette h2,.when h2{margin:0;font-family:"Noto Serif TC",serif;font-size:15px;font-weight:600}
+.sws{display:flex;flex-wrap:wrap;gap:7px}
+.sw{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;color:var(--dim);
+  border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 4px}
+.sw i{width:15px;height:15px;border-radius:50%;border:1px solid rgba(0,0,0,.16);display:block}
+
+.when{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+  display:flex;flex-direction:column;gap:9px}
+.row{display:flex;align-items:baseline;gap:10px;font-size:14px}
+.row .k{flex:0 0 74px;font-size:12.5px;color:var(--dim);font-weight:600}
+.row em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-weight:600}
+.note{margin:0;font-size:13px;color:var(--dim);border-top:1px solid var(--line);padding-top:10px;line-height:1.7}
+footer{text-align:center;color:var(--faint);font-size:12.5px;line-height:1.8}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,14px);
+  background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:11px;font-size:14px;
+  box-shadow:0 10px 30px -8px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  body{background:#fff}
+  .wrap{max-width:none;padding:12mm 10mm}
+  .actions,#toast{display:none!important}
+  .qrcard{box-shadow:none;break-inside:avoid}
+  .qrcard svg{width:96mm}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">六年級 · 分數的除法</p>
+    <span class="who p1">各班導師</span>
+    <h1>分數除法檢核卷　導師檢核</h1>
+    <p class="lede">完成人數、每位學生的作答明細與 PDF 匯出</p>
+  </header>
+
+  <div class="qrcard">
+    <svg viewBox="-4 -4 53 53" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="分數除法檢核卷　導師檢核 QR code">
+      <rect x="-4" y="-4" width="53" height="53" fill="#ffffff"/>
+      <path fill="#1e1c19" d="M0 0h7v1h-7zM8 0h1v1h-1zM10 0h1v1h-1zM12 0h2v1h-2zM15 0h1v1h-1zM17 0h2v1h-2zM22 0h3v1h-3zM29 0h3v1h-3zM33 0h1v1h-1zM36 0h1v1h-1zM38 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM10 1h3v1h-3zM14 1h1v1h-1zM16 1h1v1h-1zM18 1h1v1h-1zM20 1h1v1h-1zM25 1h4v1h-4zM31 1h3v1h-3zM35 1h1v1h-1zM38 1h1v1h-1zM44 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h5v1h-5zM15 2h2v1h-2zM20 2h2v1h-2zM23 2h5v1h-5zM33 2h1v1h-1zM35 2h1v1h-1zM38 2h1v1h-1zM40 2h3v1h-3zM44 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM9 3h2v1h-2zM12 3h5v1h-5zM22 3h5v1h-5zM28 3h5v1h-5zM35 3h2v1h-2zM38 3h1v1h-1zM40 3h3v1h-3zM44 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h1v1h-1zM11 4h1v1h-1zM13 4h1v1h-1zM15 4h2v1h-2zM18 4h8v1h-8zM27 4h4v1h-4zM32 4h1v1h-1zM34 4h3v1h-3zM38 4h1v1h-1zM40 4h3v1h-3zM44 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM11 5h1v1h-1zM13 5h2v1h-2zM18 5h1v1h-1zM20 5h1v1h-1zM24 5h1v1h-1zM26 5h1v1h-1zM29 5h1v1h-1zM31 5h3v1h-3zM38 5h1v1h-1zM44 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM32 6h1v1h-1zM34 6h1v1h-1zM36 6h1v1h-1zM38 6h7v1h-7zM8 7h1v1h-1zM10 7h2v1h-2zM13 7h2v1h-2zM18 7h3v1h-3zM24 7h7v1h-7zM32 7h1v1h-1zM34 7h3v1h-3zM2 8h3v1h-3zM6 8h1v1h-1zM8 8h1v1h-1zM14 8h1v1h-1zM18 8h1v1h-1zM20 8h11v1h-11zM34 8h1v1h-1zM37 8h3v1h-3zM42 8h3v1h-3zM1 9h2v1h-2zM4 9h2v1h-2zM7 9h2v1h-2zM11 9h2v1h-2zM14 9h1v1h-1zM16 9h1v1h-1zM21 9h1v1h-1zM23 9h1v1h-1zM25 9h2v1h-2zM28 9h1v1h-1zM30 9h1v1h-1zM32 9h2v1h-2zM35 9h2v1h-2zM40 9h1v1h-1zM43 9h2v1h-2zM0 10h4v1h-4zM6 10h2v1h-2zM10 10h4v1h-4zM15 10h2v1h-2zM20 10h1v1h-1zM23 10h1v1h-1zM25 10h2v1h-2zM28 10h1v1h-1zM31 10h1v1h-1zM33 10h4v1h-4zM38 10h3v1h-3zM42 10h1v1h-1zM0 11h1v1h-1zM4 11h1v1h-1zM8 11h3v1h-3zM13 11h1v1h-1zM17 11h1v1h-1zM19 11h4v1h-4zM28 11h2v1h-2zM31 11h3v1h-3zM36 11h1v1h-1zM39 11h5v1h-5zM3 12h1v1h-1zM6 12h4v1h-4zM13 12h3v1h-3zM17 12h7v1h-7zM25 12h3v1h-3zM29 12h3v1h-3zM33 12h1v1h-1zM1 13h1v1h-1zM4 13h1v1h-1zM7 13h1v1h-1zM9 13h2v1h-2zM13 13h2v1h-2zM18 13h1v1h-1zM20 13h2v1h-2zM23 13h1v1h-1zM25 13h1v1h-1zM28 13h3v1h-3zM32 13h2v1h-2zM35 13h3v1h-3zM40 13h1v1h-1zM43 13h2v1h-2zM1 14h1v1h-1zM5 14h2v1h-2zM9 14h3v1h-3zM14 14h8v1h-8zM31 14h1v1h-1zM34 14h2v1h-2zM37 14h2v1h-2zM40 14h1v1h-1zM42 14h2v1h-2zM0 15h1v1h-1zM4 15h1v1h-1zM7 15h1v1h-1zM10 15h4v1h-4zM15 15h3v1h-3zM19 15h1v1h-1zM23 15h4v1h-4zM30 15h1v1h-1zM32 15h2v1h-2zM35 15h1v1h-1zM38 15h5v1h-5zM0 16h2v1h-2zM6 16h1v1h-1zM9 16h3v1h-3zM13 16h3v1h-3zM19 16h2v1h-2zM22 16h1v1h-1zM25 16h2v1h-2zM29 16h3v1h-3zM33 16h3v1h-3zM37 16h1v1h-1zM41 16h1v1h-1zM44 16h1v1h-1zM1 17h1v1h-1zM3 17h3v1h-3zM7 17h1v1h-1zM10 17h1v1h-1zM14 17h1v1h-1zM16 17h1v1h-1zM25 17h1v1h-1zM28 17h1v1h-1zM30 17h3v1h-3zM36 17h1v1h-1zM39 17h2v1h-2zM42 17h3v1h-3zM0 18h2v1h-2zM3 18h5v1h-5zM11 18h2v1h-2zM15 18h1v1h-1zM21 18h1v1h-1zM23 18h1v1h-1zM28 18h4v1h-4zM33 18h2v1h-2zM36 18h3v1h-3zM40 18h1v1h-1zM42 18h1v1h-1zM1 19h2v1h-2zM4 19h2v1h-2zM8 19h5v1h-5zM17 19h2v1h-2zM22 19h2v1h-2zM25 19h1v1h-1zM29 19h1v1h-1zM32 19h2v1h-2zM36 19h1v1h-1zM38 19h1v1h-1zM40 19h1v1h-1zM42 19h1v1h-1zM44 19h1v1h-1zM2 20h1v1h-1zM4 20h7v1h-7zM14 20h2v1h-2zM17 20h2v1h-2zM20 20h8v1h-8zM31 20h1v1h-1zM34 20h1v1h-1zM36 20h6v1h-6zM43 20h2v1h-2zM1 21h4v1h-4zM8 21h2v1h-2zM11 21h1v1h-1zM15 21h6v1h-6zM24 21h1v1h-1zM26 21h4v1h-4zM31 21h1v1h-1zM35 21h2v1h-2zM40 21h3v1h-3zM44 21h1v1h-1zM0 22h2v1h-2zM4 22h1v1h-1zM6 22h1v1h-1zM8 22h1v1h-1zM14 22h2v1h-2zM17 22h1v1h-1zM20 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM27 22h2v1h-2zM30 22h1v1h-1zM32 22h3v1h-3zM36 22h1v1h-1zM38 22h1v1h-1zM40 22h4v1h-4zM0 23h1v1h-1zM3 23h2v1h-2zM8 23h3v1h-3zM16 23h2v1h-2zM20 23h1v1h-1zM24 23h1v1h-1zM28 23h1v1h-1zM34 23h1v1h-1zM36 23h1v1h-1zM40 23h3v1h-3zM2 24h7v1h-7zM11 24h1v1h-1zM13 24h1v1h-1zM15 24h2v1h-2zM20 24h5v1h-5zM29 24h1v1h-1zM36 24h5v1h-5zM43 24h2v1h-2zM4 25h1v1h-1zM7 25h1v1h-1zM9 25h1v1h-1zM11 25h1v1h-1zM13 25h1v1h-1zM16 25h1v1h-1zM18 25h3v1h-3zM22 25h4v1h-4zM27 25h2v1h-2zM30 25h1v1h-1zM35 25h3v1h-3zM39 25h1v1h-1zM42 25h1v1h-1zM44 25h1v1h-1zM6 26h2v1h-2zM10 26h3v1h-3zM15 26h3v1h-3zM19 26h4v1h-4zM25 26h3v1h-3zM29 26h1v1h-1zM33 26h3v1h-3zM37 26h1v1h-1zM39 26h1v1h-1zM41 26h3v1h-3zM0 27h1v1h-1zM3 27h2v1h-2zM8 27h5v1h-5zM20 27h2v1h-2zM23 27h2v1h-2zM27 27h1v1h-1zM30 27h3v1h-3zM34 27h2v1h-2zM38 27h2v1h-2zM42 27h3v1h-3zM1 28h1v1h-1zM3 28h2v1h-2zM6 28h4v1h-4zM13 28h2v1h-2zM17 28h2v1h-2zM21 28h3v1h-3zM25 28h1v1h-1zM27 28h3v1h-3zM31 28h1v1h-1zM34 28h1v1h-1zM36 28h2v1h-2zM40 28h2v1h-2zM1 29h1v1h-1zM4 29h1v1h-1zM7 29h6v1h-6zM14 29h1v1h-1zM17 29h1v1h-1zM20 29h1v1h-1zM23 29h6v1h-6zM30 29h2v1h-2zM36 29h1v1h-1zM38 29h1v1h-1zM41 29h4v1h-4zM0 30h3v1h-3zM4 30h3v1h-3zM8 30h2v1h-2zM13 30h2v1h-2zM17 30h1v1h-1zM21 30h4v1h-4zM29 30h2v1h-2zM32 30h1v1h-1zM34 30h4v1h-4zM39 30h1v1h-1zM41 30h2v1h-2zM1 31h1v1h-1zM5 31h1v1h-1zM7 31h2v1h-2zM11 31h2v1h-2zM14 31h1v1h-1zM17 31h3v1h-3zM23 31h1v1h-1zM25 31h2v1h-2zM28 31h2v1h-2zM32 31h1v1h-1zM35 31h1v1h-1zM37 31h2v1h-2zM41 31h3v1h-3zM3 32h1v1h-1zM6 32h4v1h-4zM11 32h2v1h-2zM14 32h4v1h-4zM21 32h1v1h-1zM25 32h2v1h-2zM28 32h1v1h-1zM31 32h1v1h-1zM33 32h1v1h-1zM36 32h5v1h-5zM43 32h2v1h-2zM0 33h2v1h-2zM3 33h1v1h-1zM9 33h1v1h-1zM11 33h3v1h-3zM17 33h1v1h-1zM19 33h7v1h-7zM27 33h4v1h-4zM32 33h2v1h-2zM35 33h2v1h-2zM38 33h1v1h-1zM41 33h2v1h-2zM44 33h1v1h-1zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM12 34h4v1h-4zM18 34h2v1h-2zM25 34h2v1h-2zM29 34h6v1h-6zM36 34h2v1h-2zM40 34h1v1h-1zM42 34h2v1h-2zM1 35h4v1h-4zM7 35h1v1h-1zM10 35h5v1h-5zM17 35h1v1h-1zM20 35h4v1h-4zM25 35h2v1h-2zM29 35h1v1h-1zM32 35h2v1h-2zM35 35h2v1h-2zM38 35h2v1h-2zM41 35h2v1h-2zM0 36h1v1h-1zM3 36h2v1h-2zM6 36h1v1h-1zM8 36h2v1h-2zM15 36h1v1h-1zM17 36h2v1h-2zM20 36h6v1h-6zM27 36h5v1h-5zM36 36h6v1h-6zM43 36h1v1h-1zM8 37h1v1h-1zM10 37h2v1h-2zM13 37h5v1h-5zM20 37h1v1h-1zM24 37h1v1h-1zM26 37h1v1h-1zM28 37h3v1h-3zM32 37h1v1h-1zM35 37h2v1h-2zM40 37h3v1h-3zM44 37h1v1h-1zM0 38h7v1h-7zM11 38h1v1h-1zM13 38h1v1h-1zM15 38h1v1h-1zM17 38h4v1h-4zM22 38h1v1h-1zM24 38h1v1h-1zM29 38h1v1h-1zM31 38h6v1h-6zM38 38h1v1h-1zM40 38h4v1h-4zM0 39h1v1h-1zM6 39h1v1h-1zM13 39h4v1h-4zM18 39h1v1h-1zM20 39h1v1h-1zM24 39h1v1h-1zM26 39h1v1h-1zM28 39h1v1h-1zM30 39h1v1h-1zM32 39h1v1h-1zM35 39h2v1h-2zM40 39h1v1h-1zM42 39h3v1h-3zM0 40h1v1h-1zM2 40h3v1h-3zM6 40h1v1h-1zM8 40h3v1h-3zM12 40h2v1h-2zM16 40h1v1h-1zM18 40h1v1h-1zM20 40h5v1h-5zM28 40h2v1h-2zM31 40h1v1h-1zM33 40h1v1h-1zM35 40h7v1h-7zM43 40h2v1h-2zM0 41h1v1h-1zM2 41h3v1h-3zM6 41h1v1h-1zM8 41h1v1h-1zM12 41h1v1h-1zM15 41h1v1h-1zM17 41h2v1h-2zM20 41h3v1h-3zM25 41h3v1h-3zM31 41h2v1h-2zM35 41h1v1h-1zM39 41h2v1h-2zM42 41h3v1h-3zM0 42h1v1h-1zM2 42h3v1h-3zM6 42h1v1h-1zM8 42h1v1h-1zM10 42h1v1h-1zM13 42h4v1h-4zM19 42h1v1h-1zM21 42h4v1h-4zM26 42h1v1h-1zM30 42h1v1h-1zM33 42h2v1h-2zM36 42h4v1h-4zM0 43h1v1h-1zM6 43h1v1h-1zM9 43h1v1h-1zM12 43h1v1h-1zM14 43h1v1h-1zM16 43h1v1h-1zM18 43h3v1h-3zM22 43h2v1h-2zM25 43h1v1h-1zM28 43h2v1h-2zM34 43h3v1h-3zM42 43h1v1h-1zM0 44h7v1h-7zM10 44h2v1h-2zM14 44h1v1h-1zM18 44h3v1h-3zM22 44h1v1h-1zM25 44h2v1h-2zM28 44h1v1h-1zM33 44h1v1h-1zM36 44h3v1h-3zM43 44h1v1h-1z"/>
+    </svg>
+    <p class="url" id="url">https://simon05091004.github.io/banfu-115/fracdiv-check.html</p>
+  </div>
+
+  <div class="actions">
+    <a class="btn" id="open" href="https://simon05091004.github.io/banfu-115/fracdiv-check.html">開啟檢核頁</a>
+    <button class="btn ghost" id="copy" type="button">複製連結</button>
+  </div>
+
+  <ol class="steps"><li><div><b>登入</b><span>帳號密碼向承辦老師索取，學生看不到成績</span></div></li><li><div><b>切換班級</b><span>各班分別顯示已完成人數與尚未作答座號</span></div></li><li><div><b>看作答明細</b><span>點學生那一列，展開每題錯幾次、花幾秒、得幾分</span></div></li><li><div><b>匯出存查</b><span>本班或全部班級 PDF，A4 直式含答錯題號</span></div></li></ol>
+
+  <section class="when">
+    <div class="row"><span class="k">適用班級</span><em>601、602、603、604、605、606、607、608、609、610、611</em></div>
+    <div class="row"><span class="k">規模</span>共 11 班、274 人</div>
+    <div class="row"><span class="k">活動長度</span><em>約 25 分鐘</em></div>
+    <p class="note">學生只填班級與座號，不填姓名。<br>
+      成績讀取需登入，未登入者連網址都讀不到資料。</p>
+  </section>
+
+  <footer>資料與學生作答即時同步</footer>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var URL_ = document.getElementById("url").textContent.trim();
+  var t = document.getElementById("toast");
+  function toast(m){ t.textContent = m; t.classList.add("show"); clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ t.classList.remove("show"); }, 2400); }
+  document.getElementById("copy").addEventListener("click", async function(){
+    try{
+      if(navigator.share){ await navigator.share({title:document.title, url:URL_}); return; }
+      await navigator.clipboard.writeText(URL_);
+      toast("連結已複製");
+    }catch(e){
+      if(e && e.name === "AbortError") return;
+      try{ await navigator.clipboard.writeText(URL_); toast("連結已複製"); }
+      catch(e2){ toast("請長按上方網址手動複製"); }
+    }
+  });
+})();
+</script>
+</body>
+</html>
