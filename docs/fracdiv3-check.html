@@ -711,6 +711,10 @@ async function buildPdf(canvases){
 /* ================= 紙本練習題（補考用） ================= */
 /* 沿用同一套 canvas → 點陣 → PDF，中文不必嵌字型，學校任何一台印表機都印得出來 */
 
+/* 標題去掉結尾的「…紀錄」：闖關紀錄／檢核卷紀錄／綜合卷紀錄都適用，
+   新單元換名字時不必再回來改這裡 */
+function paperTitle(){ return TITLE.replace(/\s*\S*紀錄$/, ''); }
+
 function paperQuestions(){
   if(PAPER_QS && PAPER_QS.length) return PAPER_QS.slice();
   /* 沒填設定就從已交的資料推導，取題數最多的那一份當範本 */
@@ -815,7 +819,7 @@ function drawPracticeB4(cols, cls, page, pages, scale){
   if(page===1){
     txt(SCHOOL, PAD, PAD, '500 10px '+FS, PC.dim);
     txt('紙本練習題', W-PAD, PAD, '700 11px '+FS, PC.red, 'right');
-    txt(TITLE.replace(' 檢核卷紀錄',''), PAD, PAD+26, '700 19px '+FS, PC.ink);
+    txt(paperTitle(), PAD, PAD+26, '700 19px '+FS, PC.ink);
     line(PAD, PAD+44, W-PAD, PAD+44, PC.line, 1.2);
     var fy=PAD+64;
     txt('班級', PAD, fy, '400 10px '+FS, PC.dim);
@@ -833,7 +837,7 @@ function drawPracticeB4(cols, cls, page, pages, scale){
         PAD, fy+28, '400 9.5px '+FS, PC.faint);
     top=PAD+112;
   }else{
-    txt(TITLE.replace(' 檢核卷紀錄','')+'　紙本練習題', PAD, PAD+6, '700 12px '+FS, PC.dim);
+    txt(paperTitle()+'　紙本練習題', PAD, PAD+6, '700 12px '+FS, PC.dim);
     txt('班級 __________　座號 ______　姓名 ____________', W-PAD, PAD+6, '400 10px '+FS, PC.dim, 'right');
     line(PAD, PAD+20, W-PAD, PAD+20, PC.line, 1);
     top=PAD+44;
@@ -875,7 +879,7 @@ function drawAnswerKey(qs, scale){
 
   txt(SCHOOL, PAD, PAD, '500 10px '+FS, PC.dim);
   txt('教師用 · 請勿發給學生', W-PAD, PAD, '700 11px '+FS, PC.red, 'right');
-  txt(TITLE.replace(' 闖關紀錄','')+'　答案', PAD, PAD+24, '700 17px '+FS, PC.ink);
+  txt(paperTitle()+'　答案', PAD, PAD+24, '700 17px '+FS, PC.ink);
   line(PAD, PAD+40, W-PAD, PAD+40, PC.line, 1.2);
 
   var y=PAD+62, RH=Math.min(28, (H-PAD-70-(PAD+62))/Math.max(1,qs.length)+6);
@@ -914,7 +918,7 @@ async function exportPaper(btn){
       cvs.push(drawPracticeB4(pgs[p], CUR, p+1, pgs.length, 2.2));   /* B4 */
     }
     cvs.push(drawAnswerKey(qs, 2.4));                                 /* 解答另外 A4 一張 */
-    download(TITLE.replace(' 闖關紀錄','')+'_紙本練習題.pdf', await buildPdf(cvs));
+    download(paperTitle()+'_紙本練習題.pdf', await buildPdf(cvs));
   }catch(e){ toast('PDF 產生失敗：'+(e && e.message || e)); }
   btn.disabled=false; btn.textContent=old;
 }
