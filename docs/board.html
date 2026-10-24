@@ -1,0 +1,681 @@
+<meta charset="utf-8">
+<title>教室常亮看板</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: 一頁滿版 — 上方狀態軌、中間模式舞台、下方四個分頁鍵；只有設定面板會捲動。 */
+:root{
+  --bg:#e8eaec; --surface:#f7f8f9; --raised:#ffffff;
+  --fg:#191d22; --muted:#5a626c; --line:#ccd1d6;
+  --accent:#8a5512; --ok:#126055; --urgent:#a32d26; --wash:#f2dbd8;
+  --mono:'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  --sans:system-ui, -apple-system, 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14161a; --surface:#1c2027; --raised:#262b33;
+  --fg:#f2f0ea; --muted:#99a2ad; --line:#2f353e;
+  --accent:#e0a24a; --ok:#49b9a6; --urgent:#ef6f5d; --wash:#3a1f1c;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#14161a; --surface:#1c2027; --raised:#262b33;
+  --fg:#f2f0ea; --muted:#99a2ad; --line:#2f353e;
+  --accent:#e0a24a; --ok:#49b9a6; --urgent:#ef6f5d; --wash:#3a1f1c;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{height:100%}
+body{
+  height:100%; margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--sans); font-size:14px; line-height:1.4;
+  display:flex; flex-direction:column; overflow:hidden;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  -webkit-tap-highlight-color:transparent;
+}
+button{font:inherit; color:inherit; cursor:pointer}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* 狀態軌 */
+.rail{
+  display:flex; align-items:center; gap:10px; flex:none;
+  padding-block:8px; border-bottom:1px solid var(--line);
+}
+.rail-date{font-size:12px; color:var(--muted); letter-spacing:.04em; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis}
+.rail-now{
+  margin-left:auto; display:flex; align-items:center; gap:6px; flex:none;
+  font-size:12px; font-weight:600; letter-spacing:.06em;
+}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--muted); flex:none}
+.dot.in{background:var(--ok)} .dot.brk{background:var(--accent)} .dot.urg{background:var(--urgent)}
+.gear{
+  flex:none; width:34px; height:34px; padding:0; background:none;
+  border:1px solid var(--line); border-radius:4px; font-size:15px; color:var(--muted);
+}
+
+/* 舞台 */
+.stage{flex:1; min-height:0; position:relative; display:flex; overflow:hidden}
+.stage.ringing{animation:wash .7s steps(1) 8}
+@keyframes wash{50%{background:var(--wash)}}
+.view{
+  flex:1; min-height:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:10px;
+  padding-block:8px; overflow-y:auto;
+}
+.eyebrow{
+  flex:none; font-size:12px; font-weight:600; color:var(--muted);
+  letter-spacing:.16em; text-align:center;
+}
+.eyebrow.hot{color:var(--urgent)}
+.eyebrow.go{color:var(--ok)}
+.big{
+  flex:none; font-family:var(--mono); font-weight:500;
+  font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1;
+  font-size:clamp(3rem, 20vmin, 11rem); line-height:.95; letter-spacing:-.02em;
+  display:flex; align-items:baseline; gap:.1em; white-space:nowrap;
+}
+.big.hot{color:var(--urgent)}
+.big .secs{font-size:.33em; color:var(--muted); letter-spacing:0}
+.big.is-name{font-family:var(--sans); font-weight:600; font-size:clamp(2.2rem, 13vmin, 7rem); letter-spacing:.02em}
+.sub{flex:none; font-size:13px; color:var(--muted); text-align:center}
+
+/* 進度條 */
+.bar{
+  flex:none; width:100%; max-width:560px; height:10px;
+  background:var(--line); border-radius:2px; overflow:hidden;
+}
+.bar i{
+  display:block; height:100%; width:100%; background:var(--ok);
+  transform-origin:left center; transform:scaleX(1);
+  transition:transform .3s linear;
+}
+.bar i.hot{background:var(--urgent)}
+.bar i.idle{background:var(--muted)}
+
+/* 時鐘頁的節次條 */
+.strip{flex:none; width:100%; max-width:560px; display:flex; flex-direction:column; gap:6px}
+.strip-head{display:flex; align-items:baseline; gap:8px; font-size:13px}
+.strip-head b{font-weight:600}
+.strip-head span{margin-left:auto; color:var(--muted); font-family:var(--mono); font-variant-numeric:tabular-nums}
+
+/* 控制列 */
+.chips{flex:none; display:flex; flex-wrap:wrap; gap:6px; justify-content:center}
+.chip{
+  padding:7px 11px; font-size:12px; font-family:var(--mono);
+  background:var(--surface); border:1px solid var(--line); border-radius:4px;
+}
+.chip.on{border-color:var(--accent); color:var(--accent); font-weight:600}
+.row{flex:none; display:flex; flex-wrap:wrap; gap:6px; justify-content:center}
+.btn{
+  min-height:44px; padding:10px 16px; font-size:13px;
+  background:var(--surface); border:1px solid var(--line); border-radius:4px;
+}
+.btn.primary{background:var(--accent); color:var(--bg); border-color:transparent; font-weight:600; min-width:108px}
+.btn.wide{min-width:92px}
+
+/* 已抽名單 */
+.drawn{
+  flex:none; width:100%; max-width:560px; max-height:4.6em; overflow-y:auto;
+  display:flex; flex-wrap:wrap; gap:4px; justify-content:center;
+}
+.drawn span{
+  font-family:var(--mono); font-size:11px; padding:2px 6px;
+  color:var(--muted); border:1px solid var(--line); border-radius:3px;
+}
+
+/* 分頁鍵 */
+.tabs{flex:none; display:grid; grid-template-columns:repeat(4,1fr); gap:6px; padding-block:8px; border-top:1px solid var(--line)}
+.tab{
+  min-height:46px; padding:6px 2px; font-size:13px; color:var(--muted);
+  background:none; border:0; border-top:3px solid transparent; border-radius:0;
+}
+.tab[aria-pressed="true"]{color:var(--accent); font-weight:600; border-top-color:var(--accent); background:var(--surface)}
+
+/* 設定面板 */
+.sheet{
+  position:fixed; inset:0; z-index:20; background:var(--bg);
+  display:flex; flex-direction:column;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-top:env(safe-area-inset-top, 0px);
+  padding-bottom:env(safe-area-inset-bottom, 0px);
+}
+.sheet-head{
+  flex:none; display:flex; align-items:center; gap:10px;
+  padding-block:10px; border-bottom:1px solid var(--line);
+}
+.sheet-head strong{font-size:15px; letter-spacing:.1em}
+.sheet-head .btn{margin-left:auto; min-height:38px; padding:8px 14px}
+.sheet-body{flex:1; min-height:0; overflow-y:auto; padding-block:14px; display:flex; flex-direction:column; gap:18px}
+fieldset{border:0; margin:0; padding:0; display:flex; flex-direction:column; gap:7px}
+legend{padding:0; font-size:12px; font-weight:600; color:var(--accent); letter-spacing:.14em}
+.hint{font-size:12px; color:var(--muted)}
+label.opt{display:flex; align-items:center; gap:8px; font-size:13px; min-height:34px}
+input[type="number"], textarea, select{
+  font:inherit; font-size:13px; width:100%; padding:9px 10px;
+  background:var(--surface); color:var(--fg);
+  border:1px solid var(--line); border-radius:4px;
+}
+textarea{font-family:var(--mono); line-height:1.65; resize:vertical}
+input[type="number"]{max-width:130px; font-family:var(--mono)}
+.note{
+  font-size:12px; color:var(--muted); line-height:1.7; margin:0;
+  padding:12px; background:var(--surface); border-left:3px solid var(--accent); border-radius:0 4px 4px 0;
+}
+.note b{color:var(--fg)}
+
+@media (prefers-reduced-motion: reduce){
+  .bar i{transition:none}
+  .stage.ringing{animation:none; background:var(--wash)}
+}
+</style>
+
+<header class="rail">
+  <div class="rail-date" id="rail-date">—</div>
+  <div class="rail-now"><i class="dot" id="rail-dot"></i><span id="rail-label">—</span></div>
+  <button class="gear" id="gear" aria-label="設定">⚙</button>
+</header>
+
+<div class="stage" id="stage">
+  <section class="view" id="v-clock">
+    <div class="big" id="clock-hm">--:--<span class="secs" id="clock-s">--</span></div>
+    <div class="strip">
+      <div class="strip-head"><b id="strip-name">—</b><span id="strip-left">—</span></div>
+      <div class="bar"><i id="strip-bar"></i></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-bell" hidden>
+    <div class="eyebrow" id="bell-eyebrow">下課倒數</div>
+    <div class="big" id="bell-time">--:--</div>
+    <div class="bar"><i id="bell-bar"></i></div>
+    <div class="sub" id="bell-foot">—</div>
+  </section>
+
+  <section class="view" id="v-timer" hidden>
+    <div class="eyebrow" id="timer-eyebrow">分組計時</div>
+    <div class="big" id="timer-time">05:00</div>
+    <div class="bar"><i id="timer-bar"></i></div>
+    <div class="chips" id="timer-presets">
+      <button class="chip" data-min="1">1 分</button>
+      <button class="chip" data-min="3">3 分</button>
+      <button class="chip" data-min="5">5 分</button>
+      <button class="chip" data-min="10">10 分</button>
+      <button class="chip" data-min="15">15 分</button>
+    </div>
+    <div class="row">
+      <button class="btn" id="timer-minus">−1 分</button>
+      <button class="btn primary" id="timer-toggle">開始</button>
+      <button class="btn" id="timer-plus">+1 分</button>
+      <button class="btn" id="timer-reset">重設</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-draw" hidden>
+    <div class="eyebrow" id="draw-count">已抽 0 / 30</div>
+    <div class="big" id="draw-result">—</div>
+    <div class="row">
+      <button class="btn primary" id="draw-go">抽一位</button>
+      <button class="btn wide" id="draw-reset">重設</button>
+    </div>
+    <div class="drawn" id="draw-list"></div>
+  </section>
+</div>
+
+<nav class="tabs">
+  <button class="tab" data-view="clock" aria-pressed="true">時鐘</button>
+  <button class="tab" data-view="bell" aria-pressed="false">下課</button>
+  <button class="tab" data-view="timer" aria-pressed="false">計時</button>
+  <button class="tab" data-view="draw" aria-pressed="false">抽籤</button>
+</nav>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-head"><strong>設定</strong><button class="btn" id="sheet-close">完成</button></div>
+  <div class="sheet-body">
+    <fieldset>
+      <legend>抽籤範圍</legend>
+      <label class="hint" for="set-count">班級人數（抽座號用）</label>
+      <input type="number" id="set-count" min="1" max="99" step="1">
+      <label class="hint" for="set-names">改抽姓名就貼名單，一行一個；留空則抽座號</label>
+      <textarea id="set-names" rows="4" placeholder="王小明&#10;李小華"></textarea>
+    </fieldset>
+
+    <fieldset>
+      <legend>節次表</legend>
+      <p class="hint">一行一個時段：名稱　開始　結束。改成你們學校的作息即可。</p>
+      <textarea id="set-schedule" rows="11" spellcheck="false"></textarea>
+    </fieldset>
+
+    <fieldset>
+      <legend>顯示</legend>
+      <label class="opt" for="set-theme">配色
+        <select id="set-theme">
+          <option value="dark">深色</option>
+          <option value="light">淺色</option>
+          <option value="auto">跟隨系統</option>
+        </select>
+      </label>
+      <label class="opt"><input type="checkbox" id="set-sound"> 時間到／下課時發出提示音</label>
+      <label class="opt"><input type="checkbox" id="set-awake"> 嘗試讓螢幕不要自動關閉</label>
+    </fieldset>
+
+    <p class="note">
+      <b>M8 要長亮，光靠網頁不夠。</b>到「設定 → 關於手機 → 連點版本號 7 次」開啟開發者選項，
+      再進「開發者選項 → 充電時不進入休眠」打勾，然後把亮度調到最低、插上電就行。<br>
+      看板按「選單 → 加到主畫面」可以全螢幕開啟，少掉網址列那一條。
+    </p>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const pad = n => (n < 10 ? '0' : '') + n;
+const WEEK = ['日','一','二','三','四','五','六'];
+
+const DEFAULT_SCHEDULE = [
+  '早自習 07:50 08:20',
+  '導師時間 08:20 08:40',
+  '第1節 08:40 09:20',
+  '第2節 09:30 10:10',
+  '第3節 10:30 11:10',
+  '第4節 11:20 12:00',
+  '午餐 12:00 12:40',
+  '午休 12:40 13:30',
+  '第5節 13:40 14:20',
+  '第6節 14:30 15:10',
+  '第7節 15:20 16:00'
+].join('\n');
+
+const DEFAULTS = {
+  count: 30, names: '', schedule: DEFAULT_SCHEDULE,
+  theme: 'dark', sound: true, awake: true,
+  timerMin: 5, drawn: [], drawnDate: ''
+};
+const KEY = 'classroom-board.v1';
+
+let cfg = Object.assign({}, DEFAULTS);
+try {
+  const raw = localStorage.getItem(KEY);
+  if (raw) cfg = Object.assign(cfg, JSON.parse(raw) || {});
+} catch (e) {}
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(cfg)); } catch (e) {}
+}
+
+/* ---------- 節次表 ---------- */
+let schedule = [];
+function parseSchedule(text) {
+  const out = [];
+  String(text || '').split(/\r?\n/).forEach(line => {
+    const t = line.replace(/　/g, ' ').trim();
+    if (!t) return;
+    const times = t.match(/\d{1,2}[:：]\d{2}/g);
+    if (!times || times.length < 2) return;
+    const toSec = s => {
+      const p = s.replace('：', ':').split(':');
+      return (+p[0]) * 3600 + (+p[1]) * 60;
+    };
+    const start = toSec(times[0]), end = toSec(times[1]);
+    if (end <= start) return;
+    const name = t.slice(0, t.indexOf(times[0])).replace(/[\s,，、]+$/, '').trim() || '節次';
+    out.push({ name, start, end, label: times[0].replace('：', ':'), endLabel: times[1].replace('：', ':') });
+  });
+  out.sort((a, b) => a.start - b.start);
+  return out;
+}
+
+function periodState(nowSec) {
+  for (const r of schedule) {
+    if (nowSec >= r.start && nowSec < r.end) {
+      return { phase: 'in', row: r, left: r.end - nowSec, span: r.end - r.start };
+    }
+  }
+  const next = schedule.find(r => r.start > nowSec);
+  if (next) {
+    const prev = schedule.filter(r => r.end <= nowSec).pop();
+    const from = prev ? prev.end : next.start - 600;
+    return { phase: prev ? 'break' : 'before', row: next, left: next.start - nowSec, span: Math.max(60, next.start - from) };
+  }
+  return { phase: 'after' };
+}
+
+/* ---------- 畫面更新（只在文字變了才寫 DOM） ---------- */
+const memo = {};
+function paint(id, text) {
+  if (memo[id] === text) return;
+  memo[id] = text;
+  $(id).textContent = text;
+}
+function cls(id, name, on) {
+  const k = id + '.' + name;
+  if (memo[k] === on) return;
+  memo[k] = on;
+  $(id).classList.toggle(name, on);
+}
+function bar(id, ratio) {
+  const v = Math.max(0, Math.min(1, ratio));
+  const k = id + '.scale';
+  const rounded = Math.round(v * 1000) / 1000;
+  if (memo[k] === rounded) return;
+  memo[k] = rounded;
+  $(id).style.transform = 'scaleX(' + rounded + ')';
+}
+function clock(sec) {
+  const s = Math.max(0, Math.round(sec));
+  const h = Math.floor(s / 3600);
+  const body = pad(Math.floor(s % 3600 / 60)) + ':' + pad(s % 60);
+  return h > 0 ? h + ':' + body : body;
+}
+
+/* ---------- 提示音 ---------- */
+let actx = null;
+function unlockAudio() {
+  try {
+    if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+  } catch (e) { actx = null; }
+}
+function beep(times) {
+  if (!cfg.sound || !actx) return;
+  for (let i = 0; i < times; i++) {
+    const t = actx.currentTime + i * 0.42;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = 'sine';
+    o.frequency.value = 880;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.25, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.34);
+    o.connect(g); g.connect(actx.destination);
+    o.start(t); o.stop(t + 0.4);
+  }
+}
+let washTimer = 0;
+function flash() {
+  $('stage').classList.add('ringing');
+  clearTimeout(washTimer);
+  washTimer = setTimeout(() => $('stage').classList.remove('ringing'), 6000);
+}
+
+/* ---------- 計時器 ---------- */
+const timer = { total: 300, left: 300, running: false, endAt: 0, done: false };
+function setTimer(sec) {
+  timer.total = Math.max(30, Math.min(99 * 60, sec));
+  timer.left = timer.total;
+  timer.running = false;
+  timer.done = false;
+  markPresets();
+}
+function markPresets() {
+  const m = Math.round(timer.total / 60);
+  [].forEach.call($('timer-presets').children, b => {
+    b.classList.toggle('on', +b.dataset.min === m && !timer.running);
+  });
+}
+function renderTimer() {
+  if (timer.running) {
+    const left = Math.max(0, Math.round((timer.endAt - Date.now()) / 1000));
+    if (left !== timer.left) timer.left = left;
+    if (left === 0) {
+      timer.running = false;
+      timer.done = true;
+      beep(3); flash(); markPresets();
+    }
+  }
+  paint('timer-time', clock(timer.left));
+  paint('timer-eyebrow', timer.done ? '時間到' : (timer.running ? '計時中' : '分組計時'));
+  paint('timer-toggle', timer.running ? '暫停' : (timer.left < timer.total && !timer.done ? '繼續' : '開始'));
+  cls('timer-eyebrow', 'hot', timer.done);
+  cls('timer-eyebrow', 'go', timer.running && !timer.done);
+  cls('timer-time', 'hot', timer.done || (timer.running && timer.left <= 10));
+  cls('timer-bar', 'hot', timer.done || (timer.running && timer.left <= 10));
+  cls('timer-bar', 'idle', !timer.running && !timer.done);
+  bar('timer-bar', timer.total ? timer.left / timer.total : 0);
+}
+
+/* ---------- 抽籤 ---------- */
+function roster() {
+  const names = String(cfg.names || '').split(/[\n,，、]/).map(s => s.trim()).filter(Boolean);
+  if (names.length) return names;
+  const n = Math.max(1, Math.min(99, +cfg.count || 30));
+  return Array.from({ length: n }, (_, i) => String(i + 1));
+}
+function today() {
+  const d = new Date();
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+}
+function renderDraw() {
+  const pool = roster();
+  const drawn = cfg.drawn.filter(v => pool.indexOf(v) >= 0);
+  paint('draw-count', '已抽 ' + drawn.length + ' / ' + pool.length);
+  $('draw-list').textContent = '';
+  drawn.forEach(v => {
+    const el = document.createElement('span');
+    el.textContent = v;
+    $('draw-list').appendChild(el);
+  });
+  $('draw-go').disabled = drawn.length >= pool.length;
+  $('draw-go').textContent = drawn.length >= pool.length ? '全班抽完' : '抽一位';
+}
+function showResult(v) {
+  const el = $('draw-result');
+  el.textContent = v;
+  el.classList.toggle('is-name', !/^\d+$/.test(v));
+  memo['draw-result'] = v;
+}
+let rolling = 0;
+function drawOne() {
+  if (cfg.drawnDate !== today()) { cfg.drawn = []; cfg.drawnDate = today(); }
+  const pool = roster();
+  const left = pool.filter(v => cfg.drawn.indexOf(v) < 0);
+  if (!left.length) return;
+  const pick = left[Math.floor(Math.random() * left.length)];
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  clearInterval(rolling);
+  if (reduce || left.length === 1) {
+    settle(pick, pool);
+    return;
+  }
+  let n = 0;
+  rolling = setInterval(() => {
+    showResult(left[Math.floor(Math.random() * left.length)]);
+    if (++n >= 9) { clearInterval(rolling); settle(pick, pool); }
+  }, 65);
+}
+function settle(pick, pool) {
+  showResult(pick);
+  cfg.drawn.push(pick);
+  cfg.drawnDate = today();
+  save();
+  renderDraw();
+  beep(1);
+}
+
+/* ---------- 每秒更新 ---------- */
+let lastIn = null, firstTick = true;
+function tick() {
+  const now = new Date();
+  const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+
+  paint('rail-date', '民國' + (now.getFullYear() - 1911) + '年 ' + (now.getMonth() + 1) + '月' + now.getDate() + '日 星期' + WEEK[now.getDay()]);
+  const hm = pad(now.getHours()) + ':' + pad(now.getMinutes());
+  if (memo.hm !== hm) { memo.hm = hm; $('clock-hm').firstChild.nodeValue = hm; }
+  paint('clock-s', pad(now.getSeconds()));
+
+  const st = periodState(nowSec);
+  const hot = st.phase === 'in' && st.left <= 180;
+
+  if (st.phase === 'in') {
+    paint('rail-label', st.row.name);
+    paint('strip-name', st.row.name + '　' + st.row.label + '–' + st.row.endLabel);
+    paint('strip-left', '還有 ' + Math.ceil(st.left / 60) + ' 分');
+    bar('strip-bar', st.left / st.span);
+    paint('bell-eyebrow', st.row.name + ' · 下課倒數');
+    paint('bell-time', clock(st.left));
+    paint('bell-foot', st.row.endLabel + ' 下課');
+    bar('bell-bar', st.left / st.span);
+  } else if (st.phase === 'break' || st.phase === 'before') {
+    const label = st.phase === 'before' ? '還沒上課' : '下課中';
+    paint('rail-label', label);
+    paint('strip-name', label + '　下一個 ' + st.row.name);
+    paint('strip-left', '還有 ' + Math.ceil(st.left / 60) + ' 分');
+    bar('strip-bar', 1 - st.left / st.span);
+    paint('bell-eyebrow', label + ' · ' + st.row.name + '倒數');
+    paint('bell-time', clock(st.left));
+    paint('bell-foot', st.row.label + ' ' + st.row.name);
+    bar('bell-bar', 1 - st.left / st.span);
+  } else {
+    paint('rail-label', '放學');
+    paint('strip-name', schedule.length ? '今天的課表結束了' : '還沒設定節次表');
+    paint('strip-left', '');
+    bar('strip-bar', 0);
+    paint('bell-eyebrow', '今天沒有節次了');
+    paint('bell-time', '--:--');
+    paint('bell-foot', schedule.length ? '明天見' : '到設定裡貼上你們學校的作息');
+    bar('bell-bar', 0);
+  }
+
+  cls('rail-dot', 'in', st.phase === 'in' && !hot);
+  cls('rail-dot', 'brk', st.phase === 'break' || st.phase === 'before');
+  cls('rail-dot', 'urg', hot);
+  cls('bell-time', 'hot', hot);
+  cls('bell-bar', 'hot', hot);
+  cls('bell-eyebrow', 'hot', hot);
+  cls('strip-bar', 'hot', hot);
+  cls('bell-bar', 'idle', st.phase === 'after');
+
+  const nowIn = st.phase === 'in' ? st.row.name : null;
+  if (!firstTick && lastIn && nowIn !== lastIn) { beep(2); flash(); }
+  lastIn = nowIn;
+  firstTick = false;
+
+  renderTimer();
+}
+
+/* ---------- 螢幕喚醒 ---------- */
+let wakeLock = null;
+function requestWake() {
+  if (!cfg.awake || !navigator.wakeLock) return;
+  navigator.wakeLock.request('screen').then(l => {
+    wakeLock = l;
+    l.addEventListener('release', () => { wakeLock = null; });
+  }).catch(() => {});
+}
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && !wakeLock) requestWake();
+});
+
+/* ---------- 模式切換 ---------- */
+const VIEWS = ['clock', 'bell', 'timer', 'draw'];
+function show(view) {
+  if (VIEWS.indexOf(view) < 0) view = 'clock';
+  VIEWS.forEach(v => { $('v-' + v).hidden = v !== view; });
+  [].forEach.call(document.querySelectorAll('.tab'), b => {
+    b.setAttribute('aria-pressed', String(b.dataset.view === view));
+  });
+  current = view;
+}
+let current = 'clock';
+document.querySelectorAll('.tab').forEach(b => {
+  b.addEventListener('click', () => { unlockAudio(); show(b.dataset.view); });
+});
+
+/* ---------- 計時器操作 ---------- */
+$('timer-toggle').addEventListener('click', () => {
+  unlockAudio();
+  if (timer.running) {
+    timer.left = Math.max(0, Math.round((timer.endAt - Date.now()) / 1000));
+    timer.running = false;
+  } else {
+    if (timer.done || timer.left <= 0) { timer.left = timer.total; timer.done = false; }
+    timer.endAt = Date.now() + timer.left * 1000;
+    timer.running = true;
+  }
+  markPresets();
+  renderTimer();
+});
+$('timer-reset').addEventListener('click', () => { setTimer(timer.total); renderTimer(); });
+$('timer-presets').addEventListener('click', e => {
+  const b = e.target.closest('.chip');
+  if (!b) return;
+  unlockAudio();
+  setTimer(+b.dataset.min * 60);
+  cfg.timerMin = +b.dataset.min;
+  save();
+  renderTimer();
+});
+function nudge(delta) {
+  timer.total = Math.max(60, Math.min(99 * 60, timer.total + delta));
+  timer.left = Math.max(0, Math.min(timer.total, timer.left + delta));
+  if (timer.running) timer.endAt = Date.now() + timer.left * 1000;
+  if (timer.left > 0) timer.done = false;
+  markPresets();
+  renderTimer();
+}
+$('timer-plus').addEventListener('click', () => nudge(60));
+$('timer-minus').addEventListener('click', () => nudge(-60));
+
+/* ---------- 抽籤操作 ---------- */
+$('draw-go').addEventListener('click', () => { unlockAudio(); drawOne(); });
+$('draw-reset').addEventListener('click', () => {
+  cfg.drawn = [];
+  cfg.drawnDate = today();
+  save();
+  showResult('—');
+  renderDraw();
+});
+
+/* ---------- 鍵盤（接鍵盤或滑鼠時好用） ---------- */
+document.addEventListener('keydown', e => {
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if (e.code === 'Space' && current === 'timer') { e.preventDefault(); $('timer-toggle').click(); }
+  if (e.code === 'Space' && current === 'draw') { e.preventDefault(); $('draw-go').click(); }
+});
+
+/* ---------- 設定面板 ---------- */
+function applyTheme() {
+  if (cfg.theme === 'auto') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', cfg.theme);
+}
+function openSheet() {
+  $('set-count').value = cfg.count;
+  $('set-names').value = cfg.names;
+  $('set-schedule').value = cfg.schedule;
+  $('set-theme').value = cfg.theme;
+  $('set-sound').checked = !!cfg.sound;
+  $('set-awake').checked = !!cfg.awake;
+  $('sheet').hidden = false;
+}
+function closeSheet() {
+  cfg.count = Math.max(1, Math.min(99, +$('set-count').value || 30));
+  cfg.names = $('set-names').value;
+  cfg.schedule = $('set-schedule').value;
+  cfg.theme = $('set-theme').value;
+  cfg.sound = $('set-sound').checked;
+  cfg.awake = $('set-awake').checked;
+  save();
+  applyTheme();
+  schedule = parseSchedule(cfg.schedule);
+  firstTick = true;
+  renderDraw();
+  if (cfg.awake) requestWake();
+  $('sheet').hidden = true;
+  tick();
+}
+$('gear').addEventListener('click', () => { unlockAudio(); openSheet(); });
+$('sheet-close').addEventListener('click', closeSheet);
+
+/* ---------- 啟動 ---------- */
+applyTheme();
+schedule = parseSchedule(cfg.schedule);
+if (cfg.drawnDate !== today()) { cfg.drawn = []; cfg.drawnDate = today(); }
+setTimer((+cfg.timerMin || 5) * 60);
+renderDraw();
+showResult('—');
+const hash = (location.hash || '').replace('#', '');
+show(VIEWS.indexOf(hash) >= 0 ? hash : 'clock');
+tick();
+setInterval(tick, 250);
+requestWake();
+</script>
