@@ -243,7 +243,7 @@ input[type="number"]{max-width:130px; font-family:var(--mono)}
 
     <fieldset>
       <legend>節次表</legend>
-      <p class="hint">一行一個時段：名稱　開始　結束。改成你們學校的作息即可。</p>
+      <p class="hint">一行一個時段：名稱　開始　結束。沒寫星期就是週一到週五；只在某幾天上的課，後面加星期，例如「第7節 15:20 16:00 一三五」。</p>
       <textarea id="set-schedule" rows="11" spellcheck="false"></textarea>
     </fieldset>
 
@@ -274,16 +274,15 @@ const pad = n => (n < 10 ? '0' : '') + n;
 const WEEK = ['日','一','二','三','四','五','六'];
 
 const DEFAULT_SCHEDULE = [
-  '早自習 07:50 08:20',
-  '導師時間 08:20 08:40',
+  '早自習 07:50 08:35',
   '第1節 08:40 09:20',
   '第2節 09:30 10:10',
-  '第3節 10:30 11:10',
-  '第4節 11:20 12:00',
-  '午餐 12:00 12:40',
-  '午休 12:40 13:30',
-  '第5節 13:40 14:20',
-  '第6節 14:30 15:10',
+  '第3節 10:25 11:05',
+  '第4節 11:15 11:55',
+  '午餐 11:55 12:30',
+  '午休 12:20 13:20',
+  '第5節 13:30 14:10',
+  '第6節 14:20 15:00',
   '第7節 15:20 16:00'
 ].join('\n');
 
@@ -292,7 +291,7 @@ const DEFAULTS = {
   theme: 'dark', sound: true, awake: true,
   timerMin: 5, drawn: [], drawnDate: ''
 };
-const KEY = 'classroom-board.v1';
+const KEY = 'classroom-board.v2';
 
 let cfg = Object.assign({}, DEFAULTS);
 try {
@@ -320,21 +319,29 @@ function parseSchedule(text) {
     const start = toSec(times[0]), end = toSec(times[1]);
     if (end <= start) return;
     const name = t.slice(0, t.indexOf(times[0])).replace(/[\s,，、]+$/, '').trim() || '節次';
-    out.push({ name, start, end, label: times[0].replace('：', ':'), endLabel: times[1].replace('：', ':') });
+    const after = t.indexOf(times[1], t.indexOf(times[0]) + times[0].length);
+    const marks = t.slice(after + times[1].length).match(/[一二三四五六日天]/g);
+    let days = [1, 2, 3, 4, 5];
+    if (marks) {
+      const picked = marks.map(c => '日一二三四五六'.indexOf(c === '天' ? '日' : c)).filter(d => d >= 0);
+      if (picked.length) days = picked;
+    }
+    out.push({ name, start, end, days, label: times[0].replace('：', ':'), endLabel: times[1].replace('：', ':') });
   });
   out.sort((a, b) => a.start - b.start);
   return out;
 }
 
-function periodState(nowSec) {
-  for (const r of schedule) {
-    if (nowSec >= r.start && nowSec < r.end) {
-      return { phase: 'in', row: r, left: r.end - nowSec, span: r.end - r.start };
-    }
+function periodState(nowSec, dow) {
+  const rows = schedule.filter(r => r.days.indexOf(dow) >= 0);
+  let cur = null;
+  for (const r of rows) {
+    if (nowSec >= r.start && nowSec < r.end && (!cur || r.start > cur.start)) cur = r;
   }
-  const next = schedule.find(r => r.start > nowSec);
+  if (cur) return { phase: 'in', row: cur, left: cur.end - nowSec, span: cur.end - cur.start };
+  const next = rows.find(r => r.start > nowSec);
   if (next) {
-    const prev = schedule.filter(r => r.end <= nowSec).pop();
+    const prev = rows.filter(r => r.end <= nowSec).pop();
     const from = prev ? prev.end : next.start - 600;
     return { phase: prev ? 'break' : 'before', row: next, left: next.start - nowSec, span: Math.max(60, next.start - from) };
   }
@@ -503,7 +510,7 @@ function tick() {
   if (memo.hm !== hm) { memo.hm = hm; $('clock-hm').firstChild.nodeValue = hm; }
   paint('clock-s', pad(now.getSeconds()));
 
-  const st = periodState(nowSec);
+  const st = periodState(nowSec, now.getDay());
   const hot = st.phase === 'in' && st.left <= 180;
 
   if (st.phase === 'in') {
