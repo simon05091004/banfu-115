@@ -243,7 +243,7 @@ input[type="number"]{max-width:130px; font-family:var(--mono)}
 
     <fieldset>
       <legend>節次表</legend>
-      <p class="hint">一行一個時段：名稱　開始　結束。沒寫星期就是週一到週五；只在某幾天上的課，後面加星期，例如「第7節 15:20 16:00 一三五」。</p>
+      <p class="hint">一行一個時段：名稱　開始　結束。沒寫星期就是週一到週五；只在某幾天上的課，後面加星期，例如「補救教學 15:20 16:00 二四」。</p>
       <textarea id="set-schedule" rows="11" spellcheck="false"></textarea>
     </fieldset>
 
@@ -281,9 +281,9 @@ const DEFAULT_SCHEDULE = [
   '第4節 11:15 11:55',
   '午餐 11:55 12:30',
   '午休 12:20 13:20',
-  '第5節 13:30 14:10',
-  '第6節 14:20 15:00',
-  '第7節 15:20 16:00'
+  '第5節 13:30 14:10 一二四五',
+  '第6節 14:20 15:00 一二四五',
+  '第7節 15:20 16:00 一二四五'
 ].join('\n');
 
 const DEFAULTS = {
