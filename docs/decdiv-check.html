@@ -759,8 +759,7 @@ function paperWrap(g, text, maxW, font){
   return out;
 }
 
-/* 拆成可排版區塊並算高度。選擇題（帶「（A）」選項）不必寫過程，只留一點空隙；
-   這份考卷全部是填空題，一律留 54pt 給約分或顛倒相乘的計算過程。 */
+/* 拆成可排版區塊並算高度。選擇題只留一點空隙，填空／計算題留 54pt 給計算過程。 */
 function paperBlocks(qs){
   var g=document.createElement('canvas').getContext('2d');
   var tw=PCOLW-40, out=[];
@@ -771,7 +770,10 @@ function paperBlocks(qs){
       var f=(pi===0?PSTEM_F:POPT_F)+FS;
       paperWrap(g,para,tw,f).forEach(function(ln){ lines.push({t:ln,f:f}); });
     });
-    var work = (String(q.q).indexOf('（A）')>=0) ? 10 : 54;
+    /* 選擇題不必寫計算過程，只留一點空隙。選項標記可能是（A）或①②③，兩種都要認，
+       漏認的話每題會白佔 44pt 的計算格，題數一多就會多擠出一面紙 */
+    var isChoice = /（[A-Ｄ]）|[①②③④⑤⑥]/.test(String(q.q));
+    var work = isChoice ? 10 : 54;
     out.push({type:'q', n:i+1, lines:lines, work:work,
               h:16 + lines.length*15 + work + 30});
   });
