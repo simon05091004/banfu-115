@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>國語語詞檢核卷</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#F4F8F2; --paper-2:#FFFFFF; --paper-3:#EAF1E8;
+  --grid:#D6E6D8; --line:#C4D6C7;
+  --ink:#1C2B30; --ink-soft:#56686D; --ink-faint:#8A9A9C;
+  --red:#CE3E2E; --red-bg:#FBE6E1;
+  --blue:#2A6B8C; --blue-bg:#DCEAF1;
+  --leaf:#3B8A58; --leaf-bg:#DFEFE3;
+  --gold:#D99A12;
+  --btn-shadow: 0 2px 0 var(--line);
+  --grid-size:28px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --paper:#1D2823; --paper-2:#25322C; --paper-3:#2C3A33;
+    --grid:#33443B; --line:#3C4E45;
+    --ink:#E8EFE5; --ink-soft:#A9BCB1; --ink-faint:#7C9086;
+    --red:#F1897A; --red-bg:#3C2A28;
+    --blue:#7CC2DD; --blue-bg:#233841;
+    --leaf:#7FD3A1; --leaf-bg:#22382C;
+    --gold:#EFC463;
+    --btn-shadow: 0 2px 0 rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --paper:#1D2823; --paper-2:#25322C; --paper-3:#2C3A33;
+  --grid:#33443B; --line:#3C4E45;
+  --ink:#E8EFE5; --ink-soft:#A9BCB1; --ink-faint:#7C9086;
+  --red:#F1897A; --red-bg:#3C2A28;
+  --blue:#7CC2DD; --blue-bg:#233841;
+  --leaf:#7FD3A1; --leaf-bg:#22382C;
+  --gold:#EFC463;
+  --btn-shadow: 0 2px 0 rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background-color:var(--paper); color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Heiti TC",sans-serif;
+  font-size:17px; line-height:1.75;
+  background-image:
+    repeating-linear-gradient(to right, var(--grid) 0 1px, transparent 1px var(--grid-size)),
+    repeating-linear-gradient(to bottom, var(--grid) 0 1px, transparent 1px var(--grid-size));
+  -webkit-text-size-adjust:100%;
+}
+button{font:inherit; color:inherit; touch-action:manipulation; -webkit-tap-highlight-color:transparent; -webkit-user-select:none; user-select:none}
+main.settling{pointer-events:none}
+:focus-visible{outline:3px solid var(--blue); outline-offset:2px}
+.num{font-family:"IBM Plex Mono","SF Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.app{max-width:760px; margin:0 auto; padding:0 16px 56px}
+
+.bar{display:flex; align-items:center; gap:12px; padding:14px 0 12px; border-bottom:1px solid var(--line); margin-bottom:8px}
+.brand{font-family:"Noto Serif TC",serif; font-weight:900; font-size:19px; letter-spacing:.04em; margin-right:auto}
+.brand span{color:var(--red)}
+.who{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:15px; color:var(--blue); background:var(--blue-bg); border:1.5px solid var(--blue); padding:2px 9px; border-radius:4px}
+.icon-btn{border:1px solid var(--line); background:var(--paper-2); border-radius:8px; min-width:44px; min-height:38px; cursor:pointer; font-size:15px; color:var(--ink-soft)}
+.icon-btn[aria-pressed="true"]{color:var(--blue); border-color:var(--blue); background:var(--blue-bg)}
+
+.sync{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-soft); margin-bottom:16px; min-height:20px}
+.dot{width:8px; height:8px; border-radius:50%; background:var(--ink-faint); flex:none}
+.dot.ok{background:var(--leaf)} .dot.warn{background:var(--gold)} .dot.err{background:var(--red)}
+
+.rail{display:flex; gap:6px; margin:0 0 24px; list-style:none; padding:0}
+.rail li{flex:1; font-size:11.5px; letter-spacing:.08em; color:var(--ink-faint); border-top:3px solid var(--line); padding-top:6px; text-align:center; transition:color .25s, border-color .25s}
+.rail li b{display:block; font-weight:500}
+.rail li.on{color:var(--red); border-top-color:var(--red)}
+.rail li.done{color:var(--ink-soft); border-top-color:var(--leaf)}
+
+h1{font-family:"Noto Serif TC",serif; font-weight:900; font-size:clamp(30px,7vw,42px); line-height:1.25; margin:0 0 6px; text-wrap:balance; letter-spacing:.02em}
+h2{font-family:"Noto Serif TC",serif; font-weight:700; font-size:clamp(21px,4.4vw,26px); margin:0 0 12px; text-wrap:balance}
+h3{font-size:16px; font-weight:700; margin:0 0 6px}
+p{margin:0 0 14px; max-width:60ch}
+.eyebrow{font-size:12px; letter-spacing:.22em; color:var(--ink-soft); margin:0 0 10px; font-weight:500}
+.lead{font-size:18px}
+.muted{color:var(--ink-soft)}
+.small{font-size:14.5px; line-height:1.7}
+
+.sheet{background:var(--paper-2); border:1px solid var(--line); padding:20px; margin:0 0 20px}
+.sheet.tint{background:var(--paper-3)}
+.story{background:var(--paper-2); border:1px solid var(--line); border-left:5px solid var(--red); padding:18px 20px; margin:0 0 22px}
+.story h3{color:var(--red); font-size:13px; letter-spacing:.12em; font-weight:700}
+
+.actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:20px}
+.btn{border:1.5px solid var(--ink); background:var(--ink); color:var(--paper-2); padding:13px 24px; font-weight:700; font-size:16.5px; cursor:pointer; border-radius:4px; min-height:50px; box-shadow:var(--btn-shadow); transition:transform .08s}
+.btn:active{transform:translateY(2px); box-shadow:none}
+.btn.ghost{background:transparent; color:var(--ink); border-color:var(--line)}
+.btn.red{background:var(--red); border-color:var(--red); color:#fff}
+.btn:disabled{opacity:.35; cursor:not-allowed}
+
+/* 班級與座號 */
+.pick-label{font-size:13px; letter-spacing:.1em; color:var(--ink-soft); margin:0 0 9px; font-weight:500}
+.classes{display:grid; grid-template-columns:repeat(auto-fit,minmax(84px,1fr)); gap:8px; margin-bottom:22px}
+.cls{min-height:56px; font-family:"IBM Plex Mono",monospace; font-size:21px; font-weight:700; cursor:pointer; border:2px solid var(--line); background:var(--paper-2); color:var(--ink); border-radius:6px; box-shadow:var(--btn-shadow)}
+.cls:active{transform:translateY(2px); box-shadow:none}
+.cls[aria-pressed="true"]{background:var(--red); border-color:var(--red); color:#fff}
+.seats{display:grid; grid-template-columns:repeat(8,1fr); gap:6px}
+.seat-hint{grid-column:1/-1; margin:0; font-size:14.5px; color:var(--ink-faint)}
+.seat{min-height:46px; font-family:"IBM Plex Mono",monospace; font-size:16px; font-weight:600; cursor:pointer; border:1.5px solid var(--line); background:var(--paper-2); color:var(--ink-soft); border-radius:5px; padding:0}
+.seat[aria-pressed="true"]{background:var(--blue); border-color:var(--blue); color:#fff; font-size:18px}
+
+.factor-line{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:12px}
+.factor-line .lbl{font-weight:700; min-width:8.5em; font-size:15px}
+.chips{display:flex; flex-wrap:wrap; gap:7px}
+.chip{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-weight:600; min-width:44px; text-align:center; padding:6px 10px; font-size:16px; border:1.5px solid var(--line); background:var(--paper-2); color:var(--ink-soft); border-radius:4px}
+.chip.common{border-color:var(--red); color:var(--red); background:var(--red-bg); transform:translateY(-2px)}
+.chip.best{border-width:3px; box-shadow:0 0 0 3px var(--red-bg)}
+
+.sd-wrap{display:flex; justify-content:center; padding:8px 0 4px}
+.sd{display:inline-block; min-width:min(300px,86vw)}
+.sd-row{display:grid; grid-template-columns:3.4ch 1fr; align-items:start}
+.sd-div{text-align:right; padding:6px 8px 0 0; font-size:clamp(20px,5vw,25px); font-weight:600; color:var(--red); font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.sd-nums{border-left:2.5px solid var(--red); border-top:2.5px solid var(--red); padding:6px 4px 4px; display:grid; grid-template-columns:1fr 1fr}
+.sd-nums span{text-align:center; font-size:clamp(20px,5vw,25px); font-weight:600; color:var(--ink); font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.sd-row.is-final .sd-nums{border:0; padding-top:8px}
+.sd-row.is-final .sd-nums span{color:var(--blue)}
+.sd-row.fresh{animation:drop .3s ease-out}
+@keyframes drop{from{opacity:0; transform:translateY(-8px)}to{opacity:1; transform:none}}
+.sd-note{display:inline-block; margin:10px 0 0; font-size:13.5px; font-weight:700; color:var(--red); border:1.5px solid var(--red); background:var(--red-bg); padding:3px 10px; transform:rotate(-1.5deg)}
+.sd-mult{margin-top:14px; font-size:clamp(17px,4vw,20px); font-weight:700; color:var(--leaf); text-align:center}
+.sd-mult .num{font-size:1.15em}
+
+.picker{margin-top:18px}
+.picker-label{font-size:13px; letter-spacing:.1em; color:var(--ink-soft); margin-bottom:8px; font-weight:500}
+.divisors{display:flex; flex-wrap:wrap; gap:9px}
+.dv{min-width:60px; min-height:56px; font-size:22px; font-weight:700; cursor:pointer; font-family:"IBM Plex Mono",monospace; border:2px solid var(--line); background:var(--paper-2); color:var(--ink); border-radius:6px; box-shadow:var(--btn-shadow); transition:transform .08s}
+.dv:active{transform:translateY(2px); box-shadow:none}
+.dv.bad{animation:shake .32s; border-color:var(--red); color:var(--red); background:var(--red-bg)}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.answer-box{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:16px 0 12px}
+.answer-box .q{font-weight:700}
+.entry{font-family:"IBM Plex Mono",monospace; font-size:28px; font-weight:700; letter-spacing:.06em; min-width:5ch; text-align:center; padding:6px 12px; color:var(--blue); border:2px solid var(--blue); background:var(--blue-bg); border-radius:6px}
+.pad{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; max-width:330px}
+.pad.dec .key.go{grid-column:1 / -1}
+.fb{font-family:"IBM Plex Mono",monospace; font-size:24px; font-weight:700; min-width:1.6em; text-align:center;
+    padding:6px 10px; color:var(--ink-soft); border:2px solid var(--line); background:var(--paper-2);
+    border-radius:6px; cursor:pointer; user-select:none}
+.fb.active{color:var(--blue); border-color:var(--blue); background:var(--blue-bg)}
+.fb-stack{display:flex; flex-direction:column; align-items:center; gap:4px}
+.fb-bar{width:1.8em; height:2px; background:var(--ink)}
+.fb-and{font-size:15px; color:var(--ink-soft)}
+
+.key{min-height:58px; font-size:23px; font-weight:700; font-family:"IBM Plex Mono",monospace; cursor:pointer; border:2px solid var(--line); background:var(--paper-2); border-radius:6px; box-shadow:var(--btn-shadow); transition:transform .08s}
+.key:active{transform:translateY(2px); box-shadow:none}
+.key.go{background:var(--leaf); border-color:var(--leaf); color:#fff; font-size:18px; font-family:inherit}
+.key.del{color:var(--red); font-size:19px}
+
+.feedback{min-height:30px; margin-top:12px; font-weight:700; font-size:15.5px}
+.feedback.ok{color:var(--leaf)}
+.feedback.no{color:var(--red)}
+
+.hud{display:flex; align-items:center; gap:10px; flex-wrap:wrap; border-bottom:2px solid var(--line); padding-bottom:10px; margin-bottom:16px}
+.hud .stage{font-family:"Noto Serif TC",serif; font-weight:700; font-size:17px}
+.hud .pips{display:flex; gap:4px; margin-right:auto}
+.pip{width:11px; height:11px; border:2px solid var(--line); border-radius:50%}
+.pip.on{background:var(--red); border-color:var(--red)}
+.stat{font-size:13px; color:var(--ink-soft); letter-spacing:.04em}
+.stat b{font-family:"IBM Plex Mono",monospace; font-size:19px; color:var(--ink); font-variant-numeric:tabular-nums; margin-left:3px}
+.combo{color:var(--gold); font-weight:700; font-size:14px}
+.bonusbar{height:5px; background:var(--line); margin:-6px 0 16px; overflow:hidden}
+.bonusbar i{display:block; height:100%; width:100%; background:var(--gold); transform-origin:left; transition:transform 1s linear}
+
+.stars{display:flex; gap:8px; justify-content:center; margin:6px 0 18px}
+.star{width:52px; height:52px; color:var(--line)}
+.star.lit{color:var(--gold); animation:pop .4s ease-out backwards}
+@keyframes pop{from{transform:scale(.4); opacity:0}to{transform:none; opacity:1}}
+.scoreline{text-align:center; margin-bottom:22px}
+.scoreline .big{font-family:"IBM Plex Mono",monospace; font-size:52px; font-weight:700; line-height:1; display:block; color:var(--red)}
+.scoreline .cap{font-size:13px; letter-spacing:.18em; color:var(--ink-soft)}
+.summary{display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:22px}
+.summary div{background:var(--paper-2); padding:12px 14px}
+.summary dt{font-size:12px; letter-spacing:.1em; color:var(--ink-soft); margin-bottom:2px}
+.summary dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:22px; font-weight:700}
+.review{border-top:1px solid var(--line); padding-top:8px}
+.review li{padding:9px 0; border-bottom:1px dashed var(--line); font-size:15px}
+.review ul{list-style:none; padding:0; margin:0}
+.review .work{font-family:"IBM Plex Mono",monospace; color:var(--ink-soft); font-size:14px; display:block; margin-top:2px}
+.reveal{border:2px solid var(--leaf); background:var(--leaf-bg); padding:16px 18px; margin:0 0 20px}
+.reveal h3{color:var(--leaf); letter-spacing:.1em; font-size:13px}
+.saved{border:2px solid var(--line); padding:14px 16px; margin:0 0 20px; font-size:15px; display:flex; gap:10px; align-items:flex-start}
+.saved.ok{border-color:var(--leaf); background:var(--leaf-bg)}
+.saved.err{border-color:var(--gold); background:var(--paper-2)}
+
+.steps-list{counter-reset:s; list-style:none; padding:0; margin:0 0 4px}
+.steps-list li{counter-increment:s; position:relative; padding-left:34px; margin-bottom:10px; font-size:15.5px}
+.steps-list li::before{content:counter(s); position:absolute; left:0; top:2px; width:24px; height:24px; line-height:22px; text-align:center; font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:700; color:var(--red); border:1.5px solid var(--red); border-radius:50%}
+dl.terms{margin:0}
+dl.terms dt{font-weight:700; color:var(--red); font-size:15px; margin-top:12px}
+dl.terms dt:first-child{margin-top:0}
+dl.terms dd{margin:2px 0 0; font-size:15.5px; color:var(--ink-soft)}
+
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms !important; transition-duration:.01ms !important} }
+@media (max-width:420px){ .app{padding:0 12px 44px} .rail li{font-size:10.5px} .seats{grid-template-columns:repeat(6,1fr)} }
+
+/* ---- 通用作答元件 ---- */
+.qtext{font-size:clamp(20px,4.6vw,26px); font-weight:700; text-align:center; margin:10px 0 4px; line-height:1.5}
+.qsub{text-align:center; color:var(--ink-soft); font-size:14.5px; margin:0 0 6px}
+.choices{display:grid; gap:10px; margin-top:16px}
+.ch{min-height:58px; font-size:18px; font-weight:600; cursor:pointer; text-align:left; padding:12px 18px;
+    border:2px solid var(--line); background:var(--paper-2); color:var(--ink); border-radius:6px; box-shadow:var(--btn-shadow)}
+.ch:active{transform:translateY(2px); box-shadow:none}
+.ch.picked{border-color:var(--blue); background:var(--blue-bg); color:var(--blue); font-weight:700}
+.seat.qn.filled{border-color:var(--leaf); background:var(--leaf-bg); color:var(--leaf); font-weight:700}
+.ch.bad{border-color:var(--red); color:var(--red); background:var(--red-bg); animation:shake .32s}
+.ch.good{border-color:var(--leaf); color:var(--leaf); background:var(--leaf-bg)}
+.seat-hint{grid-column:1/-1; margin:0; font-size:14.5px; color:var(--ink-faint)}
+
+
+/* 投影這一頁時給學生掃的 QR。白底黑碼不反白，反白有些掃描器讀不到 */
+.scanbox{display:flex; gap:18px; align-items:center; flex-wrap:wrap;
+  border:1px solid var(--line); background:var(--paper-2); padding:16px 18px; margin-top:22px}
+.scanbox .qr{background:#fff; border:1px solid var(--line); padding:8px; border-radius:4px; flex:none}
+.scanbox .qr svg{display:block; width:132px; height:132px}
+.scanbox .t{min-width:min(100%,230px)}
+.scanbox h3{margin:0 0 4px; font-size:13px; letter-spacing:.12em; color:var(--red)}
+.scanbox p{margin:0; font-size:13.5px; color:var(--ink-soft); line-height:1.65}
+.scanbox code{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-faint);
+  word-break:break-all; display:block; margin-top:6px}
+@media print{ .scanbox{break-inside:avoid} }
+
+/* 閱讀文本與中文填空 */
+.psg{border:1px solid var(--line); background:var(--paper-2); padding:14px 16px; margin:0 0 16px;
+     max-height:42vh; overflow-y:auto}
+.psg h4{margin:0 0 8px; font-size:13px; letter-spacing:.12em; color:var(--red); font-weight:700}
+.psg-body{margin:0; font-size:16.5px; line-height:2.2; text-align:justify; white-space:pre-wrap}
+.blank{display:inline-block; min-width:4.2em; text-align:center; border-bottom:2px solid var(--line);
+  margin:0 2px; color:var(--ink-faint); font-size:15px}
+.blank.done{color:var(--leaf); border-bottom-color:var(--leaf); font-weight:600}
+.blank.cur{color:var(--red); border-bottom-color:var(--red); font-weight:700;
+  background:var(--red-bg); border-radius:3px 3px 0 0}
+input.zh{font:inherit; font-size:24px; font-weight:700; text-align:center; width:6.5em; min-height:52px;
+  padding:6px 10px; border:2px solid var(--blue); background:var(--blue-bg); color:var(--blue);
+  border-radius:6px; letter-spacing:.08em}
+.zh-hint{text-align:center; font-size:13px; color:var(--ink-faint); margin:10px 0 0}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <div class="brand" id="brand"></div>
+    <span class="who" id="who" hidden></span>
+    <button class="icon-btn" id="sound" aria-pressed="false" title="音效開關">♪</button>
+    <button class="icon-btn" id="theme" title="切換亮／暗">◐</button>
+  </header>
+  <div class="sync"><span class="dot" id="sync-dot"></span><span id="sync-text">連線中…</span></div>
+
+  <ol class="rail" id="rail">
+    <li class="on"><b>選座號</b></li><li><b>作答</b></li><li><b>成績</b></li>
+  </ol>
+
+  <main>
+  <section id="s-intro">
+    <p class="eyebrow" id="i-eyebrow"></p>
+    <h1 id="i-title"></h1>
+    <p class="lead muted" id="i-lead"></p>
+    <div class="story" id="i-story"></div>
+    <div class="sheet">
+      <p class="pick-label">① 點你的班級</p>
+      <div class="classes" id="classes"></div>
+      <p class="pick-label">② 點你的座號</p>
+      <div class="seats" id="seats"></div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="go-game" disabled>開始作答</button>
+    </div>
+    <p class="small muted" id="pick-hint" style="margin-top:12px"></p>
+    <div class="scanbox">
+      <div class="qr"><svg viewBox="-4 -4 49 49" xmlns="http://www.w3.org/2000/svg"
+        role="img" aria-label="本頁網址 QR code"><rect x="-4" y="-4" width="49" height="49"
+        fill="#ffffff"/><path fill="#1e1c19" d="M0 0h7v1h-7zM8 0h1v1h-1zM10 0h1v1h-1zM13 0h2v1h-2zM17 0h2v1h-2zM20 0h4v1h-4zM25 0h1v1h-1zM28 0h2v1h-2zM31 0h1v1h-1zM34 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h7v1h-7zM18 1h4v1h-4zM23 1h1v1h-1zM25 1h4v1h-4zM30 1h1v1h-1zM32 1h1v1h-1zM34 1h1v1h-1zM40 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h4v1h-4zM13 2h5v1h-5zM19 2h1v1h-1zM22 2h4v1h-4zM30 2h1v1h-1zM32 2h1v1h-1zM34 2h1v1h-1zM36 2h3v1h-3zM40 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM9 3h2v1h-2zM13 3h1v1h-1zM20 3h5v1h-5zM26 3h2v1h-2zM29 3h1v1h-1zM31 3h1v1h-1zM34 3h1v1h-1zM36 3h3v1h-3zM40 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM11 4h1v1h-1zM15 4h2v1h-2zM18 4h2v1h-2zM21 4h2v1h-2zM24 4h2v1h-2zM31 4h2v1h-2zM34 4h1v1h-1zM36 4h3v1h-3zM40 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h4v1h-4zM16 5h1v1h-1zM20 5h3v1h-3zM27 5h1v1h-1zM29 5h2v1h-2zM32 5h1v1h-1zM34 5h1v1h-1zM40 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM32 6h1v1h-1zM34 6h7v1h-7zM8 7h2v1h-2zM11 7h2v1h-2zM14 7h1v1h-1zM17 7h6v1h-6zM24 7h3v1h-3zM31 7h2v1h-2zM2 8h3v1h-3zM6 8h1v1h-1zM8 8h2v1h-2zM11 8h3v1h-3zM18 8h4v1h-4zM25 8h1v1h-1zM27 8h3v1h-3zM32 8h4v1h-4zM38 8h3v1h-3zM2 9h4v1h-4zM11 9h2v1h-2zM15 9h2v1h-2zM19 9h5v1h-5zM25 9h2v1h-2zM29 9h8v1h-8zM38 9h3v1h-3zM1 10h1v1h-1zM5 10h2v1h-2zM8 10h1v1h-1zM11 10h3v1h-3zM15 10h1v1h-1zM18 10h1v1h-1zM20 10h3v1h-3zM24 10h2v1h-2zM27 10h1v1h-1zM30 10h1v1h-1zM32 10h1v1h-1zM35 10h2v1h-2zM0 11h3v1h-3zM7 11h2v1h-2zM10 11h1v1h-1zM13 11h1v1h-1zM15 11h2v1h-2zM18 11h2v1h-2zM21 11h2v1h-2zM25 11h2v1h-2zM28 11h1v1h-1zM31 11h2v1h-2zM36 11h2v1h-2zM3 12h1v1h-1zM5 12h3v1h-3zM10 12h3v1h-3zM16 12h1v1h-1zM18 12h2v1h-2zM21 12h5v1h-5zM29 12h1v1h-1zM31 12h1v1h-1zM33 12h1v1h-1zM35 12h1v1h-1zM37 12h4v1h-4zM0 13h1v1h-1zM2 13h2v1h-2zM8 13h1v1h-1zM10 13h1v1h-1zM12 13h1v1h-1zM15 13h2v1h-2zM18 13h1v1h-1zM20 13h1v1h-1zM22 13h1v1h-1zM27 13h1v1h-1zM31 13h2v1h-2zM34 13h1v1h-1zM36 13h1v1h-1zM39 13h2v1h-2zM0 14h1v1h-1zM5 14h3v1h-3zM14 14h2v1h-2zM18 14h1v1h-1zM20 14h1v1h-1zM23 14h5v1h-5zM30 14h1v1h-1zM33 14h1v1h-1zM36 14h1v1h-1zM2 15h1v1h-1zM4 15h1v1h-1zM7 15h1v1h-1zM10 15h2v1h-2zM13 15h1v1h-1zM15 15h3v1h-3zM19 15h4v1h-4zM24 15h1v1h-1zM27 15h1v1h-1zM31 15h2v1h-2zM34 15h1v1h-1zM36 15h1v1h-1zM0 16h1v1h-1zM3 16h2v1h-2zM6 16h1v1h-1zM8 16h2v1h-2zM11 16h3v1h-3zM18 16h4v1h-4zM23 16h1v1h-1zM25 16h1v1h-1zM27 16h1v1h-1zM29 16h3v1h-3zM33 16h1v1h-1zM35 16h1v1h-1zM37 16h4v1h-4zM1 17h1v1h-1zM5 17h1v1h-1zM10 17h2v1h-2zM14 17h1v1h-1zM18 17h1v1h-1zM20 17h2v1h-2zM23 17h3v1h-3zM28 17h1v1h-1zM31 17h1v1h-1zM34 17h5v1h-5zM40 17h1v1h-1zM0 18h1v1h-1zM3 18h1v1h-1zM5 18h2v1h-2zM9 18h1v1h-1zM12 18h1v1h-1zM15 18h1v1h-1zM18 18h5v1h-5zM24 18h2v1h-2zM27 18h2v1h-2zM32 18h2v1h-2zM36 18h4v1h-4zM0 19h4v1h-4zM8 19h3v1h-3zM12 19h1v1h-1zM14 19h1v1h-1zM17 19h2v1h-2zM24 19h1v1h-1zM28 19h1v1h-1zM30 19h1v1h-1zM32 19h2v1h-2zM36 19h1v1h-1zM2 20h2v1h-2zM5 20h5v1h-5zM11 20h3v1h-3zM16 20h1v1h-1zM18 20h3v1h-3zM22 20h5v1h-5zM29 20h1v1h-1zM33 20h1v1h-1zM38 20h1v1h-1zM2 21h2v1h-2zM5 21h1v1h-1zM7 21h1v1h-1zM9 21h4v1h-4zM14 21h2v1h-2zM18 21h1v1h-1zM20 21h3v1h-3zM25 21h1v1h-1zM28 21h5v1h-5zM34 21h7v1h-7zM0 22h1v1h-1zM2 22h1v1h-1zM4 22h3v1h-3zM10 22h5v1h-5zM16 22h1v1h-1zM19 22h1v1h-1zM21 22h2v1h-2zM24 22h2v1h-2zM27 22h2v1h-2zM30 22h1v1h-1zM34 22h2v1h-2zM38 22h1v1h-1zM1 23h4v1h-4zM8 23h1v1h-1zM10 23h1v1h-1zM12 23h3v1h-3zM17 23h2v1h-2zM21 23h1v1h-1zM23 23h1v1h-1zM27 23h2v1h-2zM31 23h4v1h-4zM36 23h2v1h-2zM39 23h1v1h-1zM0 24h2v1h-2zM6 24h3v1h-3zM10 24h2v1h-2zM21 24h1v1h-1zM23 24h5v1h-5zM29 24h1v1h-1zM31 24h1v1h-1zM38 24h3v1h-3zM2 25h1v1h-1zM7 25h2v1h-2zM11 25h1v1h-1zM13 25h1v1h-1zM15 25h1v1h-1zM22 25h1v1h-1zM24 25h2v1h-2zM28 25h1v1h-1zM30 25h2v1h-2zM33 25h5v1h-5zM39 25h2v1h-2zM1 26h4v1h-4zM6 26h3v1h-3zM13 26h1v1h-1zM15 26h1v1h-1zM17 26h2v1h-2zM24 26h1v1h-1zM27 26h2v1h-2zM32 26h1v1h-1zM0 27h2v1h-2zM3 27h2v1h-2zM7 27h4v1h-4zM13 27h3v1h-3zM18 27h1v1h-1zM22 27h1v1h-1zM24 27h1v1h-1zM26 27h1v1h-1zM28 27h1v1h-1zM30 27h3v1h-3zM36 27h2v1h-2zM39 27h1v1h-1zM1 28h1v1h-1zM3 28h1v1h-1zM6 28h1v1h-1zM8 28h1v1h-1zM13 28h4v1h-4zM18 28h1v1h-1zM20 28h3v1h-3zM26 28h1v1h-1zM29 28h1v1h-1zM31 28h1v1h-1zM33 28h1v1h-1zM35 28h1v1h-1zM37 28h4v1h-4zM0 29h6v1h-6zM7 29h2v1h-2zM11 29h1v1h-1zM13 29h1v1h-1zM17 29h2v1h-2zM20 29h1v1h-1zM24 29h1v1h-1zM26 29h2v1h-2zM30 29h2v1h-2zM34 29h1v1h-1zM36 29h1v1h-1zM38 29h3v1h-3zM0 30h1v1h-1zM5 30h2v1h-2zM9 30h2v1h-2zM13 30h1v1h-1zM15 30h2v1h-2zM18 30h2v1h-2zM21 30h2v1h-2zM24 30h4v1h-4zM30 30h1v1h-1zM33 30h5v1h-5zM0 31h1v1h-1zM2 31h1v1h-1zM4 31h2v1h-2zM7 31h5v1h-5zM15 31h1v1h-1zM18 31h3v1h-3zM22 31h1v1h-1zM27 31h2v1h-2zM33 31h2v1h-2zM36 31h1v1h-1zM39 31h2v1h-2zM0 32h1v1h-1zM2 32h2v1h-2zM6 32h7v1h-7zM14 32h6v1h-6zM22 32h1v1h-1zM24 32h1v1h-1zM26 32h1v1h-1zM29 32h2v1h-2zM32 32h7v1h-7zM40 32h1v1h-1zM8 33h8v1h-8zM17 33h1v1h-1zM19 33h3v1h-3zM23 33h3v1h-3zM29 33h1v1h-1zM31 33h2v1h-2zM36 33h3v1h-3zM40 33h1v1h-1zM0 34h7v1h-7zM10 34h4v1h-4zM19 34h3v1h-3zM24 34h1v1h-1zM27 34h2v1h-2zM31 34h2v1h-2zM34 34h1v1h-1zM36 34h4v1h-4zM0 35h1v1h-1zM6 35h1v1h-1zM17 35h2v1h-2zM20 35h3v1h-3zM24 35h1v1h-1zM27 35h2v1h-2zM31 35h2v1h-2zM36 35h2v1h-2zM39 35h1v1h-1zM0 36h1v1h-1zM2 36h3v1h-3zM6 36h1v1h-1zM8 36h4v1h-4zM14 36h6v1h-6zM21 36h1v1h-1zM23 36h3v1h-3zM27 36h3v1h-3zM32 36h5v1h-5zM38 36h2v1h-2zM0 37h1v1h-1zM2 37h3v1h-3zM6 37h1v1h-1zM8 37h1v1h-1zM10 37h4v1h-4zM17 37h3v1h-3zM22 37h4v1h-4zM28 37h3v1h-3zM32 37h2v1h-2zM35 37h1v1h-1zM37 37h1v1h-1zM40 37h1v1h-1zM0 38h1v1h-1zM2 38h3v1h-3zM6 38h1v1h-1zM8 38h3v1h-3zM13 38h1v1h-1zM15 38h1v1h-1zM17 38h1v1h-1zM20 38h1v1h-1zM22 38h6v1h-6zM31 38h1v1h-1zM33 38h5v1h-5zM39 38h1v1h-1zM0 39h1v1h-1zM6 39h1v1h-1zM9 39h1v1h-1zM11 39h3v1h-3zM20 39h5v1h-5zM26 39h2v1h-2zM32 39h1v1h-1zM36 39h2v1h-2zM39 39h1v1h-1zM0 40h7v1h-7zM9 40h1v1h-1zM11 40h1v1h-1zM18 40h3v1h-3zM22 40h1v1h-1zM24 40h3v1h-3zM29 40h1v1h-1zM33 40h1v1h-1zM35 40h4v1h-4z"/></svg></div>
+      <div class="t">
+        <h3>老師：投影這一頁</h3>
+        <p>學生用平板掃上面的 QR，就會進到這一頁開始作答。<br>已經掃進來的人可以忽略這一塊。</p>
+        <code>https://simon05091004.github.io/banfu-115/chinese50.html</code>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-game" hidden>
+    <div class="hud">
+      <span class="stage" id="hud-stage"></span>
+      <span class="pips" id="hud-pips"></span>
+      <span class="stat">已答<b id="hud-done">0</b></span>
+    </div>
+    <div class="sheet" id="p-stage"></div>
+    <div class="actions" style="margin-top:16px">
+      <button class="btn ghost" id="q-prev">上一題</button>
+      <button class="btn" id="q-next">下一題</button>
+      <button class="btn red" id="q-submit">交卷</button>
+    </div>
+    <div class="sheet tint" style="margin-top:16px">
+      <p class="eyebrow" style="margin:0 0 10px">題號（綠色代表已作答，點一下可以跳過去）</p>
+      <div class="seats" id="q-map"></div>
+    </div>
+  </section>
+
+  <section id="s-result" hidden>
+    <h2 id="r-head">交卷完成</h2>
+    <div class="stars" id="r-stars"></div>
+    <div class="scoreline"><span class="big num" id="r-score">0</span><span class="cap">分</span></div>
+    <div class="saved" id="r-saved"></div>
+    <dl class="summary" id="r-summary"></dl>
+    <div class="review" id="r-review"></div>
+    <div class="actions">
+      <button class="btn ghost" id="r-again">再考一次</button>
+    </div>
+    <p class="small muted" id="r-next" style="margin-top:18px"></p>
+  </section>
+  </main>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   設定區：換主題時只改這一塊，下面的引擎不用動
+   ============================================================ */
+const CFG = {
+  school: "永福國小",
+  grade:  "六年級",
+  unit:   "語詞閱讀填空",
+  title:  "國語語詞檢核卷",
+  accent: "檢核卷",
+  minutes: 40,
+
+  classes: {"601":26,"602":24,"603":25,"604":25,"605":24,"606":25,
+            "607":24,"608":25,"609":25,"610":26,"611":25},
+
+  passages: [
+    {id:"p1", title:"一、茶香的旅行",
+     text:"春天雨水[[1]]，山上的茶園綠得發亮。週末，我跟著爸爸[[2]]在一畦畦茶樹之間，風一吹，就[[3]]一股淡淡的清香。\n\n茶農伯伯在屋簷下[[4]]。滾水沖進壺裡，杯口浮起一層細細的[[5]]。他把[[6]]的茶湯倒進小杯，要我們慢慢[[7]]，別一口喝乾。茶湯在舌尖[[8]]，先苦後甘，苦味和甜味剛好[[9]]。\n\n伯伯說，臺灣的茶早年就不斷向外[[10]]市場，後來[[11]]了歐洲。這幾年，他和農業改良場的專家[[12]]研究新品種，希望為茶香再[[13]]一點變化。"},
+    {id:"p2", title:"二、廟口的鼎邊趖",
+     text:"到基隆廟口，一定要吃一碗[[14]]。\n\n做法說起來簡單，做起來卻很費工。老闆先把在來米泡軟，放進石磨裡磨——米粒被磨得[[15]]，變成一盆[[16]]的白漿。接著他拿杓子把米漿[[17]]，沿著燒熱的大鼎邊緣澆一圈，米漿一碰到鐵就凝成薄片，[[18]]得像一張半透明的紙。\n\n湯頭更講究。老闆從清晨就開始[[19]]大骨，中間不停[[20]]，免得黏鍋。配料裡有自家[[21]]的小菜、[[22]]的金針，還有現[[23]]的紅蔥酥。竹筍要先[[24]]外皮再切絲。\n\n一碗端上來，料多得快滿出來。難怪有人說，這不只是一碗小吃，根本是一場[[25]]。能把平凡的米變成這樣，老[[26]]的手藝真教人佩服。"},
+    {id:"p3", title:"三、阿姨的創業路",
+     text:"阿姨現在是一家公司的[[27]]，可是她常說，自己當年什麼都[[28]]，只有一股不服輸的勁。\n\n剛創業時，她每天忙的都是處理不完的[[29]]：叫貨、記帳、跑銀行。有人替她[[30]]，覺得大學畢業做這些太可惜；她卻說，正是這些小事[[31]]了她的耐心。\n\n生意上了軌道，開始[[32]]以後，她也沒有[[33]]。每年她都會[[34]]一筆錢當週轉金，說這叫[[35]]——景氣不會永遠都好。\n\n她和幾個同樣創業的朋友組了讀書會，每個月見面[[36]]彼此。她說，一個人默默[[37]]久了容易鬆懈，有人在旁邊督促，才有機會把事情做得更[[38]]。"},
+    {id:"p4", title:"四、那天的音樂會",
+     text:"班上要推派一個人代表學校比賽。老師一問，大家都看向小彥——他的二胡拉得最好，往年都是他[[39]]演出。\n\n沒想到他舉手說不去。我整個人[[40]]了。後來才知道，他媽媽生病住院，他每天下課就往醫院跑，練琴的時間被[[41]]得死死的。他不想讓同學覺得他是在接受[[42]]，所以連理由都沒說，就這樣把機會[[43]]。\n\n我去找他，一開始氣氛很[[44]]。他以為我是來勸他的，一直[[45]]談這件事。我說我只是來陪他練琴。那天我們誰也沒提比賽，只是把曲子從頭拉到尾。\n\n後來他告訴我，那陣子他把所有情緒都[[46]]著，心裡像有一團線[[47]]，誰靠近他都想[[48]]。他怕說出來，別人會對他有[[49]]，覺得他在討同情。其實他不必為了怕麻煩別人就[[50]]求全——朋友本來就是用來分擔的。"},
+  ],
+
+  parts: [{at:0,  name:"一、茶香的旅行", note:"13 格，每格 2 分"},
+          {at:13,  name:"二、廟口的鼎邊趖", note:"13 格，每格 2 分"},
+          {at:26,  name:"三、阿姨的創業路", note:"12 格，每格 2 分"},
+          {at:38,  name:"四、那天的音樂會", note:"12 格，每格 2 分"}],
+
+  qs: [
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"春天雨水＿＿＿，山上的茶園綠得發亮。", a:"豐沛",
+   s:"豐沛：形容雨水很多、很充足。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"我跟著爸爸＿＿＿在一畦畦茶樹之間。", a:"徜徉",
+   s:"徜徉：自由自在地來回走動。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"風一吹，就＿＿＿一股淡淡的清香。", a:"嗅到",
+   s:"嗅到：用鼻子聞到。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"茶農伯伯在屋簷下＿＿＿。", a:"烹茶",
+   s:"烹茶：煮茶、泡茶。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"滾水沖進壺裡，杯口浮起一層細細的＿＿＿。", a:"泡沫",
+   s:"泡沫：液體表面浮起的小氣泡。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"他把＿＿＿的茶湯倒進小杯。", a:"熱騰騰",
+   s:"熱騰騰：形容剛煮好、冒著熱氣的樣子。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"要我們慢慢＿＿＿，別一口喝乾。", a:"啜飲",
+   s:"啜飲：小口小口地喝。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"茶湯在舌尖＿＿＿。", a:"流淌",
+   s:"流淌：液體慢慢流動。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"苦味和甜味剛好＿＿＿。", a:"平衡",
+   s:"平衡：兩邊分量相當、不偏向任何一方。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"臺灣的茶早年就不斷向外＿＿＿市場。", a:"擴展",
+   s:"擴展：向外伸展、擴大範圍。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"後來＿＿＿了歐洲。", a:"風靡",
+   s:"風靡：像風吹倒草一樣，形容非常流行。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"他和農業改良場的專家＿＿＿研究新品種。", a:"聯袂",
+   s:"聯袂：手拉著手，比喻一同、共同做某事。"},
+  {w:"textpad",p:2,sec:"一、茶香的旅行",psg:"p1",
+   q:"希望為茶香再＿＿＿一點變化。", a:"增添",
+   s:"增添：再加上去、使變多。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"到基隆廟口，一定要吃一碗＿＿＿。", a:"鼎邊趖",
+   s:"鼎邊趖：基隆的傳統小吃，米漿沿著鼎邊凝成薄片。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"米粒被磨得＿＿＿。", a:"粉身碎骨",
+   s:"粉身碎骨：身體粉碎，這裡形容被磨得極碎。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"變成一盆＿＿＿的白漿。", a:"黏稠",
+   s:"黏稠：又黏又濃，不容易流動。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"他拿杓子把米漿＿＿＿。", a:"舀出",
+   s:"舀出：用杓子取出液體。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"＿＿＿得像一張半透明的紙。", a:"晶瑩",
+   s:"晶瑩：明亮透明而有光澤。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"老闆從清晨就開始＿＿＿大骨。", a:"熬煮",
+   s:"熬煮：用小火長時間煮。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"中間不停＿＿＿，免得黏鍋。", a:"攪拌",
+   s:"攪拌：用器具不停翻動混合。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"配料裡有自家＿＿＿的小菜。", a:"醃製",
+   s:"醃製：用鹽、糖等浸泡食材保存入味。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"＿＿＿的金針。", a:"晒乾",
+   s:"晒乾：放在太陽下曬到乾燥。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"還有現＿＿＿的紅蔥酥。", a:"油炸",
+   s:"油炸：放進熱油裡炸。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"竹筍要先＿＿＿外皮再切絲。", a:"削去",
+   s:"削去：用刀把表面薄薄刮掉。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"根本是一場＿＿＿。", a:"饗宴",
+   s:"饗宴：盛大豐富的宴席。"},
+  {w:"textpad",p:2,sec:"二、廟口的鼎邊趖",psg:"p2",
+   q:"老＿＿＿的手藝真教人佩服。", a:"廚師",
+   s:"廚師：以烹調為職業的人。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"阿姨現在是一家公司的＿＿＿。", a:"總裁",
+   s:"總裁：公司最高的負責人。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"自己當年什麼都＿＿＿。", a:"欠缺",
+   s:"欠缺：缺少、不足。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"她每天忙的都是處理不完的＿＿＿。", a:"瑣事",
+   s:"瑣事：細碎不重要的小事。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"有人替她＿＿＿。", a:"惋惜",
+   s:"惋惜：為別人感到可惜。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"正是這些小事＿＿＿了她的耐心。", a:"培養",
+   s:"培養：長期教育訓練，使某種能力成長。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"生意上了軌道，開始＿＿＿以後。", a:"賺錢",
+   s:"賺錢：獲得金錢上的利益。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"她也沒有＿＿＿。", a:"驕傲自滿",
+   s:"驕傲自滿：自以為了不起而不再進步。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"每年她都會＿＿＿一筆錢當週轉金。", a:"預留",
+   s:"預留：事先保留起來。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"說這叫＿＿＿。", a:"未雨綢繆",
+   s:"未雨綢繆：趁著還沒下雨先修補門窗，比喻事先準備。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"每個月見面＿＿＿彼此。", a:"砥礪",
+   s:"砥礪：互相勉勵、督促上進。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"一個人默默＿＿＿久了容易鬆懈。", a:"耕耘",
+   s:"耕耘：耕田除草，比喻努力付出。"},
+  {w:"textpad",p:2,sec:"三、阿姨的創業路",psg:"p3",
+   q:"才有機會把事情做得更＿＿＿。", a:"卓越",
+   s:"卓越：非常優秀、超越一般水準。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"往年都是他＿＿＿演出。", a:"壓軸",
+   s:"壓軸：排在最後、最精采的一場。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"我整個人＿＿＿了。", a:"愣住",
+   s:"愣住：一時發呆、反應不過來。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"練琴的時間被＿＿＿得死死的。", a:"束縛",
+   s:"束縛：綁住、限制住。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"他不想讓同學覺得他是在接受＿＿＿。", a:"施捨",
+   s:"施捨：把財物或好處給予他人，帶有同情的意味。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"就這樣把機會＿＿＿。", a:"拱手讓人",
+   s:"拱手讓人：兩手抱拳相讓，比喻輕易把東西讓給別人。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"一開始氣氛很＿＿＿。", a:"尷尬",
+   s:"尷尬：處境為難、不自在。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"他一直＿＿＿談這件事。", a:"拒絕",
+   s:"拒絕：不接受、不答應。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"他把所有情緒都＿＿＿著。", a:"壓抑",
+   s:"壓抑：用力壓住，不讓它表現出來。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"心裡像有一團線＿＿＿。", a:"纏繞",
+   s:"纏繞：一圈一圈地繞住。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"誰靠近他都想＿＿＿。", a:"退避三舍",
+   s:"退避三舍：主動退讓九十里，比喻迴避、不願正面接觸。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"別人會對他有＿＿＿。", a:"芥蒂",
+   s:"芥蒂：心裡的疙瘩、不愉快的隔閡。"},
+  {w:"textpad",p:2,sec:"四、那天的音樂會",psg:"p4",
+   q:"他不必為了怕麻煩別人就＿＿＿求全。", a:"委曲",
+   s:"委曲：勉強遷就自己，以求事情圓滿（委曲求全）。"}
+  ],
+
+  stars: [80, 60],
+  nextHint: "答錯的語詞，把它所在的整句抄一遍——語詞是靠上下文記住的，單獨背最容易忘。",
+
+  firebase: {
+    apiKey:            "AIzaSyAFh8Dmf25j1D9rCpBpCpcxKLVBNsAF4m4",
+    authDomain:        "chinese-50d0c.firebaseapp.com",
+    projectId:         "chinese-50d0c",
+    storageBucket:     "chinese-50d0c.firebasestorage.app",
+    messagingSenderId: "1044608618028",
+    appId:             "1:1044608618028:web:d95f2811e0dd61bbe30b89"
+  },
+  FIRE_COL: "cnWords6",
+
+  poster: {
+    lead: "選班級和座號，直接作答 50 格",
+    btn:  "開始作答",
+    steps: ["點自己的班級和座號，不用填姓名。",
+            "四篇短文共 50 格，用注音輸入法打字。",
+            "寫完的格子在文章裡會變綠色，可以回頭改。",
+            "全部寫完按「交卷」，成績直接存給老師。"],
+    cards: [["點班級和座號", "不用填姓名，點錯可以直接改"],
+            ["作答 50 格", "四篇短文，每格 2 分，滿分 100 分"],
+            ["按交卷", "交卷後才批改，會顯示正確語詞和意思"]]
+  }
+};
+
+const FIRE_SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
+var $ = function(id){ return document.getElementById(id); };
+function gcd(a,b){ while(b){ var t=a%b; a=b; b=t; } return a; }
+function fracStr(num, den){
+  if(den===1) return String(num);
+  if(num>den){
+    var w=Math.floor(num/den), r=num-w*den;
+    return r===0 ? String(w) : (w+'又'+r+'/'+den);
+  }
+  return num+'/'+den;
+}
+function factorsOf(n){ var r=[]; for(var i=1;i<=n;i++) if(n%i===0) r.push(i); return r; }
+function canonSteps(a,b){
+  var steps=[], x=a, y=b, i, D=CFG.divisors;
+  while(gcd(x,y)>1){
+    for(i=0;i<D.length;i++){ if(x%D[i]===0 && y%D[i]===0){ steps.push(D[i]); x/=D[i]; y/=D[i]; break; } }
+    if(i===D.length) break;
+  }
+  return steps;
+}
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+var CLASSES = Object.keys(CFG.classes);
+function seatMax(c){ return CFG.classes[c] || 30; }
+
+/* ---------- 雲端 ---------- */
+var SYNC = {db:null, mode:"connecting", note:""};
+function loadScript(src){
+  return new Promise(function(res,rej){
+    var s=document.createElement("script"); s.src=src; s.onload=res;
+    s.onerror=function(){ rej(new Error(src)); }; document.head.appendChild(s);
+  });
+}
+function renderSync(){
+  var map={connecting:["","連線中…"], fire:["ok","已連上雲端，做完會自動交卷"],
+           local:["warn", SYNC.note||"沒有連上雲端，成績只留在這台平板"]};
+  var m=map[SYNC.mode]||map.local;
+  $('sync-dot').className="dot "+m[0]; $('sync-text').textContent=m[1];
+}
+async function initFirebase(){
+  SYNC.mode="connecting"; renderSync();
+  if(!CFG.firebase || String(CFG.firebase.projectId).indexOf("PASTE")===0){
+    SYNC.mode="local"; SYNC.note="還沒填 Firebase 設定，成績只留在這台平板"; renderSync(); return;
+  }
+  try{
+    await loadScript(FIRE_SDK+"firebase-app-compat.js");
+    await loadScript(FIRE_SDK+"firebase-firestore-compat.js");
+    firebase.initializeApp(CFG.firebase);
+    SYNC.db=firebase.firestore(); SYNC.mode="fire"; SYNC.note="";
+  }catch(e){ SYNC.mode="local"; SYNC.note="載入不到雲端元件，成績只留在這台平板"; }
+  renderSync();
+}
+function queueLocal(rec){
+  try{
+    var q=JSON.parse(store("quiz_pending")||"[]"); q.push(rec);
+    if(q.length>20) q=q.slice(-20); store("quiz_pending", JSON.stringify(q));
+  }catch(e){}
+}
+async function flushPending(){
+  if(SYNC.mode!=="fire") return;
+  var q; try{ q=JSON.parse(store("quiz_pending")||"[]"); }catch(e){ return; }
+  if(!q.length) return;
+  var left=[];
+  for(var i=0;i<q.length;i++){
+    try{ await SYNC.db.collection(CFG.FIRE_COL).doc(q[i]._id).set(q[i].rec); }
+    catch(e){ left.push(q[i]); }
+  }
+  store("quiz_pending", JSON.stringify(left));
+}
+async function uploadResult(rec){
+  var id = rec.cls+"-"+String(rec.seat).padStart(2,"0")+"-"+Date.now().toString(36);
+  if(SYNC.mode!=="fire"){ queueLocal({_id:id, rec:rec});
+    return {ok:false, why:"沒有連上雲端，成績暫時留在這台平板，下次連上會自動補送"}; }
+  try{ await SYNC.db.collection(CFG.FIRE_COL).doc(id).set(rec); return {ok:true}; }
+  catch(e){
+    queueLocal({_id:id, rec:rec});
+    return {ok:false, why:(e && e.code==="permission-denied")
+      ? "雲端規則還沒開放，成績暫時留在這台平板，請告訴老師"
+      : "交卷失敗，成績暫時留在這台平板，下次連上會自動補送"};
+  }
+}
+
+/* ---------- 音效：教室裡預設關 ---------- */
+var soundOn = store('quiz_sound')==='1', ac=null;
+function beep(f,d,t){
+  if(!soundOn) return;
+  try{
+    if(!ac) ac=new (window.AudioContext||window.webkitAudioContext)();
+    var o=ac.createOscillator(), g=ac.createGain();
+    o.type=t||'sine'; o.frequency.value=f;
+    g.gain.setValueAtTime(.0001,ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(.14,ac.currentTime+.01);
+    g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+d);
+    o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime+d+.02);
+  }catch(e){}
+}
+var sBad=function(){ beep(190,.18,'square'); };
+var sTap=function(){ beep(520,.05,'triangle'); };
+var sWin=function(){ [523,659,784,1047].forEach(function(f,i){ setTimeout(function(){beep(f,.2);}, i*120); }); };
+var sb=$('sound');
+sb.setAttribute('aria-pressed', soundOn?'true':'false');
+sb.onclick=function(){ soundOn=!soundOn; store('quiz_sound', soundOn?'1':'0');
+  sb.setAttribute('aria-pressed', soundOn?'true':'false'); if(soundOn) sTap(); };
+$('theme').onclick=function(){
+  var cur=document.documentElement.getAttribute('data-theme');
+  var dark = cur ? cur==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', dark?'light':'dark');
+};
+
+/* ---------- 由設定畫出靜態內容 ---------- */
+document.title = CFG.title;
+var QN = CFG.qs.length;
+var FULL = CFG.qs.reduce(function(a,q){ return a+q.p; },0);
+function partOf(i){
+  var p=null; CFG.parts.forEach(function(x){ if(i>=x.at) p=x; }); return p;
+}
+(function paintStatic(){
+  var t=CFG.title, acc=CFG.accent||"";
+  $('brand').innerHTML = acc && t.endsWith(acc)
+    ? t.slice(0,t.length-acc.length)+'<span>'+acc+'</span>' : t;
+  $('i-eyebrow').textContent = CFG.grade+" · "+CFG.unit;
+  $('i-title').textContent = CFG.title;
+  $('i-lead').textContent = "共 "+QN+" 題，滿分 "+FULL+" 分，大約 "+CFG.minutes+" 分鐘。";
+  $('i-story').innerHTML = '<h3>作答方式</h3>'
+    + '<p>'+CFG.parts.map(function(p){ return p.name+'　'+p.note; }).join('<br>')+'</p>'
+    + '<p class="small muted" style="margin:0">一題一次作答，寫完可以用下面的題號格回去改。'
+    + '<b>全部寫完按「交卷」才會批改</b>，交卷後才看得到對錯和解法。</p>';
+  $('r-next').innerHTML = CFG.nextHint||"";
+})();
+
+/* ---------- 身分 ---------- */
+var ID={cls:store('quiz_cls')||null, seat:Number(store('quiz_seat'))||null};
+if(ID.cls && !CFG.classes[ID.cls]) ID={cls:null, seat:null};
+function renderWho(){
+  var ok=ID.cls && ID.seat;
+  $('who').hidden=!ok;
+  if(ok) $('who').textContent = ID.cls+" "+String(ID.seat).padStart(2,"0")+" 號";
+  $('go-game').disabled=!ok;
+  $('pick-hint').textContent = ok
+    ? ("已選 "+ID.cls+" "+ID.seat+" 號。點錯可以直接改。成績會存到雲端給導師看，不用填姓名。")
+    : "選好班級和座號才能開始。成績會存到雲端給導師看，不用填姓名。";
+}
+function buildSeats(){
+  var box=$('seats'); box.innerHTML='';
+  if(!ID.cls){ box.innerHTML='<p class="seat-hint">先點上面的班級，你們班的座號才會出現。</p>'; return; }
+  var max=seatMax(ID.cls);
+  if(ID.seat && ID.seat>max){ ID.seat=null; store('quiz_seat',''); }
+  for(var n=1;n<=max;n++){
+    (function(n){
+      var b=document.createElement('button');
+      b.type='button'; b.className='seat'; b.textContent=n;
+      b.setAttribute('aria-pressed', ID.seat===n?'true':'false');
+      b.onclick=function(){
+        ID.seat=n; store('quiz_seat',String(n)); sTap();
+        Array.prototype.forEach.call(box.children,function(x){
+          if(x.setAttribute) x.setAttribute('aria-pressed', x===b?'true':'false'); });
+        renderWho();
+      };
+      box.appendChild(b);
+    })(n);
+  }
+}
+(function(){
+  var cbox=$('classes');
+  CLASSES.forEach(function(c){
+    var b=document.createElement('button');
+    b.type='button'; b.className='cls'; b.textContent=c;
+    b.setAttribute('aria-pressed', ID.cls===c?'true':'false');
+    b.onclick=function(){
+      ID.cls=c; store('quiz_cls',c); sTap();
+      Array.prototype.forEach.call(cbox.children,function(x){ x.setAttribute('aria-pressed', x===b?'true':'false'); });
+      buildSeats(); renderWho();
+    };
+    cbox.appendChild(b);
+  });
+  buildSeats(); renderWho();
+})();
+
+/* ---------- 畫面切換 ---------- */
+var SCREENS=['intro','game','result'];
+var RAIL={intro:0,game:1,result:2};
+function show(name){
+  SCREENS.forEach(function(s){ $('s-'+s).hidden=(s!==name); });
+  var m=document.querySelector('main');
+  m.classList.add('settling');
+  setTimeout(function(){ m.classList.remove('settling'); },380);
+  var idx=RAIL[name], it=$('rail').children;
+  for(var i=0;i<it.length;i++) it[i].className = i<idx?'done':(i===idx?'on':'');
+  window.scrollTo(0,0);
+  if(name==='game') startExam();
+}
+$('go-game').onclick=function(){ if(ID.cls&&ID.seat){ sTap(); show('game'); } };
+
+function say(host,cls,text){
+  var el=host.querySelector('.feedback');
+  if(el){ el.className='feedback '+(cls||''); el.textContent=text; }
+}
+var PAD=['7','8','9','4','5','6','1','2','3','⌫','0','確定'];
+/* 小數版：多一顆小數點，確定鍵改成整列 */
+var PAD_DEC=['7','8','9','4','5','6','1','2','3','.','0','⌫','確定'];
+function padHTML(keys, cls){ return '<div class="pad'+(cls?' '+cls:'')+'">'+(keys||PAD).map(function(k){
+  return '<button type="button" class="key'+(k==='確定'?' go':'')+(k==='⌫'?' del':'')+'">'+k+'</button>';
+}).join('')+'</div>'; }
+function wirePad(host,onKey){
+  host.querySelectorAll('.pad .key').forEach(function(b){ b.onclick=function(){ onKey(b.textContent); }; });
+}
+
+/* ---------- 短除法畫布 ---------- */
+function rowsOf(a,b,steps){
+  var rows=[],x=a,y=b;
+  steps.forEach(function(d){ rows.push({d:d,x:x,y:y}); x/=d; y/=d; });
+  rows.push({d:null,x:x,y:y}); return rows;
+}
+function renderSD(el,a,b,steps,o){
+  o=o||{}; var html='';
+  rowsOf(a,b,steps).forEach(function(r,i,arr){
+    var last=(i===arr.length-1), fresh=(o.freshIndex===i)?' fresh':'';
+    html+='<div class="sd-row'+(last?' is-final':'')+fresh+'"><div class="sd-div">'+(r.d===null?'':r.d)
+        + '</div><div class="sd-nums"><span>'+r.x+'</span><span>'+r.y+'</span></div></div>';
+  });
+  if(o.note) html+='<div class="sd-note">'+o.note+'</div>';
+  if(o.mult) html+='<div class="sd-mult">'+steps.join(' × ')+' = <span class="num">'
+                 + steps.reduce(function(p,c){return p*c;},1)+'</span></div>';
+  el.innerHTML=html;
+}
+
+/* ============================================================
+   作答元件：三選一。每個都提供 label / answer / mount
+   mount(host, q, ctx)；ctx.wrong(msg) 記一次錯，ctx.correct() 過關
+   ============================================================ */
+/* ---------- 作答元件 ----------
+   檢核卷語意：只記錄學生選了什麼，作答期間不判對錯、不給提示。 */
+var WIDGETS = {
+
+  numpad: {
+    answer: function(q){ return String(q.a)+(q.unit||""); },
+    shown:  function(v,q){ return (v===null||v==='') ? "未作答" : String(v)+(q.unit||""); },
+    ok:     function(q,v){ return v!==null && v!=='' && Number(v)===Number(q.a); },
+    mount:  function(host,q,idx,cur){
+      var val = (cur===null||cur===undefined) ? '' : String(cur);
+      host.innerHTML = '<p class="qtext">'+q.q+'</p>'
+        + '<div class="answer-box" style="justify-content:center"><span class="q">答案</span>'
+        + '<span class="entry num" aria-live="polite">'+(val||'_')+'</span>'
+        + (q.unit?'<span class="q" style="margin-left:8px">'+q.unit+'</span>':'')+'</div>'
+        + '<div style="display:flex;justify-content:center">'+padHTML()+'</div>'
+        + '<p class="feedback"></p>';
+      var entry=host.querySelector('.entry');
+      wirePad(host,function(k){
+        if(k==='⌫'){ val=val.slice(0,-1); }
+        else if(k==='確定'){ sTap(); nextQ(); return; }
+        else if(val.length<6){ val+=k; sTap(); }
+        entry.textContent=val||'_';
+        setAns(idx, val===''?null:val);
+      });
+    }
+  },
+
+  /* 小數作答。判分用 Number() 比較，所以 2.5 和 2.50 都算對 */
+  decpad: {
+    answer: function(q){ return String(q.a)+(q.unit||""); },
+    shown:  function(v,q){ return (v===null||v==='') ? "未作答" : String(v)+(q.unit||""); },
+    ok:     function(q,v){ return v!==null && v!=='' && isFinite(Number(v)) && Number(v)===Number(q.a); },
+    mount:  function(host,q,idx,cur){
+      var val = (cur===null||cur===undefined) ? '' : String(cur);
+      host.innerHTML = '<p class="qtext">'+q.q+'</p>'
+        + '<div class="answer-box" style="justify-content:center"><span class="q">答案</span>'
+        + '<span class="entry num" aria-live="polite">'+(val||'_')+'</span>'
+        + (q.unit?'<span class="q" style="margin-left:8px">'+q.unit+'</span>':'')+'</div>'
+        + '<div style="display:flex;justify-content:center">'+padHTML(PAD_DEC,'dec')+'</div>'
+        + '<p class="feedback"></p>';
+      var entry=host.querySelector('.entry');
+      wirePad(host,function(k){
+        if(k==='⌫'){ val=val.slice(0,-1); }
+        else if(k==='確定'){ sTap(); nextQ(); return; }
+        else if(k==='.'){ if(val.indexOf('.')<0 && val!=='' && val.length<7){ val+='.'; sTap(); } }
+        else if(val.length<7){ val+=k; sTap(); }
+        entry.textContent=val||'_';
+        setAns(idx, val===''?null:val);
+      });
+    }
+  },
+
+  /* 中文語詞填空。學生用平板自帶的注音／手寫輸入法打字，比對字串自動批改。
+     打錯字算錯——國語科本來就是要考寫得出正確的字。
+     比對前正規化：去掉所有空白、全形英數轉半形。 */
+  textpad: {
+    answer: function(q){ return String(q.a); },
+    shown:  function(v){ return (v===null||v==='') ? "未作答" : String(v); },
+    ok:     function(q,v){
+      function norm(x){
+        return String(x==null?'':x)
+          .replace(/[\s　]/g,'')
+          .replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(c){
+            return String.fromCharCode(c.charCodeAt(0)-0xFEE0); });
+      }
+      return v!==null && norm(v)!=='' && norm(v)===norm(q.a);
+    },
+    mount:  function(host,q,idx,cur){
+      var val = (cur===null||cur===undefined) ? '' : String(cur);
+      var psg = (CFG.passages||[]).filter(function(x){ return x.id===q.psg; })[0];
+      host.innerHTML =
+        (psg ? '<div class="psg"><h4>'+psg.title+'</h4><p class="psg-body" id="psg-body"></p></div>' : '')
+      + '<p class="qtext">'+(q.q||'')+'</p>'
+      + '<div class="answer-box" style="justify-content:center">'
+      + '<span class="q">第 '+(idx+1)+' 格</span>'
+      + '<input class="zh" type="text" inputmode="text" lang="zh-TW" autocomplete="off" '
+      + 'autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="8" '
+      + 'aria-label="在這裡輸入語詞"></div>'
+      + '<p class="zh-hint">用平板的注音或手寫輸入法打字。按 Enter 可以跳下一格，最後再回頭檢查。</p>'
+      + '<p class="feedback"></p>';
+      var inp=host.querySelector('.zh');
+      inp.value = val;                      /* 用 value 指定，避免內容含引號時壞掉 */
+      function paintPsg(){
+        if(!psg) return;
+        var body=host.querySelector('#psg-body');
+        body.innerHTML = String(psg.text).replace(/\[\[(\d+)\]\]/g, function(_,n){
+          var i=parseInt(n,10)-1;
+          var filled = (i===idx) ? inp.value : (P.ans[i]||'');
+          var cls = (i===idx) ? 'blank cur' : (filled ? 'blank done' : 'blank');
+          return '<span class="'+cls+'">'+(filled || ('（'+n+'）＿＿')) + '</span>';
+        });
+      }
+      paintPsg();
+      inp.addEventListener('input', function(){
+        setAns(idx, inp.value===''?null:inp.value);
+        paintPsg();
+      });
+      inp.addEventListener('keydown', function(e){
+        if(e.key==='Enter'){ e.preventDefault(); sTap(); nextQ(); }
+      });
+      setTimeout(function(){ try{ inp.focus(); }catch(e){} }, 60);
+    }
+  },
+
+  choice: {
+    answer: function(q){ return q.opts[q.a]; },
+    shown:  function(v,q){ return (v===null||v===undefined) ? "未作答" : q.opts[v]; },
+    ok:     function(q,v){ return v===q.a; },
+    mount:  function(host,q,idx,cur){
+      host.innerHTML = '<p class="qtext">'+q.q+'</p><div class="choices"></div><p class="feedback"></p>';
+      var box=host.querySelector('.choices');
+      q.opts.forEach(function(txt,i){
+        var b=document.createElement('button');
+        b.type='button'; b.className='ch'+(cur===i?' picked':''); b.textContent=txt;
+        b.onclick=function(){
+          sTap(); setAns(idx,i);
+          Array.prototype.forEach.call(box.children,function(x){ x.className='ch'; });
+          b.className='ch picked';
+        };
+        box.appendChild(b);
+      });
+    }
+  },
+
+  fracpad: {
+    answer: function(q){ return fracStr(q.a[0], q.a[1]) + (q.unit||''); },
+    shown: function(v,q){
+      if(!v) return "未作答";
+      var w = (v.w!=null && v.w!=='') ? v.w : null;
+      var hasN = v.n!=null && v.n!=='', hasD = v.d!=null && v.d!=='';
+      var frac = (hasN || hasD) ? (hasN?v.n:'?')+'/'+(hasD?v.d:'?') : null;
+      if(w && frac) return w+'又'+frac;
+      if(w) return w;
+      if(frac) return frac;
+      return "未作答";
+    },
+    ok: function(q,v){
+      if(!v) return false;
+      var w = (v.w!=null && v.w!=='') ? Number(v.w) : 0;
+      var hasN = v.n!=null && v.n!=='', hasD = v.d!=null && v.d!=='';
+      if(hasN !== hasD) return false;               /* 只填了分子或分母，視為未完成 */
+      if(!hasN){                                     /* 純整數作答 */
+        if(!(v.w!=null && v.w!=='')) return false;
+        return q.a[1]===1 && w===q.a[0];
+      }
+      var n=Number(v.n), d=Number(v.d);
+      if(d===0) return false;
+      if(gcd(n,d)!==1) return false;                 /* 必須是最簡分數 */
+      var total = w + n/d, target = q.a[0]/q.a[1];
+      return Math.abs(total-target) < 1e-9;
+    },
+    mount: function(host,q,idx,cur){
+      var st = { w: cur&&cur.w!=null ? String(cur.w) : '',
+                 n: cur&&cur.n!=null ? String(cur.n) : '',
+                 d: cur&&cur.d!=null ? String(cur.d) : '' };
+      var active = 'n';
+      host.innerHTML = '<p class="qtext">'+q.q+'</p>'
+        + '<div class="answer-box" style="justify-content:center;gap:10px;flex-wrap:wrap">'
+        + '<span class="q">答案</span>'
+        + '<span class="fb" data-k="w"></span>'
+        + '<span class="fb-and">又</span>'
+        + '<span class="fb-stack"><span class="fb" data-k="n"></span><span class="fb-bar"></span><span class="fb" data-k="d"></span></span>'
+        + (q.unit?'<span class="q" style="margin-left:2px">'+q.unit+'</span>':'')
+        + '</div>'
+        + '<p class="small muted" style="text-align:center;margin:-8px 0 6px">先點一下要輸入的格子，再按數字。整數是 0 就留空。</p>'
+        + '<div style="display:flex;justify-content:center">'+padHTML()+'</div>'
+        + '<p class="feedback"></p>';
+      var boxes={}; ['w','n','d'].forEach(function(k){ boxes[k]=host.querySelector('.fb[data-k="'+k+'"]'); });
+      function paint(){
+        ['w','n','d'].forEach(function(k){
+          boxes[k].textContent = st[k]!=='' ? st[k] : '_';
+          boxes[k].classList.toggle('active', k===active);
+        });
+      }
+      ['w','n','d'].forEach(function(k){
+        boxes[k].onclick=function(){ active=k; sTap(); paint(); };
+      });
+      function commit(){
+        var has = st.w!=='' || st.n!=='' || st.d!=='';
+        setAns(idx, has ? {w:st.w||null, n:st.n||null, d:st.d||null} : null);
+      }
+      wirePad(host,function(k){
+        if(k==='⌫'){ st[active]=st[active].slice(0,-1); }
+        else if(k==='確定'){ sTap(); nextQ(); return; }
+        else if(st[active].length<3){ st[active]+=k; sTap(); }
+        paint(); commit();
+      });
+      paint();
+    }
+  }
+};
+function Wof(q){ return WIDGETS[q.w] || WIDGETS.numpad; }
+
+/* ---------- 檢核卷 ---------- */
+var P=null;
+function startExam(){
+  if(P && !P.submitted){ renderQ(); return; }
+  P={i:0, ans:CFG.qs.map(function(){return null;}), spent:CFG.qs.map(function(){return 0;}),
+     tin:Date.now(), t0:Date.now(), submitted:false};
+  renderQ();
+}
+function leaveQ(){
+  if(!P) return;
+  P.spent[P.i] += Math.round((Date.now()-P.tin)/1000);
+  P.tin=Date.now();
+}
+function setAns(i,v){ P.ans[i]=v; paintMap(); paintHUD(); }
+function answered(){ return P.ans.filter(function(v){ return v!==null && v!==''; }).length; }
+
+function paintHUD(){
+  var part=partOf(P.i);
+  $('hud-stage').textContent = part ? part.name : '';
+  var pips=''; for(var i=0;i<QN;i++) pips+='<span class="pip'+(i<=P.i?' on':'')+'"></span>';
+  $('hud-pips').innerHTML=pips;
+  $('hud-done').textContent = answered()+' / '+QN;
+}
+function paintMap(){
+  var box=$('q-map'); box.innerHTML='';
+  CFG.qs.forEach(function(q,i){
+    var b=document.createElement('button');
+    b.type='button'; b.className='seat qn'+((P.ans[i]!==null&&P.ans[i]!=='')?' filled':'');
+    b.textContent=(i+1);
+    b.setAttribute('aria-pressed', i===P.i?'true':'false');
+    b.onclick=function(){ sTap(); leaveQ(); P.i=i; renderQ(); };
+    box.appendChild(b);
+  });
+}
+function renderQ(){
+  var q=CFG.qs[P.i], host=$('p-stage');
+  host.innerHTML='<p class="eyebrow" style="margin-bottom:14px">第 '+(P.i+1)+' 題　·　'+q.p+' 分</p>'
+                +'<div class="stagebody"></div>';
+  Wof(q).mount(host.querySelector('.stagebody'), q, P.i, P.ans[P.i]);
+  $('q-prev').disabled = (P.i===0);
+  $('q-next').disabled = (P.i===QN-1);
+  paintHUD(); paintMap();
+  window.scrollTo(0,0);
+}
+function nextQ(){ if(P.i<QN-1){ leaveQ(); P.i++; renderQ(); } }
+$('q-prev').onclick=function(){ sTap(); if(P.i>0){ leaveQ(); P.i--; renderQ(); } };
+$('q-next').onclick=function(){ sTap(); nextQ(); };
+$('q-submit').onclick=function(){
+  var left=QN-answered();
+  if(left>0 && !confirm('還有 '+left+' 題沒有作答，確定要交卷嗎？沒作答的題目會算錯。')) return;
+  submitExam();
+};
+$('r-again').onclick=function(){ sTap(); P=null; show('game'); };
+
+/* ---------- 交卷與批改 ---------- */
+async function submitExam(){
+  leaveQ(); P.submitted=true;
+  var secs=Math.round((Date.now()-P.t0)/1000);
+  var log=[], score=0, right=0;
+  CFG.qs.forEach(function(q,i){
+    var W=Wof(q), good=W.ok(q,P.ans[i]);
+    if(good){ score+=q.p; right++; }
+    log.push({ q:(i+1)+'. '+q.q.replace(/<[^>]+>/g,''),
+               a:W.answer(q), u:W.shown(P.ans[i],q),
+               m:good?0:1, s:P.spent[i], p:good?q.p:0 });
+  });
+  var stars = score>=CFG.stars[0] ? 3 : (score>=CFG.stars[1] ? 2 : 1);
+
+  $('r-head').textContent = ID.cls+" "+ID.seat+" 號，交卷完成";
+  var svg='<svg class="star STAR" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5L12 17.4 6.2 20.45l1.1-6.5-4.7-4.6 6.5-.95z"/></svg>';
+  var sh=''; for(var i=0;i<3;i++) sh+=svg.replace('STAR',i<stars?'lit':'').replace('<svg ','<svg style="animation-delay:'+(i*.18)+'s" ');
+  $('r-stars').innerHTML=sh;
+  $('r-score').textContent=score;
+
+  var bySec={}; CFG.qs.forEach(function(q,i){ if(log[i].m){ var k=q.sec; bySec[k]=(bySec[k]||0)+1; } });
+  var weak=Object.keys(bySec).sort(function(a,b){ return bySec[b]-bySec[a]; });
+  $('r-summary').innerHTML =
+      '<div><dt>答對題數</dt><dd>'+right+' / '+QN+'</dd></div>'
+    + '<div><dt>總共用時</dt><dd>'+Math.max(1,Math.round(secs/60))+' 分</dd></div>'
+    + '<div><dt>要再加強</dt><dd>'+(weak.length?weak[0].slice(0,3):'沒有')+'</dd></div>';
+
+  var wrong=CFG.qs.map(function(q,i){ return {q:q,i:i}; }).filter(function(x){ return log[x.i].m>0; });
+  $('r-review').innerHTML = wrong.length===0
+    ? '<p class="small" style="margin:12px 0 0"><b style="color:var(--leaf)">'+QN+' 題全對，太厲害了。</b></p>'
+    : '<h3 style="margin-top:14px">這 '+wrong.length+' 題要訂正</h3><ul>'+wrong.map(function(x){
+        var W=Wof(x.q);
+        return '<li><b>第 '+(x.i+1)+' 題</b>　'+x.q.q
+             + '<span class="work">你的答案：'+log[x.i].u+'　·　正確答案：<b class="num" style="color:var(--red)">'+W.answer(x.q)+'</b></span>'
+             + '<span class="work">'+x.q.s+'</span></li>'; }).join('')+'</ul>';
+
+  var box=$('r-saved'); box.className='saved'; box.textContent='交卷中…';
+  show('result');
+  var r=await uploadResult({cls:ID.cls, seat:Number(ID.seat), ts:new Date().toISOString(),
+                            score:score, stars:stars, perfect:right, secs:secs, detail:log});
+  if(r.ok){
+    box.className='saved ok';
+    box.innerHTML='<span>✓</span><span>已交卷。'+ID.cls+' '+ID.seat+' 號的成績已經存到雲端，導師看得到。</span>';
+    flushPending();
+  }else{
+    box.className='saved err';
+    box.innerHTML='<span>!</span><span>'+r.why+'</span>';
+  }
+}
+
+initFirebase().then(flushPending);
+})();
+
+</script>
+</body>
+</html>
