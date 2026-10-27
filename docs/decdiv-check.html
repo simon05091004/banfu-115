@@ -746,14 +746,35 @@ var PAVAIL2=B4H-PPAD-20-(PPAD+44);    /* 第 2 面只放窄頁眉 */
 var PSTEM_F='600 12.5px ', POPT_F='400 11.5px ';
 
 function paperWrap(g, text, maxW, font){
+  /* 逐字斷行對中文是必要的，但會把「3.41」拆成「3.4／1」、把結尾的「？」
+     丟到下一行。所以先切成不可拆的詞塊：連續的數字（含小數點）算一塊，
+     收尾標點黏在前一塊後面，再依寬度貪婪填行。 */
   g.font=font; var out=[];
+  var CLOSE='？。，、）」』！：；%）';
   String(text).split('\n').forEach(function(para){
-    var cur='';
-    for(var k=0;k<para.length;k++){
-      var t=cur+para.charAt(k);
-      if(cur && g.measureText(t).width>maxW){ out.push(cur); cur=para.charAt(k); }
-      else cur=t;
+    var atoms=[], i=0;
+    while(i<para.length){
+      var ch=para.charAt(i);
+      if(/[0-9]/.test(ch)){
+        var num=ch; i++;
+        while(i<para.length && /[0-9.]/.test(para.charAt(i))){ num+=para.charAt(i); i++; }
+        atoms.push(num);
+      }else{
+        atoms.push(ch); i++;
+      }
     }
+    /* 收尾標點併進前一塊，避免孤行 */
+    var merged=[];
+    atoms.forEach(function(a){
+      if(merged.length && a.length===1 && CLOSE.indexOf(a)>=0) merged[merged.length-1]+=a;
+      else merged.push(a);
+    });
+    var cur='';
+    merged.forEach(function(a){
+      var t=cur+a;
+      if(cur && g.measureText(t).width>maxW){ out.push(cur); cur=a; }
+      else cur=t;
+    });
     out.push(cur);
   });
   return out;
