@@ -838,12 +838,17 @@ function paperBlocks(qs){
         var shown=para.replace(/\[\[(\d+)\]\]/g, function(_,n){ return '（'+n+'）＿＿＿＿'; });
         paperWrap(g, shown, tw, '400 12.5px '+FS).forEach(function(ln){ lines.push({t:ln, f:'400 12.5px '+FS}); });
       });
-      out.push({type:'psg', lines:lines, h:10 + lines.length*20 + 10});
+      out.push({type:'psg', lines:lines, h:10 + lines.length*19 + 10});
     });
+    /* 作答欄獨佔一整欄：不換欄的話它會從文章下方開始、再溢到下一欄頂端，
+       讀起來顛倒，而且線被壓到只剩 70pt，四字成語寫不下。
+       獨佔一欄之後一行放兩格就夠，每條線約 150pt。 */
+    out.push({type:'colbreak', h:0});
     out.push({type:'head', text:'作答欄（請把語詞寫在對應編號的橫線上）', h:32});
-    /* 一行放兩格。50 格各佔一行會吃掉約 1500pt，直接多擠出一面紙 */
     for(var k=0;k<qs.length;k+=2){
-      out.push({type:'slot2', a:k+1, b:(k+1<qs.length ? k+2 : 0), h:30});
+      var row=[];
+      for(var j=0;j<2;j++){ if(k+j<qs.length) row.push(k+j+1); }
+      out.push({type:'slots', ns:row, h:26});
     }
     return out;
   }
@@ -868,6 +873,8 @@ function paperPack(blocks){
   function pushCol(){ cols.push(cur); cur=[]; used=0;
     if(cols.length===PCOLS){ pages.push(cols); cols=[]; } }
   blocks.forEach(function(b){
+    /* colbreak：強制換到下一欄，本身不佔高度也不畫任何東西 */
+    if(b.type==='colbreak'){ if(used>0) pushCol(); return; }
     /* 大題標頭不要落在欄底變成孤行 */
     var need = b.h + (b.type==='head' ? 70 : 0);
     if(used>0 && used+need>avail()) pushCol();
@@ -927,18 +934,17 @@ function drawPracticeB4(cols, cls, page, pages, scale){
         var py=y+16;
         b.lines.forEach(function(ln){
           if(ln.t) txt(ln.t, x+4, py, ln.f, PC.ink);
-          py+=20;
+          py+=19;
         });
         y+=b.h; return;
       }
-      if(b.type==='slot2'){
-        var sy=y+15, half=Math.floor((PCOLW-10)/2);
-        txt(b.a+'.', x+4, sy, '700 11px '+FM, PC.red);
-        line(x+32, sy+7, x+half-8, sy+7, PC.line, .9);
-        if(b.b){
-          txt(b.b+'.', x+half+6, sy, '700 11px '+FM, PC.red);
-          line(x+half+36, sy+7, x+PCOLW-6, sy+7, PC.line, .9);
-        }
+      if(b.type==='slots'){
+        var sy=y+13, cw=Math.floor((PCOLW-6)/2);
+        b.ns.forEach(function(num, j){
+          var sx=x+2+j*cw;
+          txt(num+'.', sx, sy, '700 11px '+FM, PC.red);
+          line(sx+(num>=10?26:20), sy+7, sx+cw-10, sy+7, PC.line, .9);
+        });
         y+=b.h; return;
       }
       if(b.type==='head'){
