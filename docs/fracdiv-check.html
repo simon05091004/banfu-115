@@ -159,7 +159,7 @@ tr.detail td{background:var(--paper-3); padding:0; border-bottom:2px solid var(-
 <body>
 <div class="app">
   <header class="bar">
-    <div class="brand">分數除法<span>檢核卷</span><em>導師檢核</em></div>
+    <div class="brand" id="brand"></div>
     <span class="sp"></span>
     <button class="icon-btn" id="theme" title="切換亮／暗">◐</button>
     <button class="icon-btn" id="signout" hidden>登出</button>
@@ -205,6 +205,9 @@ tr.detail td{background:var(--paper-3); padding:0; border-bottom:2px solid var(-
    設定區：要和 quiz-game.html 的設定對應，尤其是 classes 和 FIRE_COL
    ============================================================ */
 const SCHOOL  = "永福國小";
+/* 頁首顯示用。寫死在 HTML 裡的話，複製當新單元底稿時一定會忘記改——
+   decdiv／circle／chinese50 三份都曾經頂著「分數除法綜合卷」上線。 */
+const BRAND   = ["分數除法", "檢核卷"];
 const TITLE   = "六年級 分數的除法 檢核卷紀錄";
 
 /* 班級 → 人數。導師仍可在畫面上臨時調整，調整值只存在該導師的瀏覽器 */
@@ -947,6 +950,8 @@ $('pdf-all').onclick  =function(){ exportPdf(CLASSES, '分數除法檢核卷_六
 
 $('pdf-paper').onclick =function(){ exportPaper(this); };
 
+(function(){ var b=$('brand');
+  if(b) b.innerHTML = BRAND[0]+'<span>'+BRAND[1]+'</span><em>導師檢核</em>'; })();
 boot();
 })();
 </script>
