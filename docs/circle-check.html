@@ -185,7 +185,8 @@ tr.detail td{background:var(--paper-3); padding:0; border-bottom:2px solid var(-
     <div class="toolbar">
       <button class="btn" id="pdf-class">匯出本班 PDF</button>
       <button class="btn ghost" id="pdf-all">匯出全年級 PDF</button>
-      <button class="btn ghost" id="pdf-paper">匯出紙本練習題</button>
+      <button class="btn ghost" id="pdf-paper">匯出學生卷</button>
+      <button class="btn ghost" id="pdf-key">匯出教師答案</button>
       <button class="btn ghost" id="reload">重新整理</button>
       <span class="sizefield"><label for="size">班級人數</label><input id="size" type="number" min="1" max="40" value="30"></span>
     </div>
@@ -937,18 +938,31 @@ function drawAnswerKey(qs, scale){
   return cv;
 }
 
+
+async function exportAnswerKey(btn){
+  var qs=paperQuestions();
+  if(!qs.length){ toast('還沒有題目可以印'); return; }
+  var old=btn.textContent; btn.disabled=true; btn.textContent='產生中…';
+  try{
+    if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+    download(paperTitle()+'_教師答案.pdf', await buildPdf([drawAnswerKey(qs, 2.4)]));
+  }catch(e){ toast('PDF 產生失敗：'+(e && e.message || e)); }
+  btn.disabled=false; btn.textContent=old;
+}
+
 async function exportPaper(btn){
   var qs=paperQuestions();
   if(!qs.length){ toast('還沒有題目可以印。請在 PAPER_QS 填入題目，或等有人交卷後再試'); return; }
   var old=btn.textContent; btn.disabled=true; btn.textContent='產生中…';
   try{
     if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+    /* 學生卷只放 B4 那幾面。答案頁另一支按鈕匯出——印 30 份時不會跟著多印
+       30 張答案，也不必每次在列印對話框指定頁碼 */
     var pgs=paperPack(paperBlocks(qs)), cvs=[];
     for(var p=0;p<pgs.length;p++){
       cvs.push(drawPracticeB4(pgs[p], CUR, p+1, pgs.length, 2.2));   /* B4 */
     }
-    cvs.push(drawAnswerKey(qs, 2.4));                                 /* 解答另外 A4 一張 */
-    download(paperTitle()+'_紙本練習題.pdf', await buildPdf(cvs));
+    download(paperTitle()+'_學生卷.pdf', await buildPdf(cvs));
   }catch(e){ toast('PDF 產生失敗：'+(e && e.message || e)); }
   btn.disabled=false; btn.textContent=old;
 }
@@ -980,6 +994,7 @@ $('pdf-class').onclick=function(){ exportPdf([CUR], '圓的周長與面積檢核
 $('pdf-all').onclick  =function(){ exportPdf(CLASSES, '圓的周長與面積檢核卷_六年級全部.pdf', this); };
 
 $('pdf-paper').onclick =function(){ exportPaper(this); };
+$('pdf-key').onclick   =function(){ exportAnswerKey(this); };
 
 (function(){ var b=$('brand');
   if(b) b.innerHTML = BRAND[0]+'<span>'+BRAND[1]+'</span><em>導師檢核</em>'; })();
