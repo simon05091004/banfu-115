@@ -832,7 +832,9 @@ function drawPracticeB4(cols, cls, page, pages, scale){
     line(PAD+432, fy+6, PAD+532, fy+6, PC.line, .8);
     txt('日期', PAD+548, fy, '400 10px '+FS, PC.dim);
     line(PAD+574, fy+6, W-PAD, fy+6, PC.line, .8);
-    txt('每題的答案都寫在下面的「答」橫線上。計算題和應用題請把計算過程寫在格子裡。',
+    /* 卷頭的作答說明。數學卷講計算過程、國語卷講選項與語詞，所以做成可覆寫 */
+    txt((typeof PAPER_HINT!=='undefined' && PAPER_HINT) ? PAPER_HINT
+        : '每題的答案都寫在下面的「答」橫線上。計算題和應用題請把計算過程寫在格子裡。',
         PAD, fy+28, '400 9.5px '+FS, PC.faint);
     top=PAD+112;
   }else{

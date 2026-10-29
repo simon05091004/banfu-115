@@ -863,7 +863,10 @@ function paperBlocks(qs){
       paperWrap(g,para,tw,f).forEach(function(ln){ lines.push({t:ln,f:f}); });
     });
     var isChoice = /（[A-Ｄ]）|[①②③④⑤⑥]/.test(String(q.q));
-    var work = isChoice ? 12 : 46;
+    /* 非選擇題預設留 46pt 給計算過程；國語那種只寫一個詞的卷子用不到，
+       在設定區放 PAPER_WORK 就能改小，不然 35 題就會多擠出一面紙 */
+    var defWork = (typeof PAPER_WORK!=='undefined' && PAPER_WORK!=null) ? PAPER_WORK : 46;
+    var work = isChoice ? 12 : defWork;
     out.push({type:'q', n:i+1, lines:lines, work:work,
               h:16 + lines.length*15 + work + 34});
   });
@@ -921,7 +924,9 @@ function drawPracticeB4(cols, cls, page, pages, scale){
     line(PAD+432, fy+6, PAD+532, fy+6, PC.line, .8);
     txt('日期', PAD+548, fy, '400 10px '+FS, PC.dim);
     line(PAD+574, fy+6, W-PAD, fy+6, PC.line, .8);
-    txt('每題的答案都寫在下面的「答」橫線上。計算題和應用題請把計算過程寫在格子裡。',
+    /* 卷頭的作答說明。數學卷講計算過程、國語卷講選項與語詞，所以做成可覆寫 */
+    txt((typeof PAPER_HINT!=='undefined' && PAPER_HINT) ? PAPER_HINT
+        : '每題的答案都寫在下面的「答」橫線上。計算題和應用題請把計算過程寫在格子裡。',
         PAD, fy+28, '400 9.5px '+FS, PC.faint);
     top=PAD+112;
   }else{
