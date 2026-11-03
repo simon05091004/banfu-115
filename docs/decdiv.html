@@ -877,7 +877,7 @@ async function submitExam(){
   $('r-summary').innerHTML =
       '<div><dt>答對題數</dt><dd>'+right+' / '+QN+'</dd></div>'
     + '<div><dt>總共用時</dt><dd>'+Math.max(1,Math.round(secs/60))+' 分</dd></div>'
-    + '<div><dt>要再加強</dt><dd>'+(weak.length?weak[0].slice(0,3):'沒有')+'</dd></div>';
+    + '<div><dt>要再加強</dt><dd>'+(weak.length?weak[0]:'沒有')+'</dd></div>';
 
   var wrong=CFG.qs.map(function(q,i){ return {q:q,i:i}; }).filter(function(x){ return log[x.i].m>0; });
   $('r-review').innerHTML = wrong.length===0

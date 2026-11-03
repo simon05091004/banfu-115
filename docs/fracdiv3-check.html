@@ -909,7 +909,9 @@ function drawAnswerKey(qs, scale){
   txt(paperTitle()+'　答案', PAD, PAD+24, '700 17px '+FS, PC.ink);
   line(PAD, PAD+40, W-PAD, PAD+40, PC.line, 1.2);
 
-  var y=PAD+62, RH=Math.min(28, (H-PAD-70-(PAD+62))/Math.max(1,qs.length)+6);
+  /* 行距要除得剛好，多加 6 的話題數一多就會印到紙外面 */
+  var y=PAD+62, RH=Math.min(28, (H-PAD-70-(PAD+62))/Math.max(1,qs.length));
+  var FZ=(RH<20?10:11);
   var ANSX=PAD+330;
   function fit(text, maxW, font){
     g.font=font;
@@ -918,16 +920,26 @@ function drawAnswerKey(qs, scale){
     while(t.length>1 && g.measureText(t+'…').width>maxW) t=t.slice(0,-1);
     return t+'…';
   }
+  /* 選擇題印圈號，老師對答只要看號碼；長選項再接前面幾個字當提示 */
+  function ansShown(q){
+    var a=String(q.a).trim(), s=String(q.q).replace(/\n/g,'　');
+    var re=/([①②③④⑤⑥])[ 　]*([^①②③④⑤⑥）]*)/g, m;
+    while((m=re.exec(s))){
+      if(m[2].replace(/[ 　）]/g,'')===a) return m[1]+' '+a;
+    }
+    return a;
+  }
   qs.forEach(function(q,i){
-    txt(i+1+'.', PAD+4, y, '700 11px '+FM, PC.red);
-    txt(fit(q.q, ANSX-(PAD+26)-10, '600 11px '+FS), PAD+26, y, '600 11px '+FS, PC.ink);
-    txt(q.a, ANSX, y, '700 12px '+FM, PC.leaf);
+    txt(i+1+'.', PAD+4, y, '700 '+FZ+'px '+FM, PC.red);
+    txt(fit(q.q, ANSX-(PAD+26)-10, '600 '+FZ+'px '+FS), PAD+26, y, '600 '+FZ+'px '+FS, PC.ink);
+    txt(fit(ansShown(q), W-PAD-ANSX-4, '700 '+(FZ+1)+'px '+FM),
+        ANSX, y, '700 '+(FZ+1)+'px '+FM, PC.leaf);
     var st=paperSteps(q.q);
     if(st && st.steps.length){
       txt('短除法：'+st.steps.join(' × ')+'　最下面兩個商：'+st.bottom.join('、'),
           ANSX+90, y, '400 9px '+FS, PC.dim);
     }
-    line(PAD, y+13, W-PAD, y+13, PC.hair, .6);
+    line(PAD, y+RH*0.5, W-PAD, y+RH*0.5, PC.hair, .6);
     y+=RH;
   });
   txt('此頁為教師對答用，影印給學生時請抽掉。', PAD, H-PAD, '400 9px '+FS, PC.faint);
