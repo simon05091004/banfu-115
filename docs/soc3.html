@@ -193,7 +193,7 @@ figure.bars .src{margin:.4rem 0 0;font-size:.78rem;color:var(--muted)}
 .steps{counter-reset:s;list-style:none;padding:0;margin:.8rem 0;display:grid;gap:.5rem}
 .steps li{counter-increment:s;display:grid;grid-template-columns:2rem minmax(0,1fr);gap:.6rem;align-items:start}
 .steps li::before{content:counter(s);font-family:var(--f-display);width:2rem;height:2rem;border-radius:50%;background:var(--c);color:var(--on-c);display:grid;place-items:center;font-size:1rem;line-height:1}
-.steps b{display:block}
+.steps span>b:first-child{display:block}
 
 /* 語詞 */
 .vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.1rem 1.4rem;margin:.6rem 0 1.4rem;padding:0}

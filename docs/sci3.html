@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>動物大解密</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* Layout: 一欄閱讀（最寬 52rem）＋頂端黏著課次分頁；每課以課色淡底開頭，內文用表格與清單，考點、想一想、網路補充各有固定樣式 */
+:root{
+  --bg:#F2F5F5; --surface:#FFFFFF; --ink:#17262B; --muted:#55676C; --line:#D3DDDE; --soft:#E7EDEE;
+  --c1:#2A66A8; --c1-soft:#E2ECF8;
+  --c2:#A65A0C; --c2-soft:#FAEEDF;
+  --c3:#23805A; --c3-soft:#DFF1E7;
+  --c4:#6A4FA6; --c4-soft:#EDE7F8;
+  --on-c:#FFFFFF;
+  --word:#C8312F; --blank:#D5DFE0;
+  --ok:#1D7546; --ok-soft:#DCF0E3; --bad:#B02E2A; --bad-soft:#F8E0DE;
+  --f-display:"Huninn","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --c:var(--c1); --cs:var(--c1-soft);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F171A; --surface:#162125; --ink:#E1EAEB; --muted:#9AACB0; --line:#2A3A3F; --soft:#1C292D;
+    --c1:#80B3EC; --c1-soft:#17283A;
+    --c2:#EEA75C; --c2-soft:#2D2113;
+    --c3:#6FCB9A; --c3-soft:#13281E;
+    --c4:#B89EEC; --c4-soft:#241E34;
+    --on-c:#0F171A;
+    --word:#FF8A80; --blank:#2A3A3F;
+    --ok:#6FCB9A; --ok-soft:#13281E; --bad:#FF8A80; --bad-soft:#331918;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F171A; --surface:#162125; --ink:#E1EAEB; --muted:#9AACB0; --line:#2A3A3F; --soft:#1C292D;
+  --c1:#80B3EC; --c1-soft:#17283A;
+  --c2:#EEA75C; --c2-soft:#2D2113;
+  --c3:#6FCB9A; --c3-soft:#13281E;
+  --c4:#B89EEC; --c4-soft:#241E34;
+  --on-c:#0F171A;
+  --word:#FF8A80; --blank:#2A3A3F;
+  --ok:#6FCB9A; --ok-soft:#13281E; --bad:#FF8A80; --bad-soft:#331918;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.8;}
+[hidden]{display:none!important}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+a{color:var(--c1)}
+:focus-visible{outline:3px solid var(--c1);outline-offset:2px;border-radius:4px}
+
+.wrap{max-width:52rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- 分頁列 ---------- */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;align-items:center;gap:.25rem;overflow-x:auto;padding-block:.5rem;scrollbar-width:thin}
+.tabs a{flex:none;text-decoration:none;color:var(--muted);font-size:.92rem;line-height:1.4;padding:.4rem .7rem;border-radius:999px;white-space:nowrap}
+.tabs a:hover{background:var(--soft);color:var(--ink)}
+.tabs a b{font-weight:700}
+.tabs a.t1 b{color:var(--c1)} .tabs a.t2 b{color:var(--c2)} .tabs a.t3 b{color:var(--c3)} .tabs a.t4 b{color:var(--c4)}
+#clozeBtn{flex:none;margin-left:auto;font:inherit;font-size:.9rem;line-height:1.4;padding:.4rem .8rem;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;white-space:nowrap}
+#clozeBtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* ---------- 封面 ---------- */
+.hero{padding-block:2.2rem 1.6rem}
+.hero-grid{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:start}
+.unit-no{font-family:var(--f-display);font-size:7.5rem;line-height:.9;color:var(--c2);letter-spacing:-.02em}
+.eyebrow{margin:0;font-size:.85rem;letter-spacing:.08em;color:var(--muted)}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0;line-height:1.35}
+h1{font-size:2.4rem;margin-top:.2rem}
+.lede{margin:.8rem 0 0;max-width:40em}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.9rem 0 0;padding:0;list-style:none;font-size:.85rem}
+.chips li{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:.15rem .55rem;color:var(--muted)}
+.chips li b{color:var(--ink);font-weight:700;margin-right:.3em}
+.howto{margin:1.1rem 0 0;font-size:.92rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:.8rem}
+
+/* ---------- 區塊 ---------- */
+section{scroll-margin-top:4rem}
+.block{padding-block:2rem}
+.block > h2{font-size:1.7rem}
+.block > .intro{color:var(--muted);margin:.3rem 0 1rem}
+.lesson{border-top:1px solid var(--line)}
+.lesson-head{background:var(--cs);border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:1.4rem}
+.lesson-tag{display:inline-block;background:var(--c);color:var(--on-c);font-size:.85rem;font-weight:700;letter-spacing:.06em;border-radius:6px;padding:.1rem .6rem}
+.lesson-head h2{font-size:1.75rem;margin-top:.5rem}
+.lesson-head ol{margin:.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;font-size:.95rem}
+.lesson-head ol a{color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--c)}
+.lesson-head ol span{color:var(--c);font-weight:700;margin-right:.3em;font-variant-numeric:tabular-nums}
+
+.topic{padding-block:1rem 1.6rem;scroll-margin-top:4rem}
+.topic + .topic{border-top:1px dashed var(--line)}
+.topic h3{font-size:1.4rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .6rem}
+.topic h3 .no{color:var(--c);font-variant-numeric:tabular-nums}
+.pg{font-family:var(--f-body);font-size:.8rem;color:var(--muted);letter-spacing:.04em}
+h4{font-size:1.1rem;margin:1.3rem 0 .5rem;color:var(--c)}
+p{margin:.6rem 0}
+ul.pts,ol.pts{margin:.6rem 0;padding-left:1.3em}
+ul.pts li,ol.pts li{margin:.3rem 0}
+ul.pts li::marker{color:var(--c)}
+ol.pts li::marker{color:var(--c);font-weight:700}
+
+/* 重點字、紅線語詞 */
+.k{font-weight:700;border-radius:4px;transition:background-color .15s,color .15s}
+.w{text-decoration:underline;text-decoration-color:var(--word);text-decoration-thickness:2px;text-underline-offset:5px}
+body.cloze .k{color:transparent;background:var(--blank);cursor:pointer;text-decoration-color:transparent}
+body.cloze .k.on{color:var(--c);background:var(--cs)}
+body.cloze .k.w.on{text-decoration-color:var(--word)}
+
+/* 表格 */
+.tbl{overflow-x:auto;margin:.8rem 0;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.95rem;line-height:1.65}
+th,td{text-align:left;vertical-align:top;padding:.55rem .75rem;border-bottom:1px solid var(--line)}
+tr:last-child > th,tr:last-child > td{border-bottom:0}
+thead th{background:var(--soft);font-weight:700;font-size:.85rem;letter-spacing:.04em;color:var(--muted);white-space:nowrap}
+tbody th{font-weight:700;white-space:nowrap;color:var(--c)}
+td.time{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+
+/* 總整理：手機改成一格一格 */
+.matrix th[scope="row"]{font-family:var(--f-display);font-weight:400;font-size:1.05rem}
+.matrix .r1 th{color:var(--c1)} .matrix .r2 th{color:var(--c2)} .matrix .r3 th{color:var(--c3)}
+@media (max-width:720px){
+  .matrix{border:0;background:transparent;overflow:visible}
+  .matrix table,.matrix tbody,.matrix tr,.matrix th,.matrix td{display:block;width:100%}
+  .matrix thead{display:none}
+  .matrix tr{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:.8rem;overflow:hidden}
+  .matrix th[scope="row"]{background:var(--soft);border-bottom:1px solid var(--line)}
+  .matrix td{border-bottom:1px dashed var(--line)}
+  .matrix td::before{content:attr(data-label);display:block;font-size:.78rem;letter-spacing:.06em;color:var(--muted);font-weight:700}
+}
+
+/* 三欄（現象／問題／行動） */
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin:.8rem 0}
+.trio > div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.8rem .9rem;min-width:0}
+.trio h5{margin:0 0 .3rem;font-family:var(--f-display);font-weight:400;font-size:1.05rem;color:var(--c)}
+.trio p{margin:.25rem 0;font-size:.93rem;line-height:1.65}
+.trio .sub{font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-top:.5rem}
+@media (max-width:640px){.trio{grid-template-columns:1fr}}
+
+/* 停看查 */
+.stl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin:.8rem 0}
+.stl div{display:flex;gap:.6rem;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem;min-width:0}
+.stl strong{font-family:var(--f-display);font-weight:400;font-size:1.7rem;line-height:1;color:var(--on-c);background:var(--c);border-radius:8px;padding:.35rem .45rem;flex:none}
+.stl span{font-size:.93rem;line-height:1.5}
+@media (max-width:560px){.stl{grid-template-columns:1fr}}
+
+/* 考點、補充 */
+.exam{border-left:4px solid var(--c);background:var(--cs);border-radius:0 10px 10px 0;padding:.7rem 1rem;margin:1rem 0;font-size:.97rem}
+.exam > b:first-child{display:block;font-size:.8rem;letter-spacing:.1em;color:var(--c)}
+.extra{border:1.5px dashed var(--line);border-radius:10px;padding:.7rem 1rem;margin:1rem 0;font-size:.93rem;line-height:1.7;background:var(--surface)}
+.extra > b:first-child{display:inline-block;font-size:.75rem;letter-spacing:.08em;background:var(--ink);color:var(--bg);border-radius:4px;padding:0 .45rem;margin-right:.4rem}
+.extra .src{display:block;margin-top:.3rem;font-size:.8rem;color:var(--muted)}
+.extra .src a{color:var(--muted)}
+
+/* 想一想 */
+details.think{border:1px solid var(--line);border-radius:10px;background:var(--surface);margin:.9rem 0}
+details.think summary{cursor:pointer;list-style:none;padding:.65rem 1rem;display:flex;gap:.6rem;align-items:baseline}
+details.think summary::-webkit-details-marker{display:none}
+details.think summary::before{content:"想一想";flex:none;font-size:.75rem;font-weight:700;letter-spacing:.05em;color:var(--on-c);background:var(--c2);border-radius:999px;padding:.05rem .55rem}
+details.think summary::after{content:"看參考答案";margin-left:auto;flex:none;font-size:.78rem;color:var(--muted)}
+details.think[open] summary::after{content:"收起"}
+details.think .ans{padding:0 1rem .8rem;border-top:1px dashed var(--line);font-size:.95rem}
+details.think .ans p{margin:.6rem 0 0}
+
+/* 長條圖 */
+figure.bars{margin:1rem 0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.9rem 1rem .7rem}
+figure.bars figcaption{font-weight:700;font-size:.98rem}
+figure.bars .unit{font-weight:400;font-size:.8rem;color:var(--muted);margin-left:.4rem}
+.bar-list{margin:.6rem 0 0;padding:0;list-style:none}
+.bar-row{display:grid;grid-template-columns:4.6em minmax(0,1fr);align-items:center;gap:.6rem;padding:.12rem 0;border-radius:6px}
+.bar-row:hover,.bar-row:focus-visible{background:var(--soft)}
+.bar-row .lab{font-size:.9rem;text-align:right;line-height:1.5}
+.track{position:relative;display:flex;align-items:center;height:1.6rem;
+  background-image:linear-gradient(to right,var(--line) 1px,transparent 1px);background-size:25% 100%;border-right:1px solid var(--line)}
+.fill{display:block;height:14px;width:calc(var(--v) * 1%);min-width:3px;background:var(--c);border-radius:0 4px 4px 0}
+.val{margin-left:.4rem;font-size:.85rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);background:var(--surface);padding:0 .15rem;border-radius:3px;line-height:1.3}
+.bar-row:hover .val{background:var(--soft)}
+.ticks{display:grid;grid-template-columns:4.6em minmax(0,1fr);gap:.6rem;margin-top:.15rem}
+.ticks div{position:relative;height:1.2rem;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.ticks div span{position:absolute;transform:translateX(-50%)}
+.ticks div span:first-child{transform:none}
+.ticks div span:last-child{transform:translateX(-100%)}
+figure.bars .src{margin:.4rem 0 0;font-size:.78rem;color:var(--muted)}
+
+/* 步驟 */
+.steps{counter-reset:s;list-style:none;padding:0;margin:.8rem 0;display:grid;gap:.5rem}
+.steps li{counter-increment:s;display:grid;grid-template-columns:2rem minmax(0,1fr);gap:.6rem;align-items:start}
+.steps li::before{content:counter(s);font-family:var(--f-display);width:2rem;height:2rem;border-radius:50%;background:var(--c);color:var(--on-c);display:grid;place-items:center;font-size:1rem;line-height:1}
+.steps span>b:first-child{display:block}
+
+/* 語詞 */
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.1rem 1.4rem;margin:.6rem 0 1.4rem;padding:0}
+.vocab div{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.6rem;align-items:baseline;padding:.4rem 0;border-bottom:1px dashed var(--line)}
+.vocab dt{font-weight:700;white-space:nowrap}
+.vocab dd{margin:0;font-size:.9rem;color:var(--muted);line-height:1.55}
+.vocab-h{font-size:1.05rem;margin:1.2rem 0 .2rem}
+.vocab-h.v1{color:var(--c1)} .vocab-h.v2{color:var(--c2)} .vocab-h.v3{color:var(--c3)} .vocab-h.v4{color:var(--c4)}
+
+/* 自我檢測 */
+.scorebar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 3.1rem);z-index:5;display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;background:var(--bg);padding:.5rem 0;border-bottom:1px solid var(--line)}
+.scorebar output{font-weight:700;font-variant-numeric:tabular-nums}
+.scorebar button{margin-left:auto}
+.btn{font:inherit;font-size:.9rem;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:.35rem .8rem;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+ol.qs{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:1rem}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem}
+.q .stem{margin:0;font-weight:500}
+.q .qn{font-family:var(--f-display);margin-right:.4rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.q .from{display:inline-block;font-size:.72rem;font-weight:700;border-radius:4px;padding:0 .4rem;margin-left:.4rem;vertical-align:.1em;color:var(--on-c);background:var(--c)}
+.opts{display:grid;gap:.4rem;margin-top:.6rem}
+.opt{font:inherit;font-size:.97rem;text-align:left;line-height:1.55;display:grid;grid-template-columns:1.6em minmax(0,1fr);gap:.3rem;padding:.5rem .7rem;border-radius:8px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--c)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.dim{opacity:.6}
+.exp{margin:.6rem 0 0;font-size:.93rem;line-height:1.7;padding:.5rem .7rem;border-radius:8px;background:var(--soft)}
+.exp b{margin-right:.3rem}
+.exp .y{color:var(--ok)} .exp .n{color:var(--bad)}
+#done{margin-top:1rem;font-family:var(--f-display);font-size:1.25rem}
+
+footer{border-top:1px solid var(--line);padding-block:1.4rem 2.4rem;font-size:.82rem;color:var(--muted);line-height:1.7}
+footer ul{margin:.3rem 0 0;padding-left:1.2em}
+footer a{color:var(--muted)}
+
+@media (max-width:560px){
+  body{font-size:16px}
+  .hero-grid{grid-template-columns:1fr;gap:.2rem}
+  .unit-no{font-size:4.5rem}
+  h1{font-size:1.95rem}
+  .lesson-head{padding:1rem}
+  .lesson-head h2{font-size:1.45rem}
+  .topic h3{font-size:1.25rem}
+}
+
+@media print{
+  body{font-size:11pt;background:#fff;color:#000}
+  .tabs,.scorebar,#quiz,body::before{display:none!important}
+  body.cloze .k{color:inherit;background:none}
+  .lesson,.topic{break-inside:auto}
+  .tbl,figure.bars,details.think,.trio > div{break-inside:avoid}
+  details.think summary::after{content:""}
+}
+</style>
+
+<nav class="tabs" aria-label="單元目錄">
+  <div class="wrap">
+    <a href="#overview"><b>總整理</b></a>
+    <a href="#l1" class="t1"><b>活動1</b> 運動</a>
+    <a href="#l2" class="t2"><b>活動2</b> 呼吸</a>
+    <a href="#l3" class="t3"><b>活動3</b> 生活</a>
+    <a href="#read" class="t4"><b>科學閱讀</b></a>
+    <a href="#words"><b>名詞</b></a>
+    <a href="#quiz"><b>自我檢測</b></a>
+    <button id="clozeBtn" type="button" aria-pressed="false">背誦模式：關</button>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="hero-grid">
+    <div class="unit-no" aria-hidden="true">3</div>
+    <div>
+      <p class="eyebrow">康軒版　六年級上學期　自然　第三單元　課本 p.70–99</p>
+      <h1>動物大解密</h1>
+      <p class="lede">動物如何利用身體內各種器官運作來維持生存？這個單元要弄懂三件事：動物靠<b class="k">肌肉、骨骼和關節</b>互相配合來運動；不同動物用<b class="k">肺、鰓或氣管</b>呼吸；人類從動物取得資源，也模仿動物發明新產品。</p>
+      <p class="eyebrow" style="margin-top:.9rem">我學過的</p>
+      <ul class="chips" aria-label="我學過的">
+        <li><b>3下</b>動物外形分頭、軀幹和肢</li>
+        <li><b>4上</b>水生動物有不同的呼吸方式</li>
+        <li><b>4下</b>昆蟲的構造和運動、生長有關</li>
+        <li><b>5上</b>動物的覓食、繁殖等行為</li>
+        <li><b>5下</b>細胞是構成生物體最小的單位</li>
+      </ul>
+      <p class="howto">複習方法：先讀「總整理」抓大方向，再逐個活動看重點。按右上角「背誦模式」，粗體重點會變成空格，點一下空格就會出現答案；最後到「自我檢測」做 18 題選擇題。紅色底線的是課本用紫色字標出的重要名詞。</p>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================== 總整理 ===================== -->
+<section id="overview" class="block wrap">
+  <h2>一張表看懂三個活動</h2>
+  <p class="intro">三個活動都從動物的身體構造出發：<b>身體構造和功能互相配合 → 動物才能運動、呼吸 → 人類利用動物資源，也模仿動物發明</b>。課本 p.98–99 的「學習筆記」都整理在這張表和下面各活動裡。</p>
+  <div class="tbl matrix">
+    <table>
+      <thead><tr><th>活動</th><th>要回答的問題</th><th>關鍵構造</th><th>記住這句話</th><th>課本例子</th></tr></thead>
+      <tbody>
+        <tr class="r1">
+          <th scope="row">動物如何運動</th>
+          <td data-label="要回答的問題">動物靠什麼構造運動？怎麼幫動物分類？</td>
+          <td data-label="關鍵構造">肌肉、骨骼、關節（還有連接肌肉和骨骼的肌腱）</td>
+          <td data-label="記住這句話">肌肉藉由<b class="k">收縮或舒張</b>拉動骨骼，使關節彎曲或伸直；可以用<b class="k">二分法</b>依外形特徵、身體構造、運動或繁殖方式分類</td>
+          <td data-label="課本例子">狗、鳥：肌肉＋骨骼＋關節；蝸牛（腹足）、蚯蚓、河蚌（斧足）、章魚（腕足）：沒有骨骼，靠肌肉的收縮和舒張</td>
+        </tr>
+        <tr class="r2">
+          <th scope="row">動物如何呼吸</th>
+          <td data-label="要回答的問題">空氣怎麼進出身體？不同動物用什麼呼吸？</td>
+          <td data-label="關鍵構造">鼻、氣管、肺；魚的鰓；昆蟲的氣管</td>
+          <td data-label="記住這句話">空氣由鼻 → 氣管 → 肺，在肺<b class="k">氣體交換</b>；呼出的氣體含有比空氣<b class="k">較多的二氧化碳</b>；細胞 → 組織 → 器官 → 器官系統 → 個體</td>
+          <td data-label="課本例子">人、狗用肺；魚用鰓；蝗蟲用氣管</td>
+        </tr>
+        <tr class="r3">
+          <th scope="row">動物與我們生活有關嗎</th>
+          <td data-label="要回答的問題">動物提供我們什麼？帶給人類哪些靈感？</td>
+          <td data-label="關鍵構造">養殖、仿生</td>
+          <td data-label="記住這句話">取得動物資源要注重<b class="k">食品安全與環境保護</b>；模仿動物的構造或運動方式研發產品，就是<b class="k">仿生</b></td>
+          <td data-label="課本例子">牛奶、羊毛、雞肉和雞蛋、皮革商品；飛機—鳥、蛙鞋—蹼、吸盤—章魚</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 style="color:var(--ink)">這個單元的三個問題</h4>
+  <ol class="pts">
+    <li>動物如何運動？</li>
+    <li>動物如何呼吸？</li>
+    <li>動物與我們生活有關嗎？</li>
+  </ol>
+
+  <h4 style="color:var(--ink)">單元開頭的潛水圖：三個問題去哪裡找答案</h4>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>課本 p.72–73 的問題</th><th>到哪裡找答案</th></tr></thead>
+      <tbody>
+        <tr><td>為什麼他要浮出水面才能呼吸？</td><td><a href="#l2-3">活動 2-3 動物的呼吸</a>：人用肺呼吸，不能像魚用鰓吸收水中的氧氣。</td></tr>
+        <tr><td>他（潛水的人）游水的動作為什麼和我們（魚）不一樣？</td><td><a href="#l1-2">活動 1-2</a>：動物的身體構造不同，運動方式也不同。人靠肌肉、骨骼和關節帶動手腳划水，魚的身體構造和人不一樣。</td></tr>
+        <tr><td>他的腳上穿著蛙鞋，有什麼用途？</td><td><a href="#l3-2">活動 3-2 來自動物的靈感</a>：蛙鞋的靈感來自動物的蹼。</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== 活動 1 ===================== -->
+<section id="l1" class="lesson" style="--c:var(--c1);--cs:var(--c1-soft)">
+ <div class="block wrap">
+  <header class="lesson-head">
+    <span class="lesson-tag">活動 1</span>
+    <h2>動物如何運動？</h2>
+    <ol>
+      <li><a href="#l1-1"><span>1-1</span>人體的構造與運動方式</a></li>
+      <li><a href="#l1-2"><span>1-2</span>動物的構造與運動方式</a></li>
+      <li><a href="#l1-3"><span>1-3</span>動物的分類</a></li>
+    </ol>
+  </header>
+
+  <article class="topic" id="l1-1">
+    <h3><span class="no">1-1</span>人體的構造與運動方式<span class="pg">課本 p.74–76</span></h3>
+    <p>上體育課時會做出踢球、跑步等許多動作，是因為人體內具有這些構造：</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>構造</th><th>功能</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><b class="k w">肌肉</b></th><td>能<b class="k">收縮</b>產生運動或<b class="k">維持姿勢</b></td></tr>
+          <tr><th scope="row"><b class="k w">骨骼</b></th><td>能<b class="k">支撐</b>、幫助運動並<b class="k">保護</b>人體</td></tr>
+          <tr><th scope="row"><b class="k w">關節</b></th><td>是<b class="k">骨骼與骨骼連接</b>的地方，讓我們可以做出不同動作</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="exam"><b>知識庫・肌腱</b>肌肉兩端<b class="k">白色</b>的構造稱為<b class="k w">肌腱</b>，可以幫助肌肉與骨骼連接。肌腱<b class="k">不能主動收縮</b>，但可以<b class="k">傳遞肌肉的力</b>給骨骼，做出不同動作。</div>
+
+    <h4>手臂怎麼彎曲和伸直？</h4>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>手臂動作</th><th>內側肌肉</th><th>外側肌肉</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">彎曲</th><td><b class="k">收縮</b></td><td><b class="k">舒張</b></td></tr>
+          <tr><th scope="row">伸直</th><td><b class="k">舒張</b></td><td><b class="k">收縮</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="pts">
+      <li>肌肉藉由<b class="k w">收縮</b>或<b class="k w">舒張</b>拉動骨骼，使關節<b class="k">彎曲或伸直</b>。</li>
+      <li>肌肉、骨骼和關節<b class="k">互相配合</b>，幫助我們做出各種動作。</li>
+      <li>記法：看哪一側的肌肉「收縮」——內側收縮，手臂彎曲；外側收縮，手臂伸直。另一側就是舒張。</li>
+    </ul>
+    <details class="think"><summary>上體育課時會做出許多不同的動作，我們身體內部有什麼構造，使我們可以做出這些動作？</summary>
+      <div class="ans"><p>身體內有肌肉、骨骼和關節。肌肉收縮或舒張拉動骨骼，骨骼支撐身體，關節讓骨骼可以彎曲或伸直，三者互相配合，我們才能踢球、跑步、跳躍。</p></div>
+    </details>
+  </article>
+
+  <article class="topic" id="l1-2">
+    <h3><span class="no">1-2</span>動物的構造與運動方式<span class="pg">課本 p.77–79</span></h3>
+    <p>除了人類，有些動物也利用肌肉、骨骼和關節互相配合來運動；有些動物具有肌肉，卻<b class="k">沒有骨骼</b>。</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>動物</th><th>有骨骼和關節嗎</th><th>主要運動方式</th><th>靠什麼運動</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">狗</th><td>有</td><td>走、跑、跳</td><td>四肢的肌肉、骨骼和關節</td></tr>
+          <tr><th scope="row">鳥</th><td>有</td><td>飛行</td><td>肌肉、骨骼和關節，幫助牠展開翅膀飛翔</td></tr>
+          <tr><th scope="row">蚯蚓</th><td>沒有</td><td>爬行</td><td>身體肌肉的收縮和舒張，使身體<b class="k">變長或縮短</b></td></tr>
+          <tr><th scope="row">蝸牛</th><td>沒有（也沒有腳）</td><td>爬行</td><td><b class="k">腹足</b>肌肉的收縮和舒張</td></tr>
+          <tr><th scope="row">河蚌</th><td>沒有（也沒有腳）</td><td>移動</td><td>把<b class="k">斧足</b>伸出殼外，利用斧足肌肉的收縮和舒張</td></tr>
+          <tr><th scope="row">章魚</th><td>沒有</td><td>游水、爬行</td><td>肌肉構成的<b class="k">腕足</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="exam"><b>考點</b>表裡的動物<b>都有肌肉</b>，差別在有沒有骨骼和關節。沒有骨骼的動物，靠<b class="k">肌肉的收縮和舒張</b>來運動。蝸牛＝腹足、河蚌＝斧足、章魚＝腕足，不要記混。</div>
+
+    <h4>比較動物和人的異同</h4>
+    <div class="tbl">
+      <table>
+        <thead><tr><th></th><th>鳥</th><th>人</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">相異</th><td>有一對翅膀；利用雙翅飛行</td><td>有兩隻手；利用兩隻腳跑</td></tr>
+          <tr><th scope="row">相同</th><td colspan="2">有肌肉、骨骼和關節；利用兩隻腳走或跳</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>只有蝸牛</th><th>蝸牛和人共同</th><th>只有人</th></tr></thead>
+        <tbody>
+          <tr><td>沒有骨骼、關節；利用腹足爬行</td><td>具有<b class="k">肌肉</b></td><td>有骨骼、關節；利用兩隻腳走、跑、跳</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details class="think"><summary>有些動物具有肌肉卻沒有骨骼，牠們是怎麼運動呢？</summary>
+      <div class="ans"><p>牠們靠肌肉的收縮和舒張來運動。例如蝸牛靠腹足肌肉爬行，蚯蚓靠身體肌肉讓身體變長或縮短來爬行，河蚌伸出斧足移動，章魚用肌肉構成的腕足游水或爬行。</p></div>
+    </details>
+  </article>
+
+  <article class="topic" id="l1-3">
+    <h3><span class="no">1-3</span>動物的分類<span class="pg">課本 p.80–82</span></h3>
+    <ul class="pts">
+      <li>不同的動物具有不同的外形特徵和身體構造，以<b class="k">適應環境</b>。</li>
+      <li>可以依據動物的<b class="k">外形特徵、身體構造、運動或繁殖方式</b>等來幫牠們分類。</li>
+    </ul>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>動物</th><th>特徵</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">蛙</th><td>卵生、有四隻腳、有潮溼皮膚</td></tr>
+          <tr><th scope="row">蝴蝶</th><td>卵生、有六隻腳、有翅膀</td></tr>
+          <tr><th scope="row">鳥</th><td>卵生、有兩隻腳、有翅膀、有羽毛</td></tr>
+          <tr><th scope="row">金魚</th><td>卵生、有鰭、有鱗片</td></tr>
+          <tr><th scope="row">蜥蜴</th><td>卵生、有四隻腳、有鱗片、有尾巴</td></tr>
+          <tr><th scope="row">狗</th><td><b class="k">胎生</b>、有四隻腳、有毛、有尾巴</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="exam"><b>知識庫・二分法</b>在生物領域裡，會採用<b class="k w">二分法</b>來分類、辨識各種生物。分類時選擇<b class="k">一種特徵標準</b>，將<b class="k">符合</b>這個標準的歸為一類，<b class="k">不符合</b>的歸為另一類。</div>
+
+    <h4>小廷這一組的分類（一層一層往下分）</h4>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>從哪一群分</th><th>特徵標準</th><th>符合</th><th>不符合</th></tr></thead>
+        <tbody>
+          <tr><td>六種動物</td><td>是胎生？</td><td>狗</td><td>蛙、蝴蝶、鳥、金魚、蜥蜴</td></tr>
+          <tr><td>不是胎生的五種</td><td>是六隻腳？</td><td>蝴蝶</td><td>蛙、鳥、金魚、蜥蜴</td></tr>
+          <tr><td>不是六隻腳的四種</td><td>有鱗片？</td><td>金魚、蜥蜴</td><td>蛙、鳥</td></tr>
+          <tr><td>有鱗片的兩種</td><td>有鰭？</td><td>金魚</td><td>蜥蜴</td></tr>
+          <tr><td>沒有鱗片的兩種</td><td>有翅膀？</td><td>鳥</td><td>蛙</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>小妍這一組的分類</h4>
+    <p>用「有沒有翅膀」分：<b>有翅膀</b>——蝴蝶、鳥；<b>沒有翅膀</b>——蛙、金魚、蜥蜴、狗。兩組都還可以再往下分。同一群動物用<b class="k">不同的特徵標準</b>，分出來的結果就不一樣。</p>
+    <details class="think"><summary>小妍這一組還有其他分類方式嗎？可以怎麼繼續分下去？</summary>
+      <div class="ans"><p>可以。例如有翅膀的再用「有羽毛嗎？」分成鳥／蝴蝶；沒有翅膀的用「是胎生嗎？」分出狗，剩下的蛙、金魚、蜥蜴再用「有鱗片嗎？」分出蛙，最後用「有鰭嗎？」分開金魚和蜥蜴。</p></div>
+    </details>
+    <details class="think"><summary>想一想，如何將雞、蜥蜴、虎、兔、水牛、鴨分類？</summary>
+      <div class="ans"><p>這題沒有標準答案，每次只要用一個特徵標準就可以。例如先用「有羽毛嗎？」分成雞、鴨／蜥蜴、虎、兔、水牛；沒有羽毛的再用「是胎生嗎？」分成虎、兔、水牛／蜥蜴。</p></div>
+    </details>
+  </article>
+ </div>
+</section>
+
+<!-- ===================== 活動 2 ===================== -->
+<section id="l2" class="lesson" style="--c:var(--c2);--cs:var(--c2-soft)">
+ <div class="block wrap">
+  <header class="lesson-head">
+    <span class="lesson-tag">活動 2</span>
+    <h2>動物如何呼吸？</h2>
+    <ol>
+      <li><a href="#l2-1"><span>2-1</span>人體的呼吸</a></li>
+      <li><a href="#l2-lab"><span>探究</span>人體呼出的氣體</a></li>
+      <li><a href="#l2-2"><span>2-2</span>人體的組成層次</a></li>
+      <li><a href="#l2-3"><span>2-3</span>動物的呼吸</a></li>
+    </ol>
+  </header>
+
+  <article class="topic" id="l2-1">
+    <h3><span class="no">2-1</span>人體的呼吸<span class="pg">課本 p.83</span></h3>
+    <ol class="steps">
+      <li><span><b>吸入</b>外界環境的空氣由人體的<b class="k w">鼻</b>吸入。</span></li>
+      <li><span><b>往下走</b>經由<b class="k w">氣管</b>進入<b class="k w">肺</b>。</span></li>
+      <li><span><b>氣體交換</b>空氣中一部分的<b class="k">氧氣</b>在肺部與<b class="k">二氧化碳</b>進行氣體交換。</span></li>
+      <li><span><b>排出</b>再經由肺、氣管，最後由鼻排出人體外。</span></li>
+    </ol>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>呼吸器官</th><th>功能</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">鼻</th><td>吸入、排出氣體</td></tr>
+          <tr><th scope="row">氣管</th><td><b class="k">連接鼻和肺</b></td></tr>
+          <tr><th scope="row">肺</th><td>負責<b class="k">氣體交換</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="topic" id="l2-lab">
+    <h3><span class="no">探究</span>人體呼出氣體探究<span class="pg">課本 p.84–87</span></h3>
+    <ol class="steps">
+      <li><span><b>察覺現象</b>空氣是生物生存必要的物質之一，我們呼吸時會不斷吸入、呼出氣體。跑步吐氣時想到：呼出的氣體是二氧化碳嗎？</span></li>
+      <li><span><b>提出問題</b>人體吐氣時，真的會呼出比吸氣時更多的二氧化碳嗎？</span></li>
+      <li><span><b>蒐集資料</b>空氣中含有二氧化碳；人體吐氣時會排出氮氣、二氧化碳等氣體。可以用<b class="k">澄清石灰水</b>檢驗二氧化碳，因為澄清石灰水碰到二氧化碳時會<b class="k">變混濁</b>。</span></li>
+      <li><span><b>假設</b>驗證後，會得到「人體呼出的氣體中含有比空氣中較多二氧化碳」的結果。</span></li>
+      <li><span><b>實驗設計</b>用吸管把呼出的氣體吹入塑膠袋；另用塑膠袋收集空氣。</span></li>
+      <li><span><b>實驗</b>一個塑膠袋加入澄清石灰水，插入短吸管後綁緊，再對著吸管吐氣；另一個塑膠袋加入<b class="k">等量</b>的澄清石灰水，收集空氣後再綁緊；分別搖晃兩個塑膠袋，觀察變化。</span></li>
+      <li><span><b>結果、討論、結論</b>記錄在習作，分析結果，驗證假設是否成立。</span></li>
+    </ol>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>塑膠袋</th><th>裝進的氣體</th><th>搖晃後的澄清石灰水</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">甲</th><td>人體呼出的氣體</td><td>變得<b class="k">比較混濁</b></td></tr>
+          <tr><th scope="row">乙</th><td>空氣</td><td>沒有甲袋那麼混濁</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><b>結論：</b>人體呼出的氣體會使澄清石灰水變得比較<b class="k w">混濁</b>，所以人體呼出的氣體中含有比空氣中較多的<b class="k w">二氧化碳</b>。</p>
+    <h4>實驗注意</h4>
+    <ul class="pts">
+      <li>短吸管<b>不可接觸</b>到澄清石灰水。</li>
+      <li>對著吸管吐氣時要小心，避免<b>吸入</b>澄清石灰水。</li>
+    </ul>
+    <div class="exam"><b>考點</b>澄清石灰水用來檢驗<b>二氧化碳</b>（碰到會變混濁）。兩袋加入<b>等量</b>的澄清石灰水，差別只有「裝進的氣體」，比較出來的結果才可靠。</div>
+    <div class="extra"><b>網路補充</b>吸入的空氣中，二氧化碳只占大約 <b>0.04%</b>；呼出的氣體中大約有 <b>4%</b>，多了約 100 倍，所以吐氣的那一袋明顯比較混濁。呼出的氧氣則從約 21% 降到約 16%（都是大約的數字，會隨運動等狀況改變）。
+      <span class="src">資料：<a href="https://www.savemyexams.com/gcse/biology/wjec/18/revision-notes/1-cells-organ-systems-and-ecosystems/1-2-respiration-and-the-respiratory-system-in-humans/comparing-inspired-and-expired-air" target="_blank" rel="noopener">Save My Exams：Comparing Inspired &amp; Expired Air（2026-07-02 更新）</a></span></div>
+    <details class="think"><summary>裝有澄清石灰水的兩個塑膠袋中，為什麼澄清石灰水的變化情形會不同呢？</summary>
+      <div class="ans"><p>因為兩袋裝進的氣體不同。吐氣的那一袋裝的是人體呼出的氣體，含有比空氣較多的二氧化碳，所以澄清石灰水變得比較混濁；裝空氣的那一袋二氧化碳比較少，變化比較不明顯。</p></div>
+    </details>
+    <details class="think"><summary>還可以用什麼物品來進行實驗？</summary>
+      <div class="ans"><p>例如用透明杯子或錐形瓶裝澄清石灰水，用吸管把呼出的氣體吹進去；也可以先用氣球收集呼出的氣體。記得同樣要準備一份裝空氣的來比較，澄清石灰水也要等量。</p></div>
+    </details>
+  </article>
+
+  <article class="topic" id="l2-2">
+    <h3><span class="no">2-2</span>人體的組成層次<span class="pg">課本 p.88–89</span></h3>
+    <ul class="pts">
+      <li>人類能夠呼吸是藉由<b class="k">呼吸系統</b>的幫助。除了呼吸系統，人體內還有許多執行不同<b class="k w">生理作用</b>的器官系統。</li>
+      <li><b class="k w">器官系統</b>由具有不同功能的器官組成，例如呼吸系統由<b class="k">鼻、氣管和肺</b>等呼吸器官組成。</li>
+      <li><b class="k w">器官</b>由<b class="k w">組織</b>組成，組織由<b class="k w">細胞</b>組成；細胞是構成生物體的<b class="k">最小單位</b>。</li>
+    </ul>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>層次（由大到小）</th><th>課本的例子</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">個體</th><td>人體</td></tr>
+          <tr><th scope="row">器官系統</th><td>呼吸系統</td></tr>
+          <tr><th scope="row">器官</th><td>鼻、氣管、肺等</td></tr>
+          <tr><th scope="row">組織</th><td>上皮組織（鼻的上皮組織由細胞組成）</td></tr>
+          <tr><th scope="row">細胞</th><td>上皮細胞</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="exam"><b>考點</b>由小到大：<b class="k">細胞 → 組織 → 器官 → 器官系統 → 個體</b>。題目常把順序打亂，或問「最小單位」是什麼（細胞）。</div>
+  </article>
+
+  <article class="topic" id="l2-3">
+    <h3><span class="no">2-3</span>動物的呼吸<span class="pg">課本 p.90–91</span></h3>
+    <p>不同動物具有不同的<b class="k">呼吸器官</b>，呼吸的方式也不同。</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>動物</th><th>呼吸器官</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">人、狗</th><td><b class="k">肺</b></td><td>狗具有與人類相同的呼吸器官，用肺呼吸，進行氣體交換。</td></tr>
+          <tr><th scope="row">魚（例如鯉魚）</th><td><b class="k">鰓</b></td><td>鰓吸收<b class="k">水中的氧氣</b>，將二氧化碳排出到水中；這兩種氣體都可以<b class="k">溶於水</b>。</td></tr>
+          <tr><th scope="row">蝗蟲等昆蟲</th><td><b class="k">氣管</b></td><td>利用氣管呼吸，進行氣體交換。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="exam"><b>考點</b>人和魚都需要氧氣、都會排出二氧化碳；差別是人用肺吸收<b>空氣中</b>的氧氣，魚用鰓吸收<b>水中</b>的氧氣。</div>
+    <details class="think"><summary>單元開頭的潛水圖：為什麼潛水的人要浮出水面才能呼吸？</summary>
+      <div class="ans"><p>因為人用肺呼吸，要吸入空氣中的氧氣。人沒有鰓，不能像魚一樣吸收水中的氧氣，所以要浮出水面吸氣，或背著裝了空氣的氣瓶潛水。</p></div>
+    </details>
+  </article>
+ </div>
+</section>
+
+<!-- ===================== 活動 3 ===================== -->
+<section id="l3" class="lesson" style="--c:var(--c3);--cs:var(--c3-soft)">
+ <div class="block wrap">
+  <header class="lesson-head">
+    <span class="lesson-tag">活動 3</span>
+    <h2>動物與我們生活有關嗎？</h2>
+    <ol>
+      <li><a href="#l3-1"><span>3-1</span>動物與我們的生活</a></li>
+      <li><a href="#l3-2"><span>3-2</span>來自動物的靈感</a></li>
+    </ol>
+  </header>
+
+  <article class="topic" id="l3-1">
+    <h3><span class="no">3-1</span>動物與我們的生活<span class="pg">課本 p.92–93</span></h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>動物</th><th>提供我們什麼</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">乳牛</th><td>我們常喝的<b class="k">牛奶</b></td></tr>
+          <tr><th scope="row">綿羊</th><td><b class="k">羊毛</b>，製成我們常穿的毛衣</td></tr>
+          <tr><th scope="row">雞</th><td>我們常吃的<b class="k">雞肉和雞蛋</b></td></tr>
+          <tr><th scope="row">魚、蝦、貝類</th><td>豐富的食物</td></tr>
+          <tr><th scope="row">動物的皮</th><td>經過加工成為各種商品（例如包包、皮帶、鞋子），具有<b class="k">經濟價值</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="pts">
+      <li>人類生活所需的動物資源，常透過各種<b class="k">養殖</b>方式來取得。</li>
+      <li>但須注重<b class="k">食品安全</b>與<b class="k">環境保護</b>，避免<b class="k">過度開發</b>，以減少對環境的衝擊。</li>
+    </ul>
+    <div class="tbl">
+      <table>
+        <thead><tr><th></th><th>傳統的方式</th><th>改變後的方式</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">養雞</th><td>以<b class="k">格子籠</b>飼養</td><td>提供雞適當的<b class="k">活動空間</b>，規畫每日戶外活動的時間</td></tr>
+          <tr><th scope="row">養魚</th><td>傳統魚塭很依賴<b class="k">陸地的水土資源</b></td><td><b class="k">箱網養殖</b>，可以減少建造傳統魚塭對環境的衝擊</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="extra"><b>網路補充</b>臺灣的陸上養殖曾經超量抽取地下水，造成<b>地層下陷</b>，所以政府鼓勵陸上魚塭業者改到海上經營箱網養殖，主要集中在澎湖縣和屏東縣的海域。養雞方面，農委會（現在的農業部）在民國 104 年 12 月 31 日公告「雞蛋友善生產系統」，分成豐富化籠飼、平飼、放牧三種；有公告生產系統的雞蛋，包裝上要標示是哪一種。
+      <span class="src">資料：<a href="https://www.moa.gov.tw/ws.php?id=2448317" target="_blank" rel="noopener">農業部《農政與農情》2013-10-17</a>、<a href="https://www.moa.gov.tw/ws.php?id=2506836" target="_blank" rel="noopener">農業部《農政與農情》2017-09-19</a></span></div>
+    <details class="think"><summary>想一想，一天中你所接觸到的各種物品和食物，哪些是來自於動物？</summary>
+      <div class="ans"><p>例如早餐的牛奶、雞蛋，午餐的雞肉、魚、蝦，冬天穿的羊毛衣，還有皮鞋、皮帶、皮包等用動物的皮加工做成的商品。</p></div>
+    </details>
+  </article>
+
+  <article class="topic" id="l3-2">
+    <h3><span class="no">3-2</span>來自動物的靈感<span class="pg">課本 p.94–95</span></h3>
+    <p>動物除了與我們的生活相關，也帶給人類許多研發新產品的<b class="k">靈感</b>。</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>發明或產品</th><th>動物</th><th>和動物的什麼有關</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">飛機</th><td>鳥</td><td>模仿<b class="k">翅膀的外形構造</b>和鳥類運動方式</td></tr>
+          <tr><th scope="row">蛙鞋</th><td>蛙</td><td>靈感來自動物的<b class="k">蹼</b></td></tr>
+          <tr><th scope="row">船槳</th><td>魚</td><td>課本提問：船槳和魚的<b class="k">鰭</b>有關嗎？</td></tr>
+          <tr><th scope="row">吸盤</th><td>章魚</td><td>和章魚的<b class="k">吸盤</b>很像</td></tr>
+          <tr><th scope="row">取物工具（課本例子）</th><td>變色龍</td><td>模仿變色龍的<b class="k">舌頭</b>，設計可以取得遠處物品的工具</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="pts">
+      <li>科學家會模仿動物的<b class="k">身體構造或運動方式</b>，研發並製造出許多新的科技產品，讓我們的生活更便利。</li>
+      <li>模仿生物的構造與行為，研發可以幫助我們的工具或產品，這就是「<b class="k w">仿生</b>」。</li>
+    </ul>
+    <div class="extra"><b>網路補充</b>一個常被舉出的仿生例子：日本新幹線 500 系列車高速衝出隧道時，會發出很大的「隧道爆音」。工程師中津英治觀察到翠鳥從空中衝進水裡幾乎不濺起水花，就參考翠鳥嘴的形狀，把車頭設計得又長又尖，讓列車能跑得更快，又符合噪音的標準。
+      <span class="src">資料：<a href="https://trellis.net/article/how-one-engineers-birdwatching-made-japans-bullet-train-better" target="_blank" rel="noopener">Trellis（Tom McKeag）2012-10-19，2024-07-24 更新</a></span></div>
+    <details class="think"><summary>單元開頭的潛水圖：潛水的人腳上穿著蛙鞋，有什麼用途？</summary>
+      <div class="ans"><p>蛙鞋的靈感來自動物的蹼。腳掌變得又寬又大，划水時能推動更多的水，讓人在水中游得更快、更省力。</p></div>
+    </details>
+    <details class="think"><summary>透過觀察許多不同的動物，哪一種動物擁有讓你想模仿的身體構造或運動方式呢？</summary>
+      <div class="ans"><p>這題沒有標準答案，要說出理由：先說你觀察到這種動物的哪一個構造或運動方式，再說可以做成什麼工具、解決什麼問題。例如課本的小朋友想模仿變色龍的長舌頭，做出可以拿到遠處物品的工具。</p></div>
+    </details>
+  </article>
+ </div>
+</section>
+
+<!-- ===================== 科學閱讀 ===================== -->
+<section id="read" class="lesson" style="--c:var(--c4);--cs:var(--c4-soft)">
+ <div class="block wrap">
+  <header class="lesson-head">
+    <span class="lesson-tag">科學閱讀</span>
+    <h2>蝸牛來去自如的祕訣</h2>
+    <ol><li><span>p.96–97</span>蝸牛的身體構造與移動方式</li></ol>
+  </header>
+  <ul class="pts">
+    <li>蝸牛屬於<b class="k">軟體動物</b>，由<b class="k">殼</b>和伸出殼外的<b class="k">軟體</b>組成。</li>
+    <li>伸出殼外的軟體分為<b class="k">頭部</b>與<b class="k">腹足</b>兩部分，是主要的<b class="k">感覺與運動器官</b>。</li>
+    <li>課本圖中的構造：殼、眼睛、大觸角、小觸角、腹足（眼睛在大觸角的頂端）。</li>
+  </ul>
+  <h4>蝸牛怎麼移動？</h4>
+  <ol class="pts">
+    <li>要移動時，腹足肌肉開始<b class="k">收縮</b>。</li>
+    <li>肌肉收縮後再次<b class="k">舒張</b>，帶動身體前進。</li>
+  </ol>
+  <ul class="pts">
+    <li>蝸牛<b class="k">無法後退</b>。想改變方向，只能慢慢轉彎、修改前進角度，再往新的方向前進。</li>
+    <li>腹足前端有<b class="k">黏液腺</b>，會分泌黏液幫助蝸牛爬行。（課本開頭也提到：蝸牛爬過的地方，會有一道溼溼黏黏的痕跡。）</li>
+  </ul>
+  <div class="exam"><b>考點</b>蝸牛沒有像「腳」的構造，靠<b>腹足肌肉的收縮和舒張</b>前進——和活動 1「沒有骨骼的動物靠肌肉運動」是同一個觀念。</div>
+  <details class="think"><summary>蚯蚓也沒有腳，牠的移動方式和蝸牛有什麼不同？</summary>
+    <div class="ans"><p>兩者都靠肌肉的收縮和舒張移動，但用的部位不同：蚯蚓靠整個身體的肌肉，讓身體變長或縮短來爬行；蝸牛靠腹足肌肉的收縮和舒張帶動身體前進，腹足前端還會分泌黏液幫助爬行。</p></div>
+  </details>
+ </div>
+</section>
+
+<!-- ===================== 名詞 ===================== -->
+<section id="words" class="block wrap" style="border-top:1px solid var(--line)">
+  <h2>課本重要名詞</h2>
+  <p class="intro">自然課本沒有畫紅線，而是把重要名詞印成紫色字。這裡收的是課本的紫色字，加上「知識庫」和「仿生」這幾個課本特別解釋的名詞；在上面的重點裡它們都畫了紅色底線。用自己的話記住意思。</p>
+
+  <h3 class="vocab-h v1">活動 1　動物如何運動</h3>
+  <dl class="vocab">
+    <div><dt>肌肉</dt><dd>能收縮、舒張，拉動骨骼產生運動或維持姿勢</dd></div>
+    <div><dt>骨骼</dt><dd>支撐身體、幫助運動並保護人體</dd></div>
+    <div><dt>關節</dt><dd>骨骼與骨骼連接的地方</dd></div>
+    <div><dt>收縮</dt><dd>肌肉縮短、用力拉動骨骼</dd></div>
+    <div><dt>舒張</dt><dd>肌肉放鬆、恢復原來的長度</dd></div>
+    <div><dt>肌腱</dt><dd>肌肉兩端白色的構造，連接肌肉與骨骼；不能主動收縮</dd></div>
+    <div><dt>二分法</dt><dd>每次用一個特徵標準，把生物分成符合和不符合兩類</dd></div>
+  </dl>
+
+  <h3 class="vocab-h v2">活動 2　動物如何呼吸</h3>
+  <dl class="vocab">
+    <div><dt>鼻</dt><dd>吸入、排出氣體的呼吸器官</dd></div>
+    <div><dt>氣管</dt><dd>連接鼻和肺的通道；昆蟲也用氣管呼吸</dd></div>
+    <div><dt>肺</dt><dd>負責氣體交換的呼吸器官</dd></div>
+    <div><dt>混濁</dt><dd>不清澈、霧霧的樣子</dd></div>
+    <div><dt>二氧化碳</dt><dd>會使澄清石灰水變混濁的氣體；呼出的氣體中比空氣中多</dd></div>
+    <div><dt>生理作用</dt><dd>身體為了維持生命所做的工作，例如呼吸</dd></div>
+    <div><dt>器官系統</dt><dd>由不同功能的器官組成，例如呼吸系統</dd></div>
+    <div><dt>器官</dt><dd>由組織組成，例如鼻、氣管、肺</dd></div>
+    <div><dt>組織</dt><dd>由細胞組成，例如上皮組織</dd></div>
+    <div><dt>細胞</dt><dd>構成生物體的最小單位</dd></div>
+  </dl>
+
+  <h3 class="vocab-h v3">活動 3　動物與我們生活有關嗎</h3>
+  <dl class="vocab">
+    <div><dt>仿生</dt><dd>模仿生物的構造與行為，研發可以幫助我們的工具或產品</dd></div>
+  </dl>
+</section>
+
+<!-- ===================== 自我檢測 ===================== -->
+<section id="quiz" class="block wrap" style="border-top:1px solid var(--line)">
+  <h2>自我檢測</h2>
+  <p class="intro">點選你認為正確的答案，馬上看對錯和說明。每題只能選一次。</p>
+  <div class="scorebar">
+    <span>已作答 <output id="answered">0</output>／<span id="total">18</span></span>
+    <span>答對 <output id="correct">0</output> 題</span>
+    <button class="btn" id="reset" type="button">全部重來</button>
+  </div>
+  <ol class="qs" id="qs"></ol>
+  <p id="done" aria-live="polite" hidden></p>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p>內容依據：康軒版國小自然六上課本第三單元「動物大解密」（p.70–99）。標示「網路補充」的資料為課本以外的延伸，考試仍以課本內容為準。</p>
+</footer>
+
+<script>
+(function(){
+  // ---------- 背誦模式 ----------
+  var btn = document.getElementById('clozeBtn');
+  btn.addEventListener('click', function(){
+    var on = document.body.classList.toggle('cloze');
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = on ? '背誦模式：開' : '背誦模式：關';
+    if (!on) document.querySelectorAll('.k.on').forEach(function(el){ el.classList.remove('on'); });
+  });
+  document.addEventListener('click', function(e){
+    if (!document.body.classList.contains('cloze')) return;
+    var k = e.target.closest('.k');
+    if (k) k.classList.toggle('on');
+  });
+
+  // ---------- 列印時展開想一想 ----------
+  window.addEventListener('beforeprint', function(){
+    document.querySelectorAll('details.think').forEach(function(d){ d.open = true; });
+  });
+
+  // ---------- 自我檢測 ----------
+  var L = {1:['活動1','var(--c1)'],2:['活動2','var(--c2)'],3:['活動3','var(--c3)'],4:['科學閱讀','var(--c4)']};
+  var Q = [
+    {l:1,q:'人體中「骨骼與骨骼連接的地方」，讓我們可以做出不同動作，是哪一種構造？',o:['肌肉','關節','肌腱','皮膚'],a:1,e:'關節是骨骼與骨骼連接的地方；肌肉能收縮產生運動，骨骼能支撐、幫助運動並保護人體。（活動 1-1）'},
+    {l:1,q:'手臂彎曲時，手臂內側和外側的肌肉各是什麼狀態？',o:['內側收縮、外側舒張','內側舒張、外側收縮','內側和外側都收縮','內側和外側都舒張'],a:0,e:'內側肌肉收縮、外側肌肉舒張，帶動骨骼和關節，手臂就彎曲；伸直時剛好相反。（活動 1-1，課本 p.76）'},
+    {l:1,q:'關於「肌腱」，下列敘述何者正確？',o:['肌腱會主動收縮，拉動骨骼','肌腱是骨骼與骨骼連接的地方','肌腱是肌肉兩端白色的構造，能把肌肉的力傳給骨骼','肌腱負責支撐並保護人體'],a:2,e:'知識庫：肌腱是肌肉兩端白色的構造，幫助肌肉與骨骼連接。肌腱不能主動收縮，但可以傳遞肌肉的力給骨骼。骨骼與骨骼連接的地方是關節。（活動 1-1）'},
+    {l:1,q:'蝸牛、蚯蚓、河蚌、章魚都沒有骨骼和關節，牠們運動時共同依靠的是什麼？',o:['關節的彎曲','骨骼的支撐','肌腱的主動收縮','肌肉的收縮和舒張'],a:3,e:'這些動物有肌肉卻沒有骨骼，靠肌肉的收縮和舒張來運動：蝸牛用腹足、河蚌用斧足、章魚用腕足、蚯蚓讓身體變長或縮短。（活動 1-2）'},
+    {l:1,q:'小廷先用「是胎生嗎？」把狗分出來，再用「是六隻腳嗎？」把蝴蝶分出來。這種每次選一個特徵標準，把符合的歸一類、不符合的歸另一類的方法叫做什麼？',o:['二分法','維恩圖','對照實驗','長條圖'],a:0,e:'知識庫：生物領域會用二分法分類。每次選一種特徵標準，符合的歸為一類，不符合的歸為另一類。（活動 1-3）'},
+    {l:1,q:'金魚和蜥蜴都是卵生、都有鱗片。想把牠們分成兩類，可以用下面哪一個特徵標準？',o:['是不是卵生','有沒有鱗片','有沒有鰭','有沒有羽毛'],a:2,e:'金魚有鰭、蜥蜴沒有，所以「有鰭嗎？」能把牠們分開；其他三個標準兩者的答案都一樣，分不開。（活動 1-3，小廷的分類）'},
+    {l:2,q:'一般情況下，外界的空氣進入人體的順序是哪一個？',o:['鼻 → 肺 → 氣管','鼻 → 氣管 → 肺','氣管 → 鼻 → 肺','肺 → 氣管 → 鼻'],a:1,e:'空氣由鼻吸入，經由氣管進入肺，在肺部進行氣體交換，再經由肺、氣管，最後由鼻排出。（活動 2-1）'},
+    {l:2,q:'人體的呼吸器官中，負責「氣體交換」的是哪一個？',o:['鼻','氣管','鰓','肺'],a:3,e:'鼻負責吸入、排出氣體，氣管連接鼻和肺，肺負責氣體交換。鰓是魚的呼吸器官，人沒有。（活動 2-1）'},
+    {l:2,q:'把呼出的氣體吹進一袋澄清石灰水，另一袋裝空氣。搖晃後，吹氣的那一袋變得比較混濁，這表示什麼？',o:['呼出的氣體中沒有二氧化碳','呼出的氣體中含有比空氣中較多的二氧化碳','空氣中的二氧化碳比呼出的氣體多','澄清石灰水碰到氧氣會變混濁'],a:1,e:'澄清石灰水碰到二氧化碳會變混濁。吹氣的袋子比較混濁，表示人體呼出的氣體中含有比空氣中較多的二氧化碳。（活動 2 探究，課本 p.87）'},
+    {l:2,q:'做「人體呼出氣體」實驗時，為什麼另一個塑膠袋也要加入「等量」的澄清石灰水，再收集空氣？',o:['讓袋子比較好搖晃','因為澄清石灰水愈多愈混濁','讓兩袋只有「裝進的氣體」不同，才能比較','讓空氣變成二氧化碳'],a:2,e:'兩袋的澄清石灰水一樣多，差別只有一袋是呼出的氣體、一袋是空氣，比較出來的混濁程度才能說明是氣體不同造成的。（活動 2 探究）'},
+    {l:2,q:'人體的組成層次由小到大排列，哪一個正確？',o:['組織 → 細胞 → 器官 → 器官系統 → 個體','細胞 → 器官 → 組織 → 器官系統 → 個體','個體 → 細胞 → 組織 → 器官 → 器官系統','細胞 → 組織 → 器官 → 器官系統 → 個體'],a:3,e:'細胞組成組織，組織組成器官，器官組成器官系統（例如呼吸系統），再組成個體。細胞是構成生物體的最小單位。（活動 2-2）'},
+    {l:2,q:'下列動物和呼吸器官的配對，哪一個正確？',o:['狗—鰓','蝗蟲—氣管','魚—肺','人—鰓'],a:1,e:'人和狗用肺呼吸，魚用鰓吸收水中的氧氣，蝗蟲等昆蟲利用氣管呼吸。（活動 2-3）'},
+    {l:3,q:'下列哪一組「動物—提供的資源」配對正確？',o:['雞—雞肉和雞蛋','乳牛—羊毛','綿羊—牛奶','蝦—毛衣'],a:0,e:'乳牛生產牛奶，綿羊提供羊毛製成毛衣，雞提供雞肉和雞蛋，魚、蝦、貝類提供豐富的食物。（活動 3-1）'},
+    {l:3,q:'課本提到，用箱網養殖代替建造傳統魚塭，主要的好處是什麼？',o:['可以多用陸地的水土資源','魚的價格一定比較便宜','減少建造傳統魚塭對環境的衝擊','可以養殖陸地上的動物'],a:2,e:'傳統魚塭很依賴陸地的水土資源，箱網養殖可以減少建造傳統魚塭對環境的衝擊。取得動物資源要注重食品安全與環境保護。（活動 3-1）'},
+    {l:3,q:'潛水時穿的蛙鞋，設計靈感來自動物的哪一種構造？',o:['鰭','吸盤','翅膀','蹼'],a:3,e:'蛙鞋的靈感來自動物的蹼；吸盤和章魚的吸盤很像，飛機模仿鳥的翅膀。（活動 3-2）'},
+    {l:3,q:'科學家模仿鳥類翅膀的外形構造和運動方式，研發出飛機。這種模仿生物的構造與行為來研發產品的做法叫做什麼？',o:['仿生','養殖','二分法','氣體交換'],a:0,e:'模仿生物的構造與行為，研發可以幫助我們的工具或產品，就是「仿生」。（活動 3-2）'},
+    {l:4,q:'關於蝸牛移動的方式，下列敘述何者正確？',o:['利用骨骼和關節走路','遇到障礙物會直接後退','像章魚一樣用腕足游水','利用腹足肌肉的收縮和舒張前進，但無法後退'],a:3,e:'蝸牛的腹足肌肉收縮後再次舒張，帶動身體前進，但無法後退；想改變方向只能慢慢轉彎。（科學閱讀，課本 p.97）'},
+    {l:4,q:'蝸牛腹足前端的黏液腺有什麼功用？',o:['幫助蝸牛呼吸','分泌黏液幫助蝸牛爬行','讓蝸牛看見東西','製造蝸牛的殼'],a:1,e:'蝸牛腹足前端有黏液腺，會分泌黏液幫助蝸牛爬行。（科學閱讀，課本 p.97）'}
+  ];
+  var mark = ['①','②','③','④'];
+  var list = document.getElementById('qs');
+  var answeredEl = document.getElementById('answered');
+  var correctEl = document.getElementById('correct');
+  var doneEl = document.getElementById('done');
+  document.getElementById('total').textContent = Q.length;
+  var answered = 0, correct = 0;
+
+  function render(){
+    list.innerHTML = '';
+    answered = 0; correct = 0;
+    answeredEl.textContent = '0'; correctEl.textContent = '0';
+    doneEl.hidden = true;
+    Q.forEach(function(item, i){
+      var li = document.createElement('li');
+      li.className = 'q';
+      li.style.setProperty('--c', L[item.l][1]);
+      var stem = document.createElement('p');
+      stem.className = 'stem';
+      stem.innerHTML = '<span class="qn">' + (i+1) + '.</span>';
+      stem.appendChild(document.createTextNode(item.q));
+      var tag = document.createElement('span');
+      tag.className = 'from'; tag.textContent = L[item.l][0];
+      stem.appendChild(tag);
+      var opts = document.createElement('div');
+      opts.className = 'opts';
+      var exp = document.createElement('p');
+      exp.className = 'exp'; exp.hidden = true;
+      item.o.forEach(function(text, j){
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'opt'; b.id = 'q' + i + 'o' + j;
+        b.innerHTML = '<span>' + mark[j] + '</span>';
+        var t = document.createElement('span'); t.textContent = text; b.appendChild(t);
+        b.addEventListener('click', function(){ choose(i, j, opts, exp); });
+        opts.appendChild(b);
+      });
+      li.appendChild(stem); li.appendChild(opts); li.appendChild(exp);
+      list.appendChild(li);
+    });
+  }
+
+  function choose(i, j, opts, exp){
+    var item = Q[i];
+    var btns = opts.querySelectorAll('.opt');
+    if (btns[0].disabled) return;
+    btns.forEach(function(b, k){
+      b.disabled = true;
+      if (k === item.a) b.classList.add('right');
+      else if (k === j) b.classList.add('wrong');
+      else b.classList.add('dim');
+    });
+    var ok = j === item.a;
+    answered++; if (ok) correct++;
+    answeredEl.textContent = answered; correctEl.textContent = correct;
+    exp.innerHTML = ok ? '<b class="y">答對了！</b>' : '<b class="n">正確答案是 ' + mark[item.a] + '。</b>';
+    exp.appendChild(document.createTextNode(item.e));
+    exp.hidden = false;
+    if (answered === Q.length){
+      var pct = Math.round(correct / Q.length * 100);
+      doneEl.textContent = '全部完成！答對 ' + correct + '／' + Q.length + ' 題（' + pct + ' 分）。' + (pct >= 80 ? '表現很好，記得再用背誦模式複習一次。' : '把答錯的題目對照上面的重點再讀一次，然後按「全部重來」。');
+      doneEl.hidden = false;
+    }
+  }
+
+  document.getElementById('reset').addEventListener('click', function(){
+    render();
+    document.getElementById('quiz').scrollIntoView();
+  });
+  render();
+})();
+</script>
+</html>
