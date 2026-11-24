@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>英語單字練習｜永福國小六年級</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#E9F0F8; --card:#FFFFFF; --sunk:#F3F7FC;
+  --ink:#16243F; --soft:#4E5D7A; --faint:#7C8AA5; --line:#CDD9E9;
+  --rule:#9CC0E6; --base:#E39490;
+  --pri:#2352B5; --pri-ink:#FFFFFF; --pri-bg:#E2EAFA;
+  --ok:#17724A; --ok-bg:#E0F3E8; --ok-line:#8CCBA9;
+  --bad:#B8352C; --bad-bg:#FBE7E4; --bad-line:#E8AAA3;
+  --mark:#FFEFA8;
+  --key:#FFFFFF; --key-line:#B9C8DD;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#111A2B; --card:#1A2640; --sunk:#152036;
+  --ink:#E9EFF9; --soft:#AFBDD6; --faint:#8292AF; --line:#324363;
+  --rule:#3F6494; --base:#A8605E;
+  --pri:#7FA6F5; --pri-ink:#0D1930; --pri-bg:#223559;
+  --ok:#74D3A2; --ok-bg:#173529; --ok-line:#2F6B4E;
+  --bad:#F3938A; --bad-bg:#3D2425; --bad-line:#7C443F;
+  --mark:#5C5016;
+  --key:#22304D; --key-line:#3B4E72;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111A2B; --card:#1A2640; --sunk:#152036;
+  --ink:#E9EFF9; --soft:#AFBDD6; --faint:#8292AF; --line:#324363;
+  --rule:#3F6494; --base:#A8605E;
+  --pri:#7FA6F5; --pri-ink:#0D1930; --pri-bg:#223559;
+  --ok:#74D3A2; --ok-bg:#173529; --ok-line:#2F6B4E;
+  --bad:#F3938A; --bad-bg:#3D2425; --bad-line:#7C443F;
+  --mark:#5C5016;
+  --key:#22304D; --key-line:#3B4E72;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"Noto Sans TC","PingFang TC","Heiti TC",sans-serif;
+  font-size:17px; line-height:1.65; -webkit-text-size-adjust:100%}
+button{font:inherit; color:inherit; cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent; -webkit-user-select:none; user-select:none}
+button:disabled{cursor:default}
+[hidden]{display:none !important}
+:focus-visible{outline:3px solid var(--pri); outline-offset:2px}
+.en{font-family:"Andika","Trebuchet MS","Comic Sans MS",sans-serif}
+.app{max-width:1080px; margin:0 auto; padding:0 16px max(28px, env(safe-area-inset-bottom))}
+.settling{pointer-events:none}
+h1,h2,h3{text-wrap:balance; margin:0}
+
+/* 頁首 */
+.bar{display:flex; align-items:center; gap:10px; padding:12px 0; min-height:64px}
+.logo{position:relative; width:52px; height:40px; flex:none; background:var(--card); border:1px solid var(--line); border-radius:6px; overflow:hidden}
+.logo i{position:absolute; left:0; right:0; height:1px; background:var(--rule)}
+.logo i:nth-child(1){top:7px}.logo i:nth-child(2){top:16px}.logo i:nth-child(3){top:27px; background:var(--base)}.logo i:nth-child(4){top:34px}
+.logo b{position:absolute; left:0; right:0; top:0; text-align:center; font:700 24px/39px "Andika","Trebuchet MS",sans-serif; color:var(--pri)}
+.brand{margin-right:auto; line-height:1.25}
+.brand strong{display:block; font-weight:900; font-size:18px}
+.brand small{color:var(--soft); font-size:13px}
+.pill{border:1px solid var(--line); background:var(--card); border-radius:999px; padding:7px 14px; font-size:15px; font-weight:700; min-height:42px; white-space:nowrap}
+.pill b{color:var(--bad); margin-left:4px; font-variant-numeric:tabular-nums}
+.sync{font-size:13px; color:var(--soft); display:flex; align-items:center; gap:7px; margin-top:22px}
+.dot{width:9px; height:9px; border-radius:50%; background:var(--faint); flex:none}
+.dot.ok{background:var(--ok)} .dot.warn{background:#C98500}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px}
+.narrow{max-width:680px; margin:0 auto}
+.lead{color:var(--soft); margin:4px 0 18px}
+.lab{font-weight:700; font-size:15px; color:var(--soft); margin:20px 0 8px}
+
+/* 登入 */
+.grid{display:grid; gap:8px; grid-template-columns:repeat(auto-fill,minmax(64px,1fr))}
+.grid button{border:1px solid var(--key-line); background:var(--key); border-radius:10px; min-height:50px; font-weight:700; font-size:18px; font-variant-numeric:tabular-nums}
+.grid button[aria-pressed="true"]{background:var(--pri); border-color:var(--pri); color:var(--pri-ink)}
+.btn{border:1px solid transparent; border-radius:12px; min-height:54px; padding:10px 22px; font-weight:700; font-size:18px; background:var(--pri); color:var(--pri-ink)}
+.btn.wide{width:100%}
+.btn.ghost{background:transparent; border-color:var(--key-line); color:var(--ink)}
+.btn:disabled{opacity:.45}
+.link{background:none; border:0; color:var(--pri); font-weight:500; text-decoration:underline; text-underline-offset:3px; padding:10px 4px; font-size:15px}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+
+/* 選範圍 */
+.opts{display:grid; gap:10px}
+@media (min-width:640px){ .opts{grid-template-columns:1fr 1fr} .opts .full{grid-column:1/-1} }
+.opt{display:grid; grid-template-columns:1fr auto; gap:2px 12px; text-align:left; border:1.5px solid var(--key-line); background:var(--key); border-radius:12px; padding:12px 16px; min-height:68px; align-items:center; align-content:center}
+.opt[aria-pressed="true"]{border-color:var(--pri); background:var(--pri-bg); box-shadow:inset 0 0 0 1px var(--pri)}
+.opt .t{font-weight:700}
+.opt .d{font-size:14px; color:var(--soft); grid-column:1}
+.opt .c{grid-row:1/3; grid-column:2; font-size:14px; color:var(--soft); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap}
+.seg{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.seg .opt{grid-template-columns:1fr; text-align:center; padding:10px 8px}
+.seg.four{grid-template-columns:repeat(4,1fr)}
+.seg.four .opt{padding:10px 4px}
+@media (max-width:520px){ .seg.four{grid-template-columns:repeat(2,1fr)} }
+.home-foot{margin-top:22px}
+.home{max-width:680px; margin:0 auto}
+@media (min-width:860px) and (orientation:landscape){
+  .home{max-width:none}
+  .home2{display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,1fr); gap:28px; align-items:start}
+  .home2 .lab{margin-top:14px}
+}
+
+/* 作答 */
+.prog{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; font-size:15px; font-weight:700; margin-bottom:12px; font-variant-numeric:tabular-nums}
+.track{height:8px; border-radius:4px; background:var(--line); overflow:hidden}
+.track i{display:block; height:100%; background:var(--pri); border-radius:4px; transition:width .25s}
+.prog .st{color:var(--ok)}
+.play{display:grid; gap:14px}
+.tags{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px; font-size:14px; color:var(--soft)}
+.tags span{border:1px solid var(--line); border-radius:999px; padding:1px 11px}
+.sent{font-size:clamp(22px,3.1vw,29px); line-height:1.6; margin:0; text-wrap:pretty}
+.gap{display:inline-block; padding:0 8px; margin:0 2px; border-bottom:3px solid var(--base); color:var(--pri); font-weight:700; letter-spacing:.1em; white-space:nowrap}
+.gap.multi{display:inline; white-space:normal; -webkit-box-decoration-break:clone; box-decoration-break:clone}
+.gap.done{letter-spacing:0; background:var(--mark); color:var(--ink); border-radius:4px}
+.hints{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px}
+.hint{border:1px solid var(--key-line); background:var(--sunk); border-radius:10px; padding:7px 14px; min-height:44px; font-size:15px; font-weight:700}
+.hint[aria-pressed="true"]{border-color:var(--pri); color:var(--pri); background:var(--pri-bg)}
+.hintbox{margin-top:10px; display:grid; gap:4px}
+.hintbox p{margin:0; padding:8px 14px; background:var(--sunk); border-radius:8px; border-left:4px solid var(--rule)}
+.hintbox p b{color:var(--soft); font-weight:700; margin-right:8px; font-size:14px}
+
+/* 四線格 */
+.pad{position:relative; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:6px 14px; overflow:hidden}
+.pad .ln{position:absolute; left:0; right:0; height:1px; background:var(--rule)}
+.pad .ln.b{background:var(--base); height:2px}
+.word{position:relative; font-family:"Andika","Trebuchet MS",sans-serif; font-size:clamp(34px,6.4vw,52px); line-height:1.75; min-height:1.75em; text-align:center; white-space:nowrap}
+.word span{display:inline-block; padding:0 .02em; cursor:pointer}
+.word .sp{width:.4em}
+.word .caret{display:inline-block; width:3px; height:.95em; vertical-align:-.12em; background:var(--pri); margin:0 1px; padding:0; animation:bl 1.1s steps(1) infinite; border-radius:2px}
+@keyframes bl{50%{opacity:0}}
+.word .ph{color:var(--faint); font-family:"Noto Sans TC",sans-serif; font-size:.46em; letter-spacing:.06em; cursor:default; vertical-align:.3em}
+.count{display:flex; justify-content:space-between; gap:10px; font-size:14px; color:var(--soft); margin:6px 2px 10px; font-variant-numeric:tabular-nums}
+.count b{color:var(--ink)}
+.count span:last-child{white-space:nowrap}
+.nudge{margin:0 0 10px; padding:10px 14px; border-radius:10px; background:var(--bad-bg); border:1px solid var(--bad-line); color:var(--bad); font-weight:700; display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap}
+.nudge .link{padding:2px; color:var(--bad)}
+.nudge.soft{background:var(--mark); border-color:var(--line); color:var(--ink)}
+
+/* 鍵盤 */
+.kb{display:grid; gap:7px}
+.kb .r{display:flex; gap:5px; justify-content:center}
+.key{flex:1 1 0; min-width:0; max-width:76px; min-height:52px; border:1px solid var(--key-line); border-bottom-width:3px; border-radius:9px; background:var(--key); font:700 22px/1 "Andika","Trebuchet MS",sans-serif; padding:0}
+.key:active{border-bottom-width:1px; transform:translateY(2px)}
+.key.fn{flex:1.5 1 0; max-width:110px; font:700 15px/1 "Noto Sans TC",sans-serif; background:var(--sunk)}
+.key.fn[aria-pressed="true"]{background:var(--pri-bg); color:var(--pri); border-color:var(--pri)}
+.kb .send{flex:4 1 0; max-width:none; background:var(--pri); border-color:var(--pri); color:var(--pri-ink); font:700 18px/1 "Noto Sans TC",sans-serif}
+.kb .send:disabled{opacity:.4}
+.tiles{display:flex; flex-wrap:wrap; gap:9px; justify-content:center; padding:4px 0 10px}
+.tile{width:58px; height:58px; border:1px solid var(--key-line); border-bottom-width:4px; border-radius:11px; background:var(--key); font:700 27px/1 "Andika","Trebuchet MS",sans-serif}
+.tile:disabled{opacity:.18; border-bottom-width:1px}
+.choices{display:grid; gap:10px}
+@media (min-width:520px){ .choices{grid-template-columns:1fr 1fr} }
+.choice{border:1.5px solid var(--key-line); border-bottom-width:4px; border-radius:12px; background:var(--key); min-height:70px; font:700 25px/1.3 "Andika","Trebuchet MS",sans-serif}
+.under{display:flex; justify-content:flex-end; margin-top:6px}
+
+/* 回饋 */
+.fb{border-radius:14px; padding:18px 20px; border:1px solid var(--ok-line); background:var(--ok-bg)}
+.fb.no{border-color:var(--bad-line); background:var(--bad-bg)}
+.fb h3{font-size:21px; font-weight:900; color:var(--ok)}
+.fb.no h3{color:var(--bad)}
+.fb .ans{font-size:34px; font-weight:700; line-height:1.4; margin:4px 0 0}
+.fb .ans small{font:500 16px/1.4 "Noto Sans TC",sans-serif; color:var(--soft); margin-left:12px}
+.fb .tr{margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+.fb .tr b{font-size:14px; color:var(--soft); display:block}
+.cmp{display:grid; gap:4px; margin:10px 0 0; font-size:24px; overflow-x:auto}
+.cmp div{display:flex; align-items:center; gap:2px; white-space:nowrap}
+.cmp em{font:500 14px/1 "Noto Sans TC",sans-serif; color:var(--soft); width:3.4em; flex:none}
+.cmp s{text-decoration:none; display:inline-block; min-width:.72em; text-align:center; border-radius:4px; padding:0 1px}
+.cmp s.x{background:var(--bad); color:var(--card)}
+.cmp s.v{background:var(--ok); color:var(--card)}
+.cmp s.o{box-shadow:inset 0 -3px 0 var(--bad); color:transparent; border-radius:0}
+.say{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px}
+.say .hint{background:var(--card)}
+.next{margin-top:14px}
+
+/* 結算與錯題本 */
+.big{font-size:56px; font-weight:900; line-height:1.1; color:var(--pri); margin:10px 0 12px}
+.big small{font-size:22px; color:var(--soft); font-weight:700}
+.list{display:grid; gap:10px; margin-top:14px}
+.it{border:1px solid var(--line); border-radius:12px; padding:12px 16px; background:var(--sunk)}
+.it .w{font-size:22px; font-weight:700}
+.it .w small{font:500 15px/1.4 "Noto Sans TC",sans-serif; color:var(--soft); margin-left:8px}
+.it .g{font-size:15px; color:var(--bad)}
+.it .m{font-size:14px; color:var(--soft)}
+.it .sx{font-size:17px; margin-top:4px}
+.sent-ok{margin-top:16px; padding:10px 14px; border-radius:10px; background:var(--ok-bg); color:var(--ok); font-weight:700; border:1px solid var(--ok-line)}
+.sent-ok.warn{background:var(--mark); color:var(--ink); border-color:var(--line)}
+.empty{padding:26px; text-align:center; color:var(--soft)}
+
+@media (max-width:420px){
+  body{font-size:16px}
+  .card{padding:16px}
+  .key{min-height:46px; font-size:20px}
+  .kb .r{gap:4px}
+  .seg{gap:6px}
+  .tile{width:50px; height:52px}
+  .brand small{display:none}
+  .brand strong{font-size:16px; white-space:nowrap}
+  .logo{width:42px}
+  .pill{padding:5px 10px; font-size:14px; min-height:40px}
+  .bar{gap:8px}
+}
+/* 平板橫放：左邊看題目，右邊作答，不用捲 */
+@media (min-width:860px) and (orientation:landscape){
+  .play{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr); align-items:start; gap:20px}
+}
+@media (prefers-reduced-motion:reduce){ *{animation:none !important; transition:none !important} }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <div class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i><b>Aa</b></div>
+    <div class="brand"><strong id="brand">英語單字練習</strong><small id="sub"></small></div>
+    <button class="pill" id="wb" hidden>錯題本<b id="wbn">0</b></button>
+    <button class="pill" id="who" hidden></button>
+  </header>
+  <main id="main"></main>
+  <div class="sync"><span class="dot" id="sdot"></span><span id="stext">連線中…</span></div>
+</div>
+
+<script src="eng6-bank.js?v=11240842"></script>
+<script src="eng6-core.js?v=11240842"></script>
+<script>
+"use strict";
+var E=ENG6, C=ENGC, el=C.el, $=function(i){ return document.getElementById(i); };
+var ME=null;            /* {cls,seat} 或 {guest:true} */
+var P=null;             /* 這位學生在這台平板上的進度 */
+var SEL={range:"all", part:"", lv:1};
+var R=null;             /* 進行中的一輪 */
+var DB=null, SYNC="connecting", SNOTE="";
+var main=$("main");
+
+$("brand").textContent=E.title;
+$("sub").textContent=E.book||E.units.map(function(u){ return u.zh; }).join("・");
+
+/* ---------- 雲端 ---------- */
+function renderSync(){
+  var m={connecting:["","連線中…"], fire:["ok","已連上雲端，做完一輪會自動交給老師"],
+         local:["warn",SNOTE||"沒有連上雲端，紀錄先留在這台平板"]}[SYNC];
+  if(ME&&ME.guest) m=["","試試看模式，不會記錄"];
+  $("sdot").className="dot "+m[0]; $("stext").textContent=m[1];
+}
+async function initCloud(){
+  renderSync();
+  if(location.search.indexOf("offline")>=0){ SYNC="local"; SNOTE="離線測試，不會送出"; renderSync(); return; }
+  try{ DB=(await C.firebase(false)).db; SYNC="fire"; }
+  catch(e){ SYNC="local"; SNOTE="載入不到雲端元件，紀錄先留在這台平板"; }
+  renderSync(); flush();
+}
+function queue(){ try{ return JSON.parse(C.store("eng6_pending")||"[]"); }catch(e){ return []; } }
+function setQueue(q){ C.store("eng6_pending", JSON.stringify(q.slice(-200))); }
+var flushing=false;
+async function flush(){
+  if(SYNC!=="fire" || flushing) return;
+  flushing=true;
+  var q=queue(), sent={};
+  for(var i=0;i<q.length;i++){
+    try{ await DB.collection(E.FIRE_COL).doc(q[i].id).set(q[i].rec); sent[q[i].id]=1; }catch(e){}
+  }
+  if(q.length) setQueue(queue().filter(function(x){ return !sent[x.id]; }));   /* 重讀一次再刪，送的途中新排進來的才不會掉 */
+  flushing=false;
+}
+async function upload(rec){
+  var id=rec.cls+"-"+String(rec.seat).padStart(2,"0")+"-"+Date.now().toString(36);
+  if(SYNC!=="fire"){ var q=queue(); q.push({id:id,rec:rec}); setQueue(q); return "紀錄先留在這台平板，之後連上網路會自動補送。"; }
+  try{ await DB.collection(E.FIRE_COL).doc(id).set(rec); return ""; }
+  catch(e){
+    var q2=queue(); q2.push({id:id,rec:rec}); setQueue(q2);
+    return (e&&e.code==="permission-denied") ? "雲端規則還沒開放，紀錄先留在這台平板，請告訴老師。" : "這次沒有送出去，下次連上會自動補送。";
+  }
+}
+
+/* ---------- 個人進度（只存在這台平板） ---------- */
+function pkey(){ return ME.guest ? null : "eng6_p_"+ME.cls+"-"+ME.seat; }
+function loadP(){
+  P={seen:{}, wrong:{}, best:0, rounds:0};
+  if(!pkey()) return;
+  try{ var o=JSON.parse(C.store(pkey())||"null"); if(o) P=Object.assign(P,o); }catch(e){}
+  Object.keys(P.wrong).forEach(function(id){ if(!C.byId[id]) delete P.wrong[id]; });
+  SEL={range:"all", part:"", lv:P.lv||1};
+}
+function saveP(){ if(pkey()) C.store(pkey(), JSON.stringify(P)); }
+function wrongIds(){ return Object.keys(P.wrong); }
+function pool(range, part){
+  if(range==="wb") return wrongIds().map(function(i){ return C.byId[i]; });
+  return E.bank.filter(function(q){ return (range==="all" || q.u===range) && (!part || q.g===part); });
+}
+function seenIn(range, part){ return pool(range,part).filter(function(q){ return P.seen[q.id]; }).length; }
+
+/* ---------- 畫面切換 ---------- */
+function show(nodes){
+  main.replaceChildren.apply(main, [].concat(nodes));
+  main.classList.add("settling");
+  setTimeout(function(){ main.classList.remove("settling"); }, 320);
+  window.scrollTo(0,0);
+}
+function chrome(){
+  $("who").hidden=!ME; $("wb").hidden=!ME;
+  if(ME){
+    $("who").textContent = ME.guest ? "試試看" : ME.cls+" 班 "+ME.seat+" 號";
+    $("wbn").textContent = wrongIds().length;
+  }
+  renderSync();
+}
+$("who").onclick=function(){
+  if(R && R.rec.length && !confirm("這一輪還沒做完，要換人嗎？做過的題目會先交出去。")) return;
+  if(R && R.rec.length) finishEarly();
+  R=null; ME=null; chrome(); login();
+};
+$("wb").onclick=function(){
+  if(R && !R.over){ if(!confirm("先離開這一輪去看錯題本嗎？做過的題目會先交出去。")) return; finishEarly(); }
+  R=null; wrongBook();
+};
+
+/* ---------- 登入 ---------- */
+function login(){
+  var cls=C.store("eng6_cls"), seatBox=el("div"), clsBox=el("div",{class:"grid"});
+  if(!E.classes[cls]) cls=null;
+  function seats(){
+    seatBox.replaceChildren();
+    if(!cls) return;
+    var g=el("div",{class:"grid"});
+    for(var i=1;i<=E.classes[cls];i++) (function(n){
+      g.appendChild(el("button",{text:String(n), onclick:function(){
+        ME={cls:cls, seat:n}; C.store("eng6_cls",cls); loadP(); recoverRound(); chrome(); home();
+      }}));
+    })(i);
+    seatBox.appendChild(el("div",{class:"lab",text:"點你的座號"}));
+    seatBox.appendChild(g);
+  }
+  Object.keys(E.classes).forEach(function(c){
+    clsBox.appendChild(el("button",{text:c, "aria-pressed":c===cls?"true":"false", onclick:function(){
+      cls=c;
+      [].forEach.call(clsBox.children,function(b){ b.setAttribute("aria-pressed", b.textContent===c?"true":"false"); });
+      seats();
+    }}));
+  });
+  seats();
+  show(el("section",{class:"card narrow"},[
+    el("h2",{text:"先選班級和座號"}),
+    el("p",{class:"lead",text:"不用填姓名。同一台平板換人用也沒關係，錯題本會照座號分開。"}),
+    clsBox, seatBox,
+    el("button",{class:"link",text:"只是試試看，不要記錄",onclick:function(){ ME={guest:true}; loadP(); chrome(); home(); }})
+  ]));
+}
+
+/* ---------- 選範圍 ---------- */
+function home(){
+  chrome();
+  if(SEL.range==="wb" && !wrongIds().length) SEL.range="all";
+  var ranges=el("div",{class:"opts"}), parts=el("div",{class:"seg four"}), partLab=el("div",{class:"lab",text:"哪一部分"}), ways=el("div",{class:"seg"}), start=el("button",{class:"btn wide"});
+  function paint(){
+    ranges.replaceChildren();
+    function add(id,t,d,c,full,dis){
+      ranges.appendChild(el("button",{class:"opt"+(full?" full":""), disabled:dis, "aria-pressed":SEL.range===id?"true":"false",
+        onclick:function(){ SEL.range=id; paint(); }},
+        [el("span",{class:"t",text:t}), el("span",{class:"d",text:d}), el("span",{class:"c",text:c})]));
+    }
+    function did(id){ return "做過 "+seenIn(id,SEL.part)+" / "+pool(id,SEL.part).length; }
+    add("all","全部隨機","從所有單元抽題，沒做過的先出",did("all"), true);
+    E.units.forEach(function(u){ add(u.id, u.zh, u.name, did(u.id)); });
+    var n=wrongIds().length;
+    add("wb","錯題本", n?"把錯過的字練熟":"目前沒有錯題", n+" 題", E.units.length%2===0, !n);
+    parts.replaceChildren(); parts.hidden=partLab.hidden=SEL.range==="wb";
+    [{id:"",zh:"全部",name:"混著出"}].concat(E.parts).forEach(function(x){
+      parts.appendChild(el("button",{class:"opt","aria-pressed":SEL.part===x.id?"true":"false",
+        onclick:function(){ SEL.part=x.id; paint(); }},[el("span",{class:"t",text:x.zh}), el("span",{class:"d",text:x.name})]));
+    });
+    ways.replaceChildren();
+    [[1,"選一選","看得懂就好"],[2,"排字母","字母給你，排順序"],[3,"自己拼","只給第一個字母"]].forEach(function(w){
+      ways.appendChild(el("button",{class:"opt","aria-pressed":SEL.lv===w[0]?"true":"false",
+        onclick:function(){ SEL.lv=P.lv=w[0]; saveP(); paint(); }},[el("span",{class:"t",text:w[1]}), el("span",{class:"d",text:w[2]})]));
+    });
+    var m=pool(SEL.range,SEL.part).length; start.textContent="開始 "+Math.min(E.round,m)+" 題"; start.disabled=!m;
+  }
+  start.onclick=begin;
+  paint();
+  show(el("section",{class:"card home"},[
+    el("h2",{text:"要練哪裡？"}),
+    el("div",{class:"home2"},[
+      el("div",null,[el("div",{class:"lab",text:"範圍"}), ranges]),
+      el("div",null,[partLab, parts, el("div",{class:"lab",text:"怎麼作答"}), ways,
+        el("div",{class:"home-foot"},[start]),
+        el("div",{class:"row",style:"margin-top:8px"},[
+          el("button",{class:"link",text:"看大家常錯的字",onclick:function(){ location.href="eng6-stats.html?pub"; }}),
+          P.best?el("span",{class:"lead",style:"margin:0 0 0 auto;font-size:15px",text:"最高連續答對 "+P.best+" 題"}):null
+        ])])])
+  ]));
+}
+
+/* ---------- 出題 ---------- */
+function pickQs(range){
+  var all=C.shuffle(pool(range,SEL.part)), fresh=[], miss=[], rest=[];
+  all.forEach(function(q){ (!P.seen[q.id] ? fresh : P.wrong[q.id] ? miss : rest).push(q); });
+  return C.shuffle(fresh.concat(miss,rest).slice(0,E.round));
+}
+function begin(){
+  var qs=pickQs(SEL.range);
+  if(!qs.length) return;
+  R={qs:qs, i:0, rec:[], streak:0, lv:SEL.lv, mode:SEL.range+(SEL.range==="wb"?"":SEL.part), t0:Date.now(), over:false};
+  ask();
+}
+function wayOf(q){ return q.sp ? R.lv : 1; }
+function saveRound(){
+  if(ME.guest) return;
+  C.store("eng6_round", JSON.stringify({cls:ME.cls, seat:ME.seat, mode:R.mode, lv:R.lv, t0:R.t0, rec:R.rec}));
+}
+function makeRec(o){
+  var ok=o.rec.filter(function(d){ return d.ok; }).length;
+  return {cls:o.cls, seat:o.seat, ts:new Date().toISOString(), mode:o.mode, lv:o.lv, n:o.rec.length, ok:ok,
+          secs:Math.min(36000, o.rec.reduce(function(m,d){ return m+d.s; },0)), detail:o.rec};
+}
+/* 平板被收走、頁面被關掉：下次有人打開時把沒交的補交 */
+function recoverRound(){
+  var o; try{ o=JSON.parse(C.store("eng6_round")||"null"); }catch(e){ o=null; }
+  C.store("eng6_round",null);
+  if(o && o.rec && o.rec.length) upload(makeRec(o));
+}
+function finishEarly(){
+  if(!R || R.over || ME.guest || !R.rec.length) return;
+  R.over=true; C.store("eng6_round",null);
+  upload(makeRec({cls:ME.cls,seat:ME.seat,mode:R.mode,lv:R.lv,rec:R.rec}));
+}
+
+/* ---------- 作答 ---------- */
+var KEYH=null;
+document.addEventListener("keydown",function(e){ if(KEYH && !e.metaKey && !e.ctrlKey && !e.altKey) KEYH(e); });
+
+function maskText(q,lv){
+  if(lv===1) return "＿＿＿＿";
+  return q.a.split("").map(function(ch,i){ return /[A-Za-z]/.test(ch) ? (i===0&&lv===3 ? ch : "_") : ch; }).join("");
+}
+/* 「字首 l，3 個字共 13 個字母」 */
+function shape(q){
+  var ws=q.a.split(" ").length, n=C.letters(q.a);
+  return "字首 "+q.a[0]+"，"+(ws>1 ? ws+" 個字共 "+n+" 個字母" : "共 "+n+" 個字母")+(q.a.indexOf("'")>=0?"，有一撇 '":"");
+}
+function sentNode(q, text, done){
+  var p=q.s.split("___");
+  return el("p",{class:"sent en"},[p[0], el("span",{class:"gap"+(done?" done":"")+(/ /.test(text)?" multi":""),text:text}), p[1]]);
+}
+function ask(){
+  var q=R.qs[R.i], lv=wayOf(q), t0=Date.now(), tries=0, first=null, hintMask=0, done=false;
+  var left=el("section",{class:"card"}), right=el("section"), sentBox=el("div"), hintBox=el("div",{class:"hintbox"});
+  KEYH=null;
+
+  /* 左：題目和提示 */
+  sentBox.appendChild(sentNode(q, maskText(q,lv)));
+  var H=[{b:1,n:"常用搭配",f:function(){ return q.col; }},
+         {b:2,n:"中文",f:function(){ return C.mean(q); }},
+         {b:4,n:"聽發音",f:null}];
+  var hintRow=el("div",{class:"hints"});
+  H.forEach(function(h){
+    if(h.b===4 && !C.canSpeak()) return;
+    hintRow.appendChild(el("button",{class:"hint",text:h.n,"aria-pressed":"false",onclick:function(){
+      if(h.b===4) C.speak(q.a,0.75);
+      else if(!(hintMask&h.b)) hintBox.appendChild(el("p",null,[el("b",{text:h.n}), el("span",{class:"en",text:h.f()})]));
+      hintMask|=h.b; this.setAttribute("aria-pressed","true");
+    }}));
+  });
+  left.append(
+    el("div",{class:"tags"},[el("span",{text:C.unit(q.u).zh+"・"+C.part(q.g).zh}), el("span",{text:C.WAYS[lv]}),
+      q.sp?null:el("span",{text:"認讀就好"})]),
+    sentBox, hintRow, hintBox);
+
+  /* 右：作答 */
+  function secs(){ return Math.min(600, Math.round((Date.now()-t0)/1000)); }
+  function log(firstGot, res, fixed){
+    var d={id:q.id, w:q.a, u:String(firstGot||"").slice(0,40), t:res.t||"", d:res.d||"", ok:res.ok?1:0,
+           r:fixed?1:0, h:hintMask, lv:lv, s:secs()};
+    R.rec.push(d);
+    P.seen[q.id]=(P.seen[q.id]||0)+1;
+    if(res.ok){
+      R.streak++; P.best=Math.max(P.best,R.streak);
+      if(P.wrong[q.id]){ P.wrong[q.id].c=(P.wrong[q.id].c||0)+1; if(P.wrong[q.id].c>=2) delete P.wrong[q.id]; }
+    } else {
+      R.streak=0;
+      P.wrong[q.id]={u:d.u, t:d.t, c:0, n:((P.wrong[q.id]||{}).n||0)+1};
+    }
+    saveP(); saveRound(); chrome();
+  }
+  function submit(got){
+    if(done) return;
+    if(lv!==1 && (q.syn||[]).some(function(x){ return x.toLowerCase()===C.norm(got).toLowerCase(); })){
+      nudge.hidden=false; nudge.classList.add("soft");
+      nudge.replaceChildren(el("span",{text:"意思也通，這次不算錯。請改用課本的說法："+shape(q)+"。"}));
+      return;
+    }
+    nudge.classList.remove("soft");
+    tries++;
+    var r=C.classify(q.a, got);
+    if(tries===1) first={got:got, r:r};
+    if(r.ok){ done=true; log(first.got, first.r, tries>1); feedback(true, got, r, tries); return; }
+    if(tries===1 && lv!==1){ retry(r, got); return; }
+    done=true; log(first.got, first.r, false); feedback(false, got, r, tries);
+  }
+  function giveUp(){
+    if(done) return; done=true;
+    if(!first) first={got:"", r:{ok:false,t:"part",d:""}};
+    log(first.got, first.r, false); feedback(false, first.got, first.r, 2);
+  }
+  var nudge=el("p",{class:"nudge",hidden:true});
+  function retry(r,got){
+    nudge.hidden=false; skip.hidden=true;
+    nudge.replaceChildren(el("span",{text:C.coach(q,got,r)}), el("button",{class:"link",text:"看答案",onclick:giveUp}));
+  }
+  function feedback(ok, got, r, n){
+    KEYH=null;
+    sentBox.replaceChildren(sentNode(q,q.a,true));
+    hintRow.hidden=true;
+    var head = ok ? (n>1?"訂正成功":"答對了") : (got?"這題記到錯題本了":"沒關係，記下來");
+    var box=el("div",{class:"fb"+(ok?"":" no"),role:"status"},[
+      el("h3",{text:head}),
+      el("p",{class:"ans en"},[q.a, el("small",{text:C.mean(q)})])
+    ]);
+    if(ok && r.low) box.appendChild(el("p",{class:"lead",style:"margin:4px 0 0",text:"這個字在句子中間，開頭用小寫就好。"}));
+    if(!ok && got && lv!==1) box.appendChild(compare(q.a, got));
+    if(!ok && got && lv===1) box.appendChild(el("p",{class:"lead",style:"margin:6px 0 0"},["你選了 ",el("b",{class:"en",text:got})]));
+    if(ok && n>1) box.appendChild(el("p",{class:"lead",style:"margin:4px 0 0"},["第一次寫成 ",el("b",{class:"en",text:first.got||"（空白）"}),"，這題會放進錯題本再練。"]));
+    if(q.note && (!ok || n>1)) box.appendChild(el("p",{class:"lead",style:"margin:6px 0 0;color:var(--ink);font-weight:700",text:q.note}));
+    box.appendChild(el("p",{class:"tr"},[el("b",{text:"整句翻譯"}), q.tr]));
+    if(C.canSpeak()) box.appendChild(el("div",{class:"say"},[
+      el("button",{class:"hint",text:"聽單字",onclick:function(){ C.speak(q.a,0.75); }}),
+      el("button",{class:"hint",text:"聽整句",onclick:function(){ C.speak(C.fill(q),0.85); }})]));
+    var last=R.i>=R.qs.length-1;
+    var nx=el("button",{class:"btn wide next",text:last?"看這一輪的結果":"下一題",onclick:function(){ R.i++; last?end():ask(); }});
+    right.replaceChildren(box,nx);
+    right.classList.add("settling"); setTimeout(function(){ right.classList.remove("settling"); },320);
+    KEYH=function(e){ if(e.key==="Enter" && !e.repeat && document.activeElement!==nx){ e.preventDefault(); nx.click(); } };
+    paintProg();
+    if(innerHeight<box.getBoundingClientRect().bottom+80) box.scrollIntoView({block:"nearest"});
+  }
+  var prog=el("div",{class:"prog"});
+  function paintProg(){
+    prog.replaceChildren(
+      el("span",{text:"第 "+(R.i+1)+" / "+R.qs.length+" 題"}),
+      el("div",{class:"track"},el("i",{style:"width:"+Math.round(R.rec.length/R.qs.length*100)+"%"})),
+      el("span",{class:"st",text:"連續答對 "+R.streak}));
+  }
+  paintProg();
+  var skip=el("div",{class:"under"},el("button",{class:"link",text:"跳過這題",onclick:giveUp}));
+  if(lv===1) mountChoice(right,q,submit);
+  else if(lv===2) mountTiles(right,q,submit,nudge);
+  else mountKeys(right,q,submit,nudge);
+  right.appendChild(skip);
+  show([prog, el("div",{class:"play"},[left,right])]);
+  if(lv!==1) fitRules(right.querySelector(".pad"));
+}
+
+function compare(ans, got){
+  var al=C.align(ans,got), mine=el("div",null,el("em",{text:"你寫的"})), good=el("div",null,el("em",{text:"正確"}));
+  function vis(c,op){ return c===" " ? (op==="=" ? "\u00a0" : "␣") : c; }
+  al.forEach(function(x){
+    mine.appendChild(x.g ? el("s",{class:x.op==="="?"":"x",text:vis(x.g,x.op)}) : el("s",{class:"o",text:vis(x.a,x.op)}));
+    good.appendChild(x.a ? el("s",{class:x.op==="="?"":"v",text:vis(x.a,x.op)}) : el("s",{text:"\u00a0"}));
+  });
+  return el("div",{class:"cmp en"},[mine,good]);
+}
+
+/* 選一選 */
+function mountChoice(host,q,submit){
+  var box=el("div",{class:"choices"});
+  C.shuffle([q.a].concat(q.x)).forEach(function(w){
+    box.appendChild(el("button",{class:"choice",text:w,onclick:function(){
+      [].forEach.call(box.children,function(b){ b.disabled=true; }); submit(w); }}));
+  });
+  host.appendChild(box);
+  KEYH=function(e){ var n="1234".indexOf(e.key); if(n>=0 && e.key && !e.repeat && box.children[n]) box.children[n].click(); };
+}
+
+/* 四線格：量實際字型，讓基線、x 高度、上伸下伸剛好踩在線上 */
+var fitNow=function(){};
+addEventListener("resize",function(){ fitNow(); });
+function fitRules(pad){
+  if(!pad) return;
+  function go(){
+    if(!pad.isConnected) return;
+    var w=pad.querySelector(".word"), cs, cv=document.createElement("canvas").getContext("2d");
+    w.style.fontSize=""; cs=getComputedStyle(w);
+    cv.font=cs.fontWeight+" "+cs.fontSize+" "+cs.fontFamily;
+    var need=Math.max(cv.measureText(pad.dataset.need||"").width, w.querySelector(".ph")?0:cv.measureText(w.textContent).width)+24, room=w.clientWidth;
+    if(need>room){ w.style.fontSize=Math.max(20,Math.floor(parseFloat(cs.fontSize)*room/need))+"px"; cs=getComputedStyle(w); }
+    cv.font=cs.fontWeight+" "+cs.fontSize+" "+cs.fontFamily;
+    var x=cv.measureText("x").actualBoundingBoxAscent, h=cv.measureText("h").actualBoundingBoxAscent, p=cv.measureText("p").actualBoundingBoxDescent;
+    var probe=el("i",{style:"display:inline-block;width:0;height:0;vertical-align:baseline"});
+    w.appendChild(probe);
+    var base=probe.getBoundingClientRect().bottom-pad.getBoundingClientRect().top-1;
+    probe.remove();
+    var ys=[base-h, base-x, base, base+p], ls=pad.querySelectorAll(".ln");
+    for(var i=0;i<4;i++) ls[i].style.top=Math.round(ys[i])+"px";
+  }
+  fitNow=go; go();
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(go);
+}
+function ruled(q){
+  var word=el("div",{class:"word"});
+  return {word:word, pad:el("div",{class:"pad","data-need":q.a+"mm"},[el("i",{class:"ln"}),el("i",{class:"ln"}),el("i",{class:"ln b"}),el("i",{class:"ln"}),word])};
+}
+
+/* 自己拼：頁面內建鍵盤，不會叫出注音輸入法，也不會被自動更正 */
+function mountKeys(host,q,submit,nudge){
+  var buf="", pos=0, shift=false, U=ruled(q), cnt=el("div",{class:"count"});
+  var extra=q.a.replace(/[A-Za-z]/g,"").split("").filter(function(c,i,a){ return a.indexOf(c)===i; });
+  var send=el("button",{class:"key send",text:"送出",onclick:function(){ if(C.norm(buf)) submit(C.norm(buf)); }});
+  var sh=el("button",{class:"key fn",text:"大寫","aria-pressed":"false",onclick:function(){ shift=!shift; paintKeys(); }});
+  var keys=[];
+  function put(ch){ if(buf.length>=24) return; buf=buf.slice(0,pos)+ch+buf.slice(pos); pos++; shift=false; paintKeys(); paint(); }
+  function del(){ if(pos>0){ buf=buf.slice(0,pos-1)+buf.slice(pos); pos--; paint(); } }
+  function move(d){ pos=Math.max(0,Math.min(buf.length,pos+d)); paint(); }
+  function paintKeys(){ keys.forEach(function(k){ k.textContent=shift?k.dataset.k.toUpperCase():k.dataset.k; }); sh.setAttribute("aria-pressed",shift?"true":"false"); }
+  function paint(){
+    U.word.replaceChildren();
+    if(!buf) U.word.append(el("i",{class:"caret"}), el("span",{class:"ph",text:q.a.indexOf(" ")>0?"拼出完整的片語":"拼出完整的單字"}));
+    else {
+      for(var i=0;i<=buf.length;i++){
+        if(i===pos) U.word.appendChild(el("i",{class:"caret"}));
+        if(i<buf.length) (function(n){
+          U.word.appendChild(el("span",{class:buf[n]===" "?"sp":"",text:buf[n],onclick:function(){ pos=n+1; paint(); }}));
+        })(i);
+      }
+    }
+    var n=C.letters(buf);
+    if(U.word.scrollWidth>U.word.clientWidth+1) fitNow();
+    cnt.replaceChildren(el("span",{text:shape(q)+(extra.indexOf(" ")>=0?"（要打空格）":"")}),
+                        el("span",null,["已經寫 ",el("b",{text:String(n)})," 個"]));
+    send.disabled=!buf;
+  }
+  function row(s){ var r=el("div",{class:"r"}); s.split("").forEach(function(c){
+    var k=el("button",{class:"key",text:c,"data-k":c,onclick:function(){ put(shift?c.toUpperCase():c); }}); keys.push(k); r.appendChild(k); }); return r; }
+  var r3=row("zxcvbnm"); r3.prepend(sh);
+  r3.append(el("button",{class:"key fn",text:"刪除",onclick:del}));
+  var r4=el("div",{class:"r"},[el("button",{class:"key fn",text:"◀","aria-label":"游標往左",onclick:function(){ move(-1); }}),
+    el("button",{class:"key fn",text:"▶","aria-label":"游標往右",onclick:function(){ move(1); }})]);
+  extra.forEach(function(c){ r4.appendChild(el("button",{class:"key fn",text:c===" "?"空格":c,onclick:function(){ put(c); }})); });
+  r4.appendChild(send);
+  host.append(U.pad,cnt,nudge,el("div",{class:"kb"},[row("qwertyuiop"),row("asdfghjkl"),r3,r4]));
+  paint();
+  KEYH=function(e){
+    if(/^[a-zA-Z]$/.test(e.key) || (extra.indexOf(e.key)>=0)){ e.preventDefault(); put(e.key); }
+    else if(e.key==="Backspace"){ e.preventDefault(); del(); }
+    else if(e.key==="ArrowLeft"){ e.preventDefault(); move(-1); }
+    else if(e.key==="ArrowRight"){ e.preventDefault(); move(1); }
+    else if(e.key==="Enter" && !e.repeat){ e.preventDefault(); if(!send.disabled) send.click(); }
+  };
+}
+
+/* 排字母：多給兩個容易搞混的字母，才看得出是哪裡不熟 */
+function mountTiles(host,q,submit,nudge){
+  var letters=q.a.replace(/ /g,"").split(""), low=letters.join("").toLowerCase(), cuts={}, used=[], U=ruled(q), cnt=el("div",{class:"count"}), box=el("div",{class:"tiles"});
+  var near={a:"e",e:"a",i:"e",o:"u",u:"o",y:"i",c:"k",k:"c",s:"c",b:"d",d:"b",p:"q",m:"n",n:"m",t:"d",f:"v",v:"f",l:"r",r:"l",g:"j",w:"v",h:"n",z:"s"};
+  q.a.split("").reduce(function(n,c){ if(c===" "){ cuts[n]=1; return n; } return n+1; },0);      /* 第幾個字母前面要有空格 */
+  var add=[];
+  C.shuffle(low.split("")).forEach(function(c){ var x=near[c]; if(add.length<2 && x && add.indexOf(x)<0) add.push(x); });
+  var pool=C.shuffle(letters.concat(add));
+  if(letters.length>2 && pool.slice(0,letters.length).join("")===letters.join("")) pool.reverse();
+  var tiles=pool.map(function(ch,i){
+    var b=el("button",{class:"tile",text:ch,onclick:function(){ used.push(i); paint(); }});
+    box.appendChild(b); return b;
+  });
+  var send=el("button",{class:"key send",text:"送出",onclick:function(){ submit(C.norm(word())); }});
+  function word(){ return used.map(function(i,n){ return (n&&cuts[n]?" ":"")+pool[i]; }).join(""); }
+  function paint(){
+    U.word.replaceChildren();
+    if(!used.length) U.word.appendChild(el("span",{class:"ph",text:"點下面的字母排出"+(q.a.indexOf(" ")>0?"片語":"單字")}));
+    used.forEach(function(i,n){ if(n&&cuts[n]) U.word.appendChild(el("span",{class:"sp",text:" "})); U.word.appendChild(el("span",{text:pool[i],title:"點一下拿掉",onclick:function(){ used.splice(n,1); paint(); }})); });
+    tiles.forEach(function(b,i){ b.disabled=used.indexOf(i)>=0; });
+    if(U.word.scrollWidth>U.word.clientWidth+1) fitNow();
+    cnt.replaceChildren(el("span",{text:"共 "+C.letters(q.a)+" 個字母，有 "+add.length+" 個用不到"+(q.a.indexOf(" ")>0?"；空格會自動加":"")}), el("span",null,["已經排 ",el("b",{text:String(used.length)})," 個"]));
+    send.disabled=!used.length;
+  }
+  host.append(U.pad,cnt,nudge,box,el("div",{class:"kb"},el("div",{class:"r"},[
+    el("button",{class:"key fn",text:"刪除",onclick:function(){ used.pop(); paint(); }}), send])));
+  paint();
+  KEYH=function(e){
+    if(e.key==="Backspace"){ e.preventDefault(); used.pop(); paint(); }
+    else if(e.key==="Enter" && !e.repeat){ e.preventDefault(); if(!send.disabled) send.click(); }
+    else if(/^[a-zA-Z']$/.test(e.key)){
+      /* 先找大小寫也一樣的字母，沒有才用另一種 */
+      var left=pool.map(function(_,i){ return i; }).filter(function(i){ return used.indexOf(i)<0 && pool[i].toLowerCase()===e.key.toLowerCase(); });
+      var hit=left.filter(function(i){ return pool[i]===e.key; })[0];
+      if(hit===undefined) hit=left[0];
+      if(hit!==undefined){ used.push(hit); paint(); }
+    }
+  };
+}
+
+/* ---------- 一輪結束 ---------- */
+function end(){
+  KEYH=null; R.over=true; P.rounds++; saveP(); C.store("eng6_round",null);
+  var ok=R.rec.filter(function(d){ return d.ok; }).length, fixed=R.rec.filter(function(d){ return d.r; }).length;
+  var bad=R.rec.filter(function(d){ return !d.ok; });
+  var cnt={}; bad.forEach(function(d){ cnt[d.t]=(cnt[d.t]||0)+1; });
+  var ord=Object.keys(cnt).sort(function(a,b){ return cnt[b]-cnt[a]; }), top=ord[0];
+  if(top && (cnt[top]<2 || (ord[1] && cnt[ord[1]]===cnt[top]))) top="";      /* 沒有哪一種特別多，就不要硬說「最常」 */
+  var TIP={spell:"拼字差一點的最多。寫完先唸一次，一個音節一個音節對過去。",
+           mixup:"最常用成別的字。先看整句在說什麼，再按「中文」確認意思。",
+           form:"最常忘記字尾變化。主詞是 he、she 或一個人，動詞要加 s 或 es。",
+           func:"片語的小字最常出錯。把 by、to、a、the、my 跟著整個片語一起唸熟。",
+           part:"有幾題沒寫完。先按提示，想到多少就寫多少。",
+           caps:"最常忘記大寫。國家、星期、English、TV 和句子的開頭都要大寫。",
+           other:"有幾題差比較多。先用「選一選」把意思弄熟，再來拼。"};
+  var note=el("p",{class:"sent-ok",text:ME.guest?"試試看模式，沒有記錄。":"交給老師中…"});
+  if(ME.guest) note.className="sent-ok warn";
+  var list=el("div",{class:"list"});
+  bad.forEach(function(d){
+    var q=C.byId[d.id];
+    list.appendChild(el("div",{class:"it"},[
+      el("div",{class:"w en"},[q.a, el("small",{text:q.zh})]),
+      el("div",{class:"g"},[(d.u?"第一次寫成 ":"沒有作答"), d.u?el("b",{class:"en",text:d.u}):null, "　"+C.typeName(d.t)+(C.SUB[d.d]?"："+C.SUB[d.d]:"")]),
+      el("div",{class:"sx en",text:C.fill(q)}), el("div",{class:"m",text:q.tr})]));
+  });
+  show(el("section",{class:"card narrow"},[
+    el("h2",{text:"這一輪完成了"}),
+    el("p",{class:"big"},[String(ok), el("small",{text:" / "+R.rec.length+" 題第一次就答對"})]),
+    fixed?el("p",{class:"lead",text:"另外有 "+fixed+" 題第二次訂正成功。"}):null,
+    el("p",{style:"margin:6px 0 0"},[el("b",{text:top?TIP[top]:bad.length?"把下面的字再看一次，等一下從錯題本練。":"全部第一次就對，換難一點的作答方式試試看。"})]),
+    note,
+    bad.length?el("div",{class:"lab",text:"錯的字都放進錯題本了"}):null, list,
+    el("div",{class:"row",style:"margin-top:20px"},[
+      el("button",{class:"btn",text:"再來一輪",onclick:function(){ if(R.mode==="wb"&&!wrongIds().length){ home(); return; } begin(); }}),
+      wrongIds().length?el("button",{class:"btn ghost",text:"練錯題本",onclick:function(){ SEL.range="wb"; begin(); }}):null,
+      el("button",{class:"btn ghost",text:"換範圍",onclick:function(){ R=null; home(); }})])
+  ]));
+  chrome();
+  if(!ME.guest) upload(makeRec({cls:ME.cls,seat:ME.seat,mode:R.mode,lv:R.lv,rec:R.rec})).then(function(why){
+    if(!why){ note.textContent="已經交給老師了。"; flush(); }
+    else { note.textContent=why; note.className="sent-ok warn"; }
+  });
+}
+
+/* ---------- 錯題本 ---------- */
+function wrongBook(){
+  var ids=wrongIds(), list=el("div",{class:"list"});
+  ids.forEach(function(id){
+    var q=C.byId[id], w=P.wrong[id];
+    list.appendChild(el("div",{class:"it"},[
+      el("div",{class:"w en"},[q.a, el("small",{text:C.mean(q)})]),
+      el("div",{class:"g"},[w.u?"你寫過 ":"沒有作答", w.u?el("b",{class:"en",text:w.u}):null, "　"+C.typeName(w.t)]),
+      el("div",{class:"sx en",text:C.fill(q)}), el("div",{class:"m",text:q.tr}),
+      el("div",{class:"m",text:"錯過 "+w.n+" 次，再答對 "+(2-(w.c||0))+" 次就會移出"})]));
+  });
+  show(el("section",{class:"card narrow"},[
+    el("h2",{text:"錯題本"}),
+    ids.length?el("p",{class:"lead",text:"同一個字第一次就答對兩次，就會從這裡移出。"}):el("p",{class:"empty",text:"目前沒有錯題。"}),
+    el("div",{class:"row"},[
+      ids.length?el("button",{class:"btn",text:"練這些題目",onclick:function(){ SEL.range="wb"; begin(); }}):null,
+      el("button",{class:"btn ghost",text:"回選單",onclick:home})]),
+    list]));
+}
+
+login(); initCloud();
+</script>
+</body>
+</html>

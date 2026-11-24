@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>英語單字錯誤分析｜永福國小六年級</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#E9F0F8; --card:#FFFFFF; --sunk:#F3F7FC;
+  --ink:#16243F; --soft:#4E5D7A; --faint:#7C8AA5; --line:#CDD9E9;
+  --rule:#9CC0E6; --base:#E39490;
+  --pri:#2352B5; --pri-ink:#FFFFFF; --pri-bg:#E2EAFA;
+  --ok:#17724A; --ok-bg:#E0F3E8; --bad:#B8352C; --bad-bg:#FBE7E4; --mark:#FFEFA8;
+  --s-spell:#2a78d6; --s-mixup:#eb6834; --s-form:#1baf7a; --s-func:#eda100; --s-part:#e87ba4; --s-caps:#008300; --s-other:#9AA5B8;
+  --track:#E4EBF5;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#111A2B; --card:#1A2640; --sunk:#152036;
+  --ink:#E9EFF9; --soft:#AFBDD6; --faint:#8292AF; --line:#324363;
+  --rule:#3F6494; --base:#A8605E;
+  --pri:#7FA6F5; --pri-ink:#0D1930; --pri-bg:#223559;
+  --ok:#74D3A2; --ok-bg:#173529; --bad:#F3938A; --bad-bg:#3D2425; --mark:#5C5016;
+  --s-spell:#3987e5; --s-mixup:#d95926; --s-form:#199e70; --s-func:#c98500; --s-part:#d55181; --s-caps:#0ca30c; --s-other:#6E7C96;
+  --track:#24324F;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111A2B; --card:#1A2640; --sunk:#152036;
+  --ink:#E9EFF9; --soft:#AFBDD6; --faint:#8292AF; --line:#324363;
+  --rule:#3F6494; --base:#A8605E;
+  --pri:#7FA6F5; --pri-ink:#0D1930; --pri-bg:#223559;
+  --ok:#74D3A2; --ok-bg:#173529; --bad:#F3938A; --bad-bg:#3D2425; --mark:#5C5016;
+  --s-spell:#3987e5; --s-mixup:#d95926; --s-form:#199e70; --s-func:#c98500; --s-part:#d55181; --s-caps:#0ca30c; --s-other:#6E7C96;
+  --track:#24324F;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"Noto Sans TC","PingFang TC","Heiti TC",sans-serif; font-size:16px; line-height:1.6}
+button,select,input{font:inherit; color:inherit}
+button{cursor:pointer; touch-action:manipulation}
+button:disabled{opacity:.45; cursor:default}
+[hidden]{display:none !important}
+:focus-visible{outline:3px solid var(--pri); outline-offset:2px}
+.en{font-family:"Andika","Trebuchet MS","Comic Sans MS",sans-serif}
+.app{max-width:1180px; margin:0 auto; padding:0 20px 60px}
+h1,h2,h3{margin:0; text-wrap:balance}
+.bar{display:flex; align-items:center; gap:12px; padding:18px 0 14px; flex-wrap:wrap}
+.logo{position:relative; width:52px; height:40px; flex:none; background:var(--card); border:1px solid var(--line); border-radius:6px; overflow:hidden}
+.logo i{position:absolute; left:0; right:0; height:1px; background:var(--rule)}
+.logo i:nth-child(1){top:7px}.logo i:nth-child(2){top:16px}.logo i:nth-child(3){top:27px; background:var(--base)}.logo i:nth-child(4){top:34px}
+.logo b{position:absolute; inset:0 0 auto; text-align:center; font:700 24px/39px "Andika","Trebuchet MS",sans-serif; color:var(--pri)}
+.brand{margin-right:auto}
+.brand h1{font-size:24px; font-weight:900; line-height:1.3}
+.brand p{margin:0; color:var(--soft); font-size:14px}
+.acts{display:flex; gap:8px; flex-wrap:wrap}
+.btn{border:1px solid var(--line); background:var(--card); border-radius:10px; min-height:42px; padding:6px 16px; font-weight:700; font-size:15px}
+.btn.pri{background:var(--pri); border-color:var(--pri); color:var(--pri-ink)}
+.btn[aria-pressed="true"]{background:var(--pri-bg); border-color:var(--pri); color:var(--pri)}
+.note{border-radius:10px; padding:10px 16px; margin:0 0 14px; background:var(--mark); font-weight:700}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 22px}
+.card h2{font-size:19px; font-weight:900}
+.card .sub{color:var(--soft); font-size:14px; margin:2px 0 16px}
+.filters{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; background:var(--bg); padding:8px 0}
+@media (min-width:900px){ .filters{position:sticky; top:0; z-index:5} }
+.filters select,.filters input{border:1px solid var(--line); background:var(--card); border-radius:10px; min-height:44px; padding:4px 12px; font-size:15px}
+.filters input{flex:1 1 180px; min-width:150px}
+.kpis{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin-bottom:16px}
+.kpi .l{font-size:14px; color:var(--soft); font-weight:700}
+.kpi .v{font-size:38px; font-weight:900; line-height:1.25; overflow-wrap:anywhere}
+.kpi .v.t{font-size:27px; padding:7px 0 4px}
+.kpi .n{font-size:14px; color:var(--soft)}
+.two{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(min(100%,430px),1fr)); margin-bottom:16px}
+.one{margin-bottom:16px}
+
+.ty{display:block; width:100%; text-align:left; background:none; border:1px solid transparent; border-radius:10px; padding:9px 12px; margin:0 -12px; width:calc(100% + 24px)}
+.ty:hover{background:var(--sunk)}
+.ty[aria-pressed="true"]{border-color:var(--pri); background:var(--pri-bg)}
+.ty .h{display:flex; align-items:baseline; gap:9px}
+.ty .h b{margin-right:auto}
+.ty .h span{font-variant-numeric:tabular-nums}
+.ty .h .p{color:var(--soft); width:3.6em; text-align:right}
+.sw{width:12px; height:12px; border-radius:3px; flex:none; align-self:center}
+.hbar{height:10px; border-radius:4px; background:var(--track); margin:6px 0 4px}
+.hbar i{display:block; height:100%; border-radius:0 4px 4px 0; min-width:2px}
+.ty .ex{font-size:14px; color:var(--soft)}
+.legend{display:flex; gap:6px 16px; flex-wrap:wrap; font-size:14px; color:var(--soft); margin-bottom:12px}
+.legend span{display:inline-flex; gap:7px; align-items:center}
+.st{margin-bottom:16px}
+.st .h{display:flex; justify-content:space-between; gap:10px; margin-bottom:5px}
+.st .h span{color:var(--soft); font-variant-numeric:tabular-nums; white-space:nowrap}
+.stack{display:flex; gap:2px; height:22px}
+.stack button{border:0; padding:0; height:100%; min-width:3px; border-radius:0; cursor:default}
+.stack button:last-child{border-radius:0 4px 4px 0}
+.stack button:hover{filter:brightness(1.12)}
+.top{display:grid; gap:4px}
+.tp{display:grid; grid-template-columns:30px minmax(130px,auto) 1fr auto; gap:4px 12px; align-items:center; width:calc(100% + 24px); margin:0 -12px; text-align:left; border:0; background:none; border-radius:10px; padding:9px 12px}
+button.tp:hover{background:var(--sunk)}
+.tp .r{color:var(--faint); font-weight:700; font-variant-numeric:tabular-nums}
+.tp .w{font-size:20px; font-weight:700}
+.tp .w small{font:500 14px/1.4 "Noto Sans TC",sans-serif; color:var(--soft); margin-left:8px}
+.tp .ms{display:flex; gap:6px; flex-wrap:wrap}
+.chip{border:1px solid var(--line); background:var(--sunk); border-radius:7px; padding:1px 9px; font-size:15px; white-space:nowrap}
+.chip em{font:500 13px/1 "Noto Sans TC",sans-serif; color:var(--soft); margin-left:5px}
+.tp .n{font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap}
+.tp .stack{grid-column:2/-1; height:10px}
+table{border-collapse:collapse; width:100%; font-size:15px}
+th,td{text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:middle}
+th{font-size:13px; color:var(--soft); white-space:nowrap}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap}
+.scroll{overflow-x:auto; margin:0 -6px}
+.meter{height:8px; border-radius:4px; background:var(--track); min-width:90px}
+.meter i{display:block; height:100%; border-radius:4px; background:var(--pri)}
+td .miss{color:var(--bad); font-weight:700}
+.seats{display:grid; gap:6px; grid-template-columns:repeat(auto-fill,minmax(74px,1fr)); margin-top:14px}
+.seat{border:1px solid var(--line); border-radius:8px; padding:4px 8px; font-size:14px; line-height:1.4; background:var(--sunk); color:var(--faint)}
+.seat b{display:block; font-size:16px; color:var(--ink)}
+.seat.on{background:var(--ok-bg); color:var(--ok); border-color:transparent}
+.pager{display:flex; gap:10px; align-items:center; justify-content:flex-end; margin-top:12px; font-size:14px; color:var(--soft)}
+details{margin-top:12px; font-size:15px}
+summary{cursor:pointer; color:var(--pri); font-weight:500}
+.empty{color:var(--soft); padding:18px 0}
+.tip{position:fixed; z-index:60; pointer-events:none; background:var(--ink); color:var(--card); border-radius:8px; padding:6px 12px; font-size:14px; max-width:260px}
+.tip b{display:block; font-size:16px}
+.gate{max-width:440px; margin:40px auto}
+.gate label{display:block; font-weight:700; margin:14px 0 4px}
+.gate input{width:100%; border:1px solid var(--line); background:var(--sunk); border-radius:10px; min-height:48px; padding:6px 14px}
+.err{color:var(--bad); font-weight:700; min-height:1.6em; margin:10px 0}
+.toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:var(--ink); color:var(--card); padding:11px 22px; border-radius:10px; font-weight:700; z-index:70; max-width:90vw}
+dialog{border:1px solid var(--line); border-radius:14px; background:var(--card); color:var(--ink); padding:24px; max-width:460px}
+dialog::backdrop{background:rgba(10,18,36,.5)}
+dialog p{margin:10px 0 18px; color:var(--soft)}
+
+/* 投影檢討 */
+.rv{position:fixed; inset:0; z-index:50; background:var(--bg); display:grid; grid-template-rows:auto 1fr auto; padding:22px clamp(20px,5vw,72px)}
+.rv header,.rv footer{display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+.rv header{font-size:20px; font-weight:700; color:var(--soft)}
+.rv .stage{overflow:auto; display:grid; align-content:safe center; gap:clamp(16px,3vh,34px); padding:16px 0}
+.rv .s{font-size:clamp(28px,4.2vw,56px); line-height:1.4; margin:0; text-wrap:pretty}
+.rv .gap{border-bottom:4px solid var(--base); color:var(--pri); padding:0 .25em; letter-spacing:.08em; white-space:nowrap}
+.rv .gap.done{background:var(--mark); color:var(--ink); border-radius:6px; letter-spacing:0; border-bottom:0; font-weight:700}
+.rv .q{font-size:clamp(18px,1.9vw,26px); font-weight:700; color:var(--soft); margin:0}
+.rv .wr{display:flex; gap:14px; flex-wrap:wrap}
+.rv .wr div{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 22px; font-size:clamp(26px,3vw,42px)}
+.rv .wr div em{font:500 16px/1.3 "Noto Sans TC",sans-serif; color:var(--soft); display:block}
+.rv s{text-decoration:none; display:inline-block; border-radius:5px; padding:0 1px; min-width:.5em; text-align:center}
+.rv s.x{background:var(--bad); color:var(--card)}
+.rv s.o{box-shadow:inset 0 -4px 0 var(--bad); color:var(--faint); border-radius:0}
+.rv .rev{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 26px; font-size:clamp(20px,2.1vw,30px)}
+.rv .rev b{font-size:1.5em; margin-right:14px}
+.rv .btn{min-height:54px; padding:8px 26px; font-size:19px}
+@media (max-width:560px){
+  .app{padding:0 14px 50px}
+  .card{padding:16px}
+  .tp{grid-template-columns:24px 1fr auto}
+  .tp .ms{grid-column:2/-1; grid-row:2}
+  .tp .stack{grid-row:3}
+}
+@media print{ .acts,.filters,.pager,details,#detail,.logo{display:none !important} body{background:#fff} .card{break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <div class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i><b>Aa</b></div>
+    <div class="brand"><h1>英語單字錯誤分析</h1><p id="sub"></p></div>
+    <div class="acts" id="acts"></div>
+  </header>
+  <div id="note"></div>
+  <section id="gate" class="card gate" hidden>
+    <h2>老師登入</h2>
+    <p class="sub">用其他檢核頁同一組老師帳號。</p>
+    <label for="em">帳號</label><input id="em" type="email" autocomplete="username">
+    <label for="pw">密碼</label><input id="pw" type="password" autocomplete="current-password">
+    <p class="err" id="err" role="alert"></p>
+    <button class="btn pri" id="signin">登入</button>
+  </section>
+  <main id="board" hidden>
+    <div class="filters" id="filters"></div>
+    <div id="out"></div>
+  </main>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script src="eng6-bank.js?v=11240842"></script>
+<script src="eng6-core.js?v=11240842"></script>
+<script>
+"use strict";
+var E=ENG6, C=ENGC, el=C.el, $=function(i){ return document.getElementById(i); };
+var MODE = /[?&]demo/.test(location.search) ? "demo" : /[?&]pub/.test(location.search) ? "pub" : "teacher";
+var DB=null, AUTH=null, ROWS=[], ROUNDS=[], F={when:"all",cls:"",unit:"",part:"",lv:"",type:"",q:""}, ANON=MODE!=="teacher", PAGE=0, PER=30;
+var COLOR={}; C.TYPES.forEach(function(t){ COLOR[t.k]="var(--s-"+t.k+")"; });
+var CLS=Object.keys(E.classes);
+
+function toast(m){ var t=el("div",{class:"toast",text:m,role:"status"}); document.body.appendChild(t); setTimeout(function(){ t.remove(); },2600); }
+function pct(a,b){ return b ? (a/b*100).toFixed(1)+"%" : "0%"; }
+function stamp(ts){ var d=new Date(ts); if(isNaN(d)) return ""; var p=function(n){ return String(n).padStart(2,"0"); };
+  return p(d.getMonth()+1)+"/"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes()); }
+
+/* ---------- 資料整理 ---------- */
+function flatten(docs){
+  ROUNDS=[]; ROWS=[];
+  docs.forEach(function(d){
+    if(!d || !has(E.classes,d.cls) || !(d.seat>=1) || !Array.isArray(d.detail)) return;
+    var r={cls:d.cls, seat:Number(d.seat), ts:String(d.ts||""), n:0, ok:0};
+    d.detail.forEach(function(x){
+      var q=x && C.byId[x.id];
+      if(!q) return;                       /* 換過題庫，舊題目就不算進來 */
+      var u=C.norm(x.u).slice(0,40), ok=!!x.ok, c=ok?null:C.classify(q.a,u);
+      ROWS.push({ts:r.ts, cls:r.cls, seat:r.seat, q:q, u:u, ok:ok, t:ok?"":(c.ok?"caps":c.t), d:ok?"":c.d, r:!!x.r, h:Number(x.h)||0, lv:Number(x.lv)||3});
+      r.n++; if(ok) r.ok++;
+    });
+    if(r.n) ROUNDS.push(r);
+  });
+  ROWS.sort(function(a,b){ return b.ts.localeCompare(a.ts); });
+}
+function has(o,k){ return Object.prototype.hasOwnProperty.call(o,k); }
+function inWhen(ts){
+  if(F.when==="all") return true;
+  var d=new Date(ts), n=new Date();
+  if(F.when==="today") return d.toDateString()===n.toDateString();
+  return n-d < Number(F.when)*864e5;
+}
+function scope(skipType){
+  var s=F.q.trim().toLowerCase();
+  return ROWS.filter(function(r){
+    return inWhen(r.ts) && (!F.cls||r.cls===F.cls) && (!F.unit||r.q.u===F.unit) && (!F.part||r.q.g===F.part) && (!F.lv||r.lv===Number(F.lv))
+      && (!s || r.q.a.toLowerCase().indexOf(s)>=0 || r.u.toLowerCase().indexOf(s)>=0 || r.q.zh.indexOf(s)>=0)
+      && (skipType || !F.type || r.ok || r.t===F.type);
+  });
+}
+function countBy(rows,f){ var o={}; rows.forEach(function(r){ var k=f(r); o[k]=(o[k]||0)+1; }); return o; }
+function sorted(o){ return Object.keys(o).map(function(k){ return [k,o[k]]; }).sort(function(a,b){ return b[1]-a[1] || (a[0]<b[0]?-1:1); }); }
+function summarize(rows){
+  var bad=rows.filter(function(r){ return !r.ok; }), units={}, words={}, ways={};
+  rows.forEach(function(r){ var w=ways[r.lv]=ways[r.lv]||{n:0,ok:0}; w.n++; if(r.ok) w.ok++; });
+  E.units.forEach(function(u){ units[u.id]={}; });
+  bad.forEach(function(r){
+    units[r.q.u][r.t]=(units[r.q.u][r.t]||0)+1;
+    var w=words[r.q.id]=words[r.q.id]||{id:r.q.id,n:0,types:{},bad:{}};
+    w.n++; w.types[r.t]=(w.types[r.t]||0)+1; if(r.u) w.bad[r.u]=(w.bad[r.u]||0)+1;
+  });
+  return {total:rows.length, bad:bad.length, types:countBy(bad,function(r){ return r.t; }), units:units, ways:ways,
+    top:Object.keys(words).map(function(k){ return words[k]; }).sort(function(a,b){ return b.n-a.n || (a.id<b.id?-1:1); })
+      .map(function(w){ return {id:w.id,n:w.n,types:w.types,bad:sorted(w.bad)}; }),
+    words:Object.keys(words).length};
+}
+
+/* ---------- 提示框 ---------- */
+function tipOn(node, strong, soft){
+  function on(e){
+    var t=$("tip"); t.replaceChildren(el("b",{text:strong}), document.createTextNode(soft)); t.hidden=false;
+    var b=node.getBoundingClientRect(), x=(e&&e.clientX)||b.left+b.width/2, w=t.offsetWidth;
+    t.style.left=Math.max(8,Math.min(innerWidth-w-8,x-w/2))+"px";
+    t.style.top=(b.top-t.offsetHeight-8<4 ? b.bottom+8 : b.top-t.offsetHeight-8)+"px";
+  }
+  node.onpointermove=on; node.onpointerenter=on; node.onfocus=on;
+  node.onpointerleave=node.onblur=function(){ $("tip").hidden=true; };
+}
+function stack(types, scaleTo, name){
+  var s=el("div",{class:"stack"});
+  C.TYPES.forEach(function(t){
+    var n=types[t.k]; if(!n) return;
+    var b=el("button",{type:"button","aria-label":name+"，"+t.n+" "+n+" 筆",style:"background:"+COLOR[t.k]+";flex:0 0 calc("+(n/scaleTo*100)+"% - 2px)"});
+    tipOn(b, n+" 筆", t.n+"・"+name); s.appendChild(b);
+  });
+  return s;
+}
+function legend(types){
+  return el("div",{class:"legend"},C.TYPES.filter(function(t){ return types[t.k]; }).map(function(t){
+    return el("span",null,[el("i",{class:"sw",style:"background:"+COLOR[t.k]}), t.n]); }));
+}
+
+/* ---------- 篩選 ---------- */
+function buildFilters(){
+  var box=$("filters"); box.replaceChildren();
+  function sel(key,label,opts){
+    var s=el("select",{"aria-label":label,onchange:function(){ F[key]=s.value; PAGE=0; render(); }},
+      opts.map(function(o){ return el("option",{value:o[0],text:o[1],selected:F[key]===o[0]}); }));
+    box.appendChild(s); return s;
+  }
+  sel("when","期間",[["all","全部期間"],["today","今天"],["7","最近 7 天"],["30","最近 30 天"]]);
+  sel("cls","班級",[["","所有班級"]].concat(CLS.map(function(c){ return [c,c+" 班"]; })));
+  sel("unit","單元",[["","所有單元"]].concat(E.units.map(function(u){ return [u.id,u.zh]; })));
+  sel("part","部分",[["","單字＋發音＋句型"]].concat(E.parts.map(function(x){ return [x.id,x.zh]; })));
+  sel("lv","作答方式",[["","所有作答方式"],["1","選一選"],["2","排字母"],["3","自己拼"]]);
+  sel("type","錯誤類型",[["","所有錯誤類型"]].concat(C.TYPES.map(function(t){ return [t.k,t.n]; })));
+  var tm; box.appendChild(el("input",{type:"search",placeholder:"找單字、學生的寫法、中文","aria-label":"搜尋",value:F.q,oninput:function(){
+    var v=this.value; clearTimeout(tm); tm=setTimeout(function(){ F.q=v; PAGE=0; render(); },180); }}));
+}
+
+/* ---------- 畫面 ---------- */
+function kpi(l,v,n,text){ return el("div",{class:"card kpi"},[el("div",{class:"l",text:l}), el("div",{class:"v"+(text?" t":"")+(text==="en"?" en":""),text:v}), el("div",{class:"n",text:n})]); }
+
+function charts(S, opt){
+  var out=[], tops=sorted(S.types), t0=tops[0], w0=S.top[0];
+  out.push(el("div",{class:"kpis"},[
+    kpi("答錯筆數",S.bad.toLocaleString(),"共 "+S.total.toLocaleString()+" 筆作答，錯誤率 "+pct(S.bad,S.total)),
+    kpi("最主要的錯誤",t0?C.typeName(t0[0]):"—", t0?"佔 "+pct(t0[1],S.bad)+"（"+t0[1]+" 筆）":"還沒有錯題",true),
+    kpi("最常錯的單字",w0?C.byId[w0.id].a:"—", w0?C.byId[w0.id].zh+"，錯 "+w0.n+" 次":"還沒有錯題","en"),
+    opt.people]));
+  /* 類型分布 */
+  var ty=el("section",{class:"card"},[el("h2",{text:"錯在哪一種"}), el("p",{class:"sub",text:opt.click?"點一種錯誤，其他圖表會跟著篩選。":"全年級合計。"})]);
+  var max=Math.max.apply(null,[1].concat(Object.values(S.allTypes||S.types)));
+  C.TYPES.forEach(function(t){
+    var n=(S.allTypes||S.types)[t.k]||0; if(!n) return;
+    var exs=(opt.examples&&opt.examples[t.k])||[], tot=S.allBad||S.bad;
+    var inner=[el("div",{class:"h"},[el("i",{class:"sw",style:"background:"+COLOR[t.k]}), el("b",{text:t.n}), el("span",{text:n+" 筆"}), el("span",{class:"p",text:pct(n,tot)})]),
+      el("div",{class:"hbar"},el("i",{style:"width:"+(n/max*100)+"%;background:"+COLOR[t.k]})),
+      el("div",{class:"ex"},[t.d+(exs.length?"。例如 ":"")].concat(exs.map(function(x,i){ return el("span",{class:"en",text:(i?"、":"")+x[0]+" → "+x[1]}); })))];
+    ty.appendChild(opt.click ? el("button",{class:"ty","aria-pressed":F.type===t.k?"true":"false",onclick:function(){ F.type=F.type===t.k?"":t.k; PAGE=0; buildFilters(); render(); }},inner)
+                             : el("div",{class:"ty"},inner));
+  });
+  if(!S.bad && !S.allBad) ty.appendChild(el("p",{class:"empty",text:"這個範圍還沒有錯題。"}));
+  /* 各單元 */
+  var un=el("section",{class:"card"},[el("h2",{text:"各單元錯在哪裡"}), el("p",{class:"sub",text:"長度是答錯筆數，顏色是錯誤類型。"}), legend(S.types)]);
+  var ut=E.units.map(function(u){ return {u:u, t:S.units[u.id]||{}, n:Object.values(S.units[u.id]||{}).reduce(function(m,x){ return m+x; },0)}; });
+  var um=Math.max.apply(null,[1].concat(ut.map(function(x){ return x.n; })));
+  ut.forEach(function(x){ un.appendChild(el("div",{class:"st"},[el("div",{class:"h"},[el("b",{text:x.u.zh}), el("span",{text:x.n+" 筆"})]), stack(x.t,um,x.u.zh)])); });
+  var used=C.TYPES.filter(function(t){ return S.types[t.k]; });
+  if(used.length) un.appendChild(el("details",null,[el("summary",{text:"看數字"}), el("div",{class:"scroll"},el("table",null,[
+    el("thead",null,el("tr",null,[el("th",{text:"單元"})].concat(used.map(function(t){ return el("th",{class:"num",text:t.n}); }), el("th",{class:"num",text:"合計"})))),
+    el("tbody",null,ut.map(function(x){ return el("tr",null,[el("td",{text:x.u.zh})].concat(used.map(function(t){ return el("td",{class:"num",text:String(x.t[t.k]||0)}); }), el("td",{class:"num",text:String(x.n)}))); }))]))]));
+  var wy=S.allWays||S.ways||{};
+  if([1,2,3].some(function(k){ return wy[k]; })){
+    un.append(el("h2",{style:"margin-top:26px",text:"看得懂，拼得出來嗎"}), el("p",{class:"sub",text:"三種作答方式第一次就答對的比例。"}));
+    [1,2,3].forEach(function(k){
+      var w=wy[k]; if(!w) return;
+      un.appendChild(el("div",{class:"st"},[el("div",{class:"h"},[el("b",{text:C.WAYS[k]}), el("span",{text:pct(w.ok,w.n)+"（"+w.n.toLocaleString()+" 題）"})]),
+        el("div",{class:"hbar",style:"margin:0"},el("i",{style:"width:"+(w.ok/w.n*100)+"%;background:var(--pri)"}))]));
+    });
+  }
+  out.push(el("div",{class:"two"},[ty,un]));
+  /* Top 10 */
+  var tp=el("section",{class:"card one"},[el("h2",{text:"最常錯的 10 個字"}),
+    el("p",{class:"sub",text:opt.review?"旁邊是最常出現的寫法。點一個字，直接開投影檢討。":"旁邊是最常出現的寫法。"}), legend(S.types)]);
+  var box=el("div",{class:"top"}), tm=S.top.length?S.top[0].n:1;
+  S.top.slice(0,10).forEach(function(w,i){
+    var q=C.byId[w.id]; if(!q) return;
+    var kids=[el("span",{class:"r",text:String(i+1)}), el("span",{class:"w en"},[q.a, el("small",{text:q.zh})]),
+      el("span",{class:"ms"},w.bad.filter(function(b){ return C.classify(q.a,b[0]).t!=="part"; }).slice(0,3).map(function(b){ return el("span",{class:"chip en"},[b[0], el("em",{text:b[1]+" 次"})]); })),
+      el("span",{class:"n",text:w.n+" 次"}), stack(w.types,tm,q.a)];
+    box.appendChild(opt.review ? clickable(el("div",{class:"tp",role:"button",tabindex:"0"},kids),function(){ review(S,i); }) : el("div",{class:"tp"},kids));
+  });
+  if(!S.top.length) box.appendChild(el("p",{class:"empty",text:"這個範圍還沒有錯題。"}));
+  tp.appendChild(box); out.push(tp);
+  return out;
+}
+function clickable(n,f){ n.style.cursor="pointer"; n.onclick=f; n.onkeydown=function(e){ if(e.target===n && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); f(); } }; return n; }
+
+var LAST=null;
+function render(){
+  var rows=scope(false), all=scope(true), S=summarize(rows), A=summarize(all);
+  S.allTypes=A.types; S.allBad=A.bad; S.allWays=A.ways; S.total=all.length; LAST=S;
+  var ex={};
+  C.TYPES.forEach(function(t){
+    var pairs=countBy(all.filter(function(r){ return !r.ok && r.t===t.k && r.u; }),function(r){ return r.u+"\u0001"+r.q.a; });
+    ex[t.k]=sorted(pairs).slice(0,2).map(function(p){ return p[0].split("\u0001"); });
+  });
+  var who={}; all.forEach(function(r){ who[r.cls+"-"+r.seat]=1; });
+  var n=Object.keys(who).length, tot=F.cls?E.classes[F.cls]:CLS.reduce(function(m,c){ return m+E.classes[c]; },0);
+  var out=charts(S,{click:true, review:true, examples:ex, people:kpi("有練習的學生",n+" 人","應有 "+tot+" 人（"+pct(n,tot)+"），錯題涵蓋 "+A.words+" 題")});
+  out.push(part(all)); out.push(detail(rows.filter(function(r){ return !r.ok; })));
+  $("out").replaceChildren.apply($("out"),out);
+}
+
+/* 各班參與 */
+function part(all){
+  var sec=el("section",{class:"card one"},[el("h2",{text:F.cls?F.cls+" 班參與情形":"各班參與情形"}),
+    el("p",{class:"sub",text:F.cls?"沒有顏色的座號還沒練習過。":"選一個班級，可以看到哪些座號還沒練習。"})]);
+  var by={}; all.forEach(function(r){ var k=r.cls; by[k]=by[k]||{seat:{},n:0,ok:0}; by[k].seat[r.seat]=by[k].seat[r.seat]||{n:0,ok:0}; by[k].n++; by[k].seat[r.seat].n++; if(r.ok){ by[k].ok++; by[k].seat[r.seat].ok++; } });
+  if(F.cls){
+    var g=el("div",{class:"seats"}), b=by[F.cls]||{seat:{}};
+    if(ANON){ sec.appendChild(el("p",{class:"empty",text:"去識別開啟中，不顯示座號。"})); return sec; }
+    var mx=Math.max.apply(null,[E.classes[F.cls]].concat(Object.keys(b.seat).map(Number)));
+    for(var i=1;i<=mx;i++){ var s=b.seat[i];
+      g.appendChild(el("div",{class:"seat"+(s?" on":"")},[el("b",{text:i+" 號"}), s?s.ok+" / "+s.n+" 題":(i>E.classes[F.cls]?"超出名冊":"還沒做")])); }
+    sec.appendChild(g); return sec;
+  }
+  sec.appendChild(el("div",{class:"scroll"},el("table",null,[
+    el("thead",null,el("tr",null,[el("th",{text:"班級"}),el("th",{class:"num",text:"有練習"}),el("th",{text:""}),el("th",{class:"num",text:"作答題數"}),el("th",{class:"num",text:"第一次就對"})])),
+    el("tbody",null,CLS.map(function(c){ var x=by[c]||{seat:{},n:0,ok:0}, k=Object.keys(x.seat).length;
+      return el("tr",null,[el("td",null,el("b",{text:c})), el("td",{class:"num",text:k+" / "+E.classes[c]}),
+        el("td",{style:"width:34%"},el("div",{class:"meter"},el("i",{style:"width:"+Math.min(100,k/E.classes[c]*100)+"%"}))),
+        el("td",{class:"num",text:String(x.n)}), el("td",{class:"num",text:x.n?pct(x.ok,x.n):"—"})]); }))])));
+  return sec;
+}
+/* 明細 */
+function detail(bad){
+  var sec=el("section",{class:"card one",id:"detail"},[el("h2",{text:"答錯明細"}), el("p",{class:"sub",text:"記的是第一次作答的內容。共 "+bad.length.toLocaleString()+" 筆。"})]);
+  var pages=Math.max(1,Math.ceil(bad.length/PER)); PAGE=Math.min(PAGE,pages-1);
+  var hd=["時間"].concat(ANON?[]:["班級","座號"],["正確答案","學生寫的","錯誤類型","單元","作答方式","提示","訂正"]);
+  sec.appendChild(el("div",{class:"scroll"},el("table",null,[
+    el("thead",null,el("tr",null,hd.map(function(h){ return el("th",{text:h}); }))),
+    el("tbody",null,bad.slice(PAGE*PER,PAGE*PER+PER).map(function(r){
+      return el("tr",null,[el("td",{style:"white-space:nowrap",text:stamp(r.ts)})].concat(ANON?[]:[el("td",{text:r.cls}),el("td",{text:String(r.seat)})],[
+        el("td",{class:"en",text:r.q.a}), el("td",null,el("span",{class:"miss en",text:r.u||"（空白）"})),
+        el("td",null,[el("i",{class:"sw",style:"display:inline-block;margin-right:7px;vertical-align:-1px;background:"+COLOR[r.t]}), C.typeName(r.t)+(C.SUB[r.d]?"・"+C.SUB[r.d]:"")]),
+        el("td",{text:C.unit(r.q.u).zh+"・"+C.part(r.q.g).zh}), el("td",{text:C.WAYS[r.lv]||""}), el("td",{text:[r.h&1?"搭配":"",r.h&2?"中文":"",r.h&4?"發音":""].filter(Boolean).join("、")||"—"}), el("td",{text:r.r?"成功":"—"})]));
+    }))])));
+  if(!bad.length) sec.appendChild(el("p",{class:"empty",text:"這個範圍沒有答錯的紀錄。"}));
+  if(pages>1) sec.appendChild(el("div",{class:"pager"},[
+    el("button",{class:"btn",text:"上一頁",disabled:PAGE===0,onclick:function(){ PAGE--; render(); $("detail").scrollIntoView(); }}),
+    (PAGE+1)+" / "+pages, el("button",{class:"btn",text:"下一頁",disabled:PAGE>=pages-1,onclick:function(){ PAGE++; render(); $("detail").scrollIntoView(); }})]));
+  return sec;
+}
+
+/* ---------- 投影檢討：先看錯的寫法，再揭曉 ---------- */
+function review(S,start){
+  var list=S.top.slice(0,10), i=start||0, open=false, root=el("div",{class:"rv",role:"dialog","aria-label":"投影檢討"});
+  if(!list.length){ toast("這個範圍還沒有錯題"); return; }
+  function close(){ root.remove(); document.removeEventListener("keydown",key); document.body.style.overflow=""; }
+  function key(e){
+    if(e.key==="Escape") close();
+    else if(e.key==="ArrowRight"||e.key===" "||e.key==="Enter"){ e.preventDefault(); next(); }
+    else if(e.key==="ArrowLeft"){ e.preventDefault(); prev(); }
+  }
+  function next(){ if(!open) open=true; else if(i<list.length-1){ i++; open=false; } else { close(); return; } paint(); }
+  function prev(){ if(open) open=false; else if(i>0){ i--; open=true; } paint(); }
+  function paint(){
+    var w=list[i], q=C.byId[w.id], p=q.s.split("___");
+    /* 投影給全班看：沒寫完的不列；看不出在拼這個字的，要兩個人以上才列，避免有人亂打的字上螢幕 */
+    var bad=w.bad.filter(function(b){ var t=C.classify(q.a,b[0]).t; return t!=="part" && (t!=="other" || b[1]>=2); }).slice(0,6);
+    root.replaceChildren(
+      el("header",null,[el("span",{text:"第 "+(i+1)+" / "+list.length+" 個字，全部錯 "+w.n+" 次"}), el("button",{class:"btn",text:"離開",onclick:close})]),
+      el("div",{class:"stage"},[
+        el("p",{class:"s en"},[p[0], el("span",{class:"gap"+(open?" done":""), text:open?q.a:"＿＿＿＿"}), p[1]]),
+        bad.length?el("p",{class:"q",text:open?"紅底是寫錯的字母，紅色底線是少寫的字母":"大家寫成這樣，問題在哪裡？"}):null,
+        bad.length?el("div",{class:"wr en"},bad.map(function(b){
+          var t=C.classify(q.a,b[0]).t, letters=open && (t==="spell"||t==="caps"||t==="other") ?
+            C.align(q.a,b[0]).map(function(x){ var bad=x.op!=="=", c=x.g||x.a; c=c===" "?(bad?"␣":"\u00a0"):c; return x.g?el("s",{class:bad?"x":"",text:c}):el("s",{class:"o",text:c}); }) : [b[0]];
+          return el("div",null,letters.concat(el("em",{text:b[1]+" 次"+(open?"・"+C.typeName(t):"")}))); })):null,
+        open?el("div",{class:"rev"},[el("b",{class:"en",text:q.a}), C.mean(q), el("div",{text:q.tr}), el("div",{class:"en",style:"color:var(--soft)",text:q.col.replace("___",q.a)}), q.note?el("div",{style:"font-weight:700",text:q.note}):null]):null]),
+      el("footer",null,[
+        el("button",{class:"btn",text:"上一步",onclick:prev,disabled:i===0&&!open}),
+        C.canSpeak()?el("button",{class:"btn",text:"唸整句",onclick:function(){ C.speak(C.fill(q)); },disabled:!open}):null,
+        el("button",{class:"btn pri",text:!open?"揭曉答案":i<list.length-1?"下一個字":"結束",onclick:next})]));
+  }
+  document.addEventListener("keydown",key); document.body.style.overflow="hidden"; document.body.appendChild(root); paint();
+  if(document.activeElement) document.activeElement.blur();
+}
+
+/* ---------- 匯出、發布 ---------- */
+function csv(){
+  var q=function(v){ v=String(v==null?"":v); if(/^[=+\-@]/.test(v)) v="'"+v; return '"'+v.replace(/"/g,'""')+'"'; };
+  var hd=["時間"].concat(ANON?[]:["班級","座號"],["題號","單元","部分","正確答案","中文","第一次作答","對錯","錯誤類型","細分","作答方式","第二次訂正","用了幾個提示"]);
+  var lines=[hd.map(q).join(",")].concat(scope(false).map(function(r){
+    return [stamp(r.ts)].concat(ANON?[]:[r.cls,r.seat],[r.q.id,C.unit(r.q.u).zh,C.part(r.q.g).zh,r.q.a,r.q.zh,r.u,r.ok?"對":"錯",r.ok?"":C.typeName(r.t),C.SUB[r.d]||"",C.WAYS[r.lv]||"",r.r?"成功":"",(r.h&1?1:0)+(r.h&2?1:0)+(r.h&4?1:0)]).map(q).join(","); }));
+  var a=el("a",{href:URL.createObjectURL(new Blob(["﻿"+lines.join("\r\n")],{type:"text/csv"})),download:"英語單字作答明細"+(ANON?"_去識別":"")+".csv"});
+  a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); },2000);
+}
+/* 公開版只放統計：不含班級座號；錯的寫法要出現兩次以上、而且看得出是在拼這個字，避免把學生亂打的內容貼出去 */
+function snapshot(){
+  var S=summarize(ROWS.filter(function(r){ return inWhen(r.ts); }));
+  return {at:new Date().toISOString(), total:S.total, bad:S.bad, words:S.words, types:S.types, units:S.units, ways:S.ways,
+    top:S.top.slice(0,10).map(function(w){ var q=C.byId[w.id];
+      return {id:w.id, n:w.n, types:w.types, bad:w.bad.filter(function(b){ var t=C.classify(q.a,b[0]).t; return b[1]>=2 && (t==="spell"||t==="form"||t==="func"||t==="mixup"||t==="caps"); }).slice(0,3).map(function(b){ return {u:b[0],n:b[1]}; })}; })};
+}
+function publish(){
+  var dlg=el("dialog",null,[el("h2",{text:"發布給學生看？"}),
+    el("p",{text:"學生會在練習頁的「看大家常錯的字」看到全年級合計的統計和前 10 個常錯字。不會有班級、座號，也不會有只出現一次的寫法。再按一次會蓋掉上一版。"}),
+    el("div",{class:"acts"},[el("button",{class:"btn pri",text:"發布",onclick:async function(){
+      this.disabled=true;
+      try{ await DB.collection(E.PUB_COL).doc("summary").set(snapshot()); toast("已發布"); }
+      catch(e){ toast(e&&e.code==="permission-denied"?"雲端規則還沒開放 "+E.PUB_COL:"發布失敗，請再試一次"); }
+      dlg.close(); }}), el("button",{class:"btn",text:"取消",onclick:function(){ dlg.close(); }})])]);
+  dlg.onclose=function(){ dlg.remove(); };
+  document.body.appendChild(dlg); dlg.showModal();
+}
+function buildActs(){
+  var a=$("acts"); a.replaceChildren();
+  a.appendChild(el("button",{class:"btn pri",text:"投影檢討",onclick:function(){ review(LAST,0); }}));
+  var an=el("button",{class:"btn",text:"去識別","aria-pressed":ANON?"true":"false",onclick:function(){ ANON=!ANON; an.setAttribute("aria-pressed",ANON?"true":"false"); render(); }});
+  a.appendChild(an);
+  a.appendChild(el("button",{class:"btn",text:"匯出 CSV",onclick:csv}));
+  if(MODE==="teacher"){
+    a.appendChild(el("button",{class:"btn",text:"發布給學生看",onclick:publish}));
+    a.appendChild(el("button",{class:"btn",text:"重新整理",onclick:load}));
+    a.appendChild(el("button",{class:"btn",text:"登出",onclick:function(){ AUTH.signOut(); }}));
+  }
+}
+
+/* ---------- 老師模式 ---------- */
+async function load(){
+  $("sub").textContent="讀取中…";
+  try{
+    var snap=await DB.collection(E.FIRE_COL).get(), docs=[];
+    snap.forEach(function(d){ docs.push(d.data()); });
+    flatten(docs);
+    $("sub").textContent="共 "+ROUNDS.length+" 輪作答，資料時間 "+stamp(new Date().toISOString());
+    render();
+  }catch(e){
+    $("sub").textContent=(e&&e.code==="permission-denied")?"讀取被拒，雲端規則還沒開放 "+E.FIRE_COL+"。":"讀取失敗，請按重新整理。";
+  }
+}
+async function teacher(){
+  try{ var f=await C.firebase(true); DB=f.db; AUTH=f.auth; }
+  catch(e){ $("gate").hidden=false; $("err").textContent="載入不到 Firebase 元件，請檢查網路。"; return; }
+  AUTH.onAuthStateChanged(function(u){
+    $("gate").hidden=!!u; $("board").hidden=!u;
+    if(u){ buildActs(); buildFilters(); load(); }
+    else { $("acts").replaceChildren(); $("out").replaceChildren(); ROWS=[]; ROUNDS=[]; $("sub").textContent=E.school+" "+E.grade; }
+  });
+}
+$("signin").onclick=async function(){
+  var em=$("em").value.trim(), pw=$("pw").value;
+  if(!em||!pw){ $("err").textContent="帳號和密碼都要填。"; return; }
+  $("err").textContent=""; this.disabled=true;
+  try{ await AUTH.signInWithEmailAndPassword(em,pw); $("pw").value=""; }
+  catch(e){
+    var m={"auth/invalid-email":"帳號格式不對。","auth/invalid-credential":"帳號或密碼不對。","auth/wrong-password":"帳號或密碼不對。","auth/user-not-found":"帳號或密碼不對。",
+      "auth/too-many-requests":"嘗試太多次，請等幾分鐘再試。","auth/network-request-failed":"連不到網路。"};
+    $("err").textContent=m[e&&e.code]||"登入失敗，請再試一次。";
+  }
+  this.disabled=false;
+};
+$("pw").addEventListener("keydown",function(e){ if(e.key==="Enter") $("signin").click(); });
+
+/* ---------- 學生看的公開版 ---------- */
+async function pub(){
+  $("board").hidden=false; $("filters").hidden=true; $("sub").textContent="讀取中…";
+  $("acts").appendChild(el("a",{class:"btn",href:"eng6.html",text:"回去練習",style:"text-decoration:none;display:inline-flex;align-items:center"}));
+  document.querySelector(".brand h1").textContent="大家常錯的字";
+  try{
+    var f=await C.firebase(false), d=await f.db.collection(E.PUB_COL).doc("summary").get();
+    if(!d.exists) throw {code:"none"};
+    var s=d.data();
+    s.top=(s.top||[]).filter(function(w){ return C.byId[w.id]; }).map(function(w){ return {id:w.id,n:w.n,types:w.types||{},bad:(w.bad||[]).map(function(b){ return [b.u,b.n]; })}; });
+    $("sub").textContent="老師在 "+stamp(s.at)+" 更新，全年級合計，不顯示班級座號";
+    $("out").replaceChildren.apply($("out"),charts(s,{people:kpi("錯過的題目",(s.words||0)+" 題","題庫共 "+E.bank.length+" 題")}));
+  }catch(e){
+    $("sub").textContent=E.school+" "+E.grade;
+    $("out").replaceChildren(el("section",{class:"card"},el("p",{class:"empty",text:"老師還沒有發布統計，過幾天再來看。"})));
+  }
+}
+
+/* ---------- 示範資料（網址加 ?demo） ---------- */
+function demo(){
+  var seed=20261124; function rnd(){ seed=(seed*1664525+1013904223)>>>0; return seed/4294967296; }
+  function pick(a){ return a[Math.floor(rnd()*a.length)]; }
+  var REAL={Australia:["Austrlia","Australa","australia","Austrailia"],Singapore:["Singapor","Singapoer","singapore"],Japan:["Japen","japan","Jpan"],India:["india","Indea"],Spain:["Span","Spian","spain"],Taiwan:["taiwan","Taiwen"],
+    "the UK":["UK","the uk","UK"],"the USA":["USA","the usa","USA"],bird:["brid","bird ","burd"],circle:["cirle","circel","curcle"],dirty:["drity","durty"],shirt:["shrit","short","shurt"],curry:["cury","carry","curry "],nurse:["nerse","nures","nurs"],purple:["perple","purpel","purpul"],Thursday:["Thusday","thursday","Tuesday","Thrusday"],
+    "by bike":["bike","by a bike","by bick"],"by bus":["bus","by the bus","on bus"],"by car":["car","by a car"],"by metro":["by mertro","metro","by meter"],"by MRT":["by mrt","MRT","by the MRT"],"by scooter":["by scoter","scooter","by scotter"],"by taxi":["by texi","taxi","by taxy"],"by train":["by trian","train","by tarin"],"on foot":["by foot","by foot","by foot","on feet"],
+    school:["shcool","scool","schol"],dark:["drak","dack"],farm:["fram","from"],park:["prak","pack"],shark:["shrak","sark"],corn:["con","cron"],fork:["frok","folk"],horse:["house","hores","hose"],short:["shirt","shrot","shot"],
+    "go jogging":["go joging","jogging","go jog","go joging"],"listen to music":["listen music","listen music","lisen to music","listen to musik"],"play baseball":["play the baseball","play basketball","play baseboll"],"play basketball":["play basketbal","play baseball","play baskeball"],"ride a bike":["ride bike","ride bike","rid a bike"],"study English":["study english","study english","studdy English"],
+    "surf the Internet":["surf Internet","surf the internet","serf the Internet"],"watch TV":["watch the TV","watch tv","wach TV"],"free time":["freetime","fee time"],coin:["cion","coyn"],oil:["oli","oyl"],point:["piont","ponit"],soil:["soli","oil"],joy:["joi"],soybeans:["soybean","soybens","soybeens"],
+    does:["do","do","dose"],"watches TV":["watch TV","watchs TV","watch TV"],"goes jogging":["go jogging","goes joging"],"studies English":["studys English","study English","studies english"],"listens to music":["listens music","listen to music"],"rides a bike":["ride a bike","rides bike"],
+    "get up":["get","get app"],"go to school":["go school","go to the school"],"have lunch":["have a lunch","have lanch"],"go home":["go to home","go to home"],"do my homework":["do homework","do homework","do my homwork"],"take a shower":["take shower","take shower","take a showr"],"go to bed":["go to the bed","go bed"],
+    bounce:["bonce","bounse"],cloud:["clound","cloub"],house:["horse","hous"],shout:["shot","short"],clown:["cloun","crown"],crowd:["croud","cloud"],owl:["oul","awl"],shower:["shouer","showr"],
+    "gets up":["get up","get up"],"has lunch":["have lunch","have lunch"],"does his homework":["do his homework","does my homework","does homework"],"takes a shower":["take a shower","takes shower"],"goes to bed":["go to bed","gos to bed"],goes:["go","go","gos"],"isn't":["isnt","doesn't"],"doesn't":["isn't","doesnt","don't"],"She's":["She","Shes"],Where:["where","Were"],How:["how"],Does:["Do","does"]};
+  var docs=[], now=Date.now();
+  CLS.forEach(function(c,ci){
+    var join=[.92,.35,.6,.22,.5,.71,.15,.44,.3,.55,.4][ci];
+    for(var s=1;s<=E.classes[c];s++){
+      if(rnd()>join) continue;
+      var level=.62+rnd()*.33, rounds=1+Math.floor(rnd()*3);
+      for(var k=0;k<rounds;k++){
+        var lv=pick([1,2,3,3,3]), qs=C.shuffle(E.bank,rnd).slice(0,10);
+        docs.push({cls:c,seat:s,ts:new Date(now-rnd()*12*864e5).toISOString(),lv:lv,detail:qs.map(function(q){
+          var w=q.sp?lv:1, hard=(q.g==="s"?.14:.06)+(q.a.length>9?.1:0), ok=rnd()<level-hard+(w===1?.2:w===2?.08:0), u=q.a;
+          if(!ok) u = w===1 ? pick(q.x) : (REAL[q.a]&&rnd()<.86) ? C.norm(pick(REAL[q.a])) : rnd()<.4 ? "" : rnd()<.5 ? q.a.slice(0,2) : q.a.replace(/[aeiou]/,function(v){ return v==="a"?"e":"a"; });
+          if(!ok && C.classify(q.a,u).ok) ok=true;
+          return {id:q.id,w:q.a,u:u,ok:ok?1:0,r:(!ok&&rnd()<.5)?1:0,h:rnd()<.35?2:0,lv:w,s:8};
+        })});
+      }
+    }
+  });
+  flatten(docs);
+  $("note").appendChild(el("p",{class:"note",text:"這是電腦產生的示範資料，不是學生真實作答。"}));
+  $("sub").textContent="示範："+ROUNDS.length+" 輪作答"; $("board").hidden=false;
+  ANON=false; buildActs(); buildFilters(); render();
+}
+
+$("sub").textContent=E.school+" "+E.grade;
+if(MODE==="demo") demo(); else if(MODE==="pub") pub(); else teacher();
+</script>
+</body>
+</html>

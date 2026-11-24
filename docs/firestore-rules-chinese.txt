@@ -326,5 +326,38 @@ service cloud.firestore {
         && request.resource.data.detail.size() <= 45;
       allow update: if false;
     }
+
+    // 六年級 英語單字練習（每一輪一份，最多 20 題）
+    match /engWord6/{docId} {
+      allow read, delete: if request.auth != null;
+      allow create: if request.resource.data.keys().hasOnly(
+                         ['cls','seat','ts','mode','lv','n','ok','secs','detail'])
+        && request.resource.data.cls in ['601','602','603','604','605','606',
+                                         '607','608','609','610','611']
+        && request.resource.data.seat is int
+        && request.resource.data.seat >= 1 && request.resource.data.seat <= 40
+        && request.resource.data.ts is string && request.resource.data.ts.size() <= 30
+        && request.resource.data.mode is string && request.resource.data.mode.size() <= 6
+        && request.resource.data.lv is int
+        && request.resource.data.lv >= 1 && request.resource.data.lv <= 3
+        && request.resource.data.n is int
+        && request.resource.data.n >= 1 && request.resource.data.n <= 20
+        && request.resource.data.ok is int
+        && request.resource.data.ok >= 0 && request.resource.data.ok <= request.resource.data.n
+        && request.resource.data.secs is int && request.resource.data.secs <= 36000
+        && request.resource.data.detail is list
+        && request.resource.data.detail.size() <= 20;
+      allow update: if false;
+    }
+
+    // 英語單字練習：老師按「發布」才會有的全年級統計，不含班級座號，學生看得到
+    match /engWord6Pub/{docId} {
+      allow read: if docId == 'summary';
+      allow create, update: if docId == 'summary' && request.auth != null
+        && request.resource.data.keys().hasOnly(
+             ['at','total','bad','words','types','units','ways','top'])
+        && request.resource.data.top is list
+        && request.resource.data.top.size() <= 10;
+    }
   }
 }
