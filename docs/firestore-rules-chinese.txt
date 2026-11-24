@@ -359,5 +359,46 @@ service cloud.firestore {
         && request.resource.data.top is list
         && request.resource.data.top.size() <= 10;
     }
+
+    // 603 畢業旅行 同房意願調查：學生只能新增，只有張老師的帳號讀得到
+    // 姓名一定要是「姓＋*＋最後一個字」，送全名會被擋下來
+    match /tripRoom603/{docId} {
+      allow read, delete: if request.auth != null
+        && request.auth.uid == 'r3OqDYodicdzHkVlTis0QXjeTq83';
+      allow create: if request.resource.data.keys().hasOnly(
+                         ['seat','name','sex','wn','ws','kn','ks','tags','note','mind','at'])
+        && request.resource.data.keys().hasAll(
+                         ['seat','name','sex','wn','ws','kn','ks','tags','note','mind','at'])
+        && request.resource.data.seat is int
+        && request.resource.data.seat >= 1 && request.resource.data.seat <= 40
+        && request.resource.data.name is string && request.resource.data.name.matches('.[*].')
+        && request.resource.data.sex in ['M','F']
+        && request.resource.data.wn is list && request.resource.data.wn.size() == 3
+        && request.resource.data.wn[0] is string && request.resource.data.wn[0].matches('(.[*].)?')
+        && request.resource.data.wn[1] is string && request.resource.data.wn[1].matches('(.[*].)?')
+        && request.resource.data.wn[2] is string && request.resource.data.wn[2].matches('(.[*].)?')
+        && request.resource.data.ws is list && request.resource.data.ws.size() == 3
+        && request.resource.data.ws[0] is int && request.resource.data.ws[0] >= 0 && request.resource.data.ws[0] <= 40
+        && request.resource.data.ws[1] is int && request.resource.data.ws[1] >= 0 && request.resource.data.ws[1] <= 40
+        && request.resource.data.ws[2] is int && request.resource.data.ws[2] >= 0 && request.resource.data.ws[2] <= 40
+        && request.resource.data.kn is list && request.resource.data.kn.size() == 2
+        && request.resource.data.kn[0] is string && request.resource.data.kn[0].matches('(.[*].)?')
+        && request.resource.data.kn[1] is string && request.resource.data.kn[1].matches('(.[*].)?')
+        && request.resource.data.ks is list && request.resource.data.ks.size() == 2
+        && request.resource.data.ks[0] is int && request.resource.data.ks[0] >= 0 && request.resource.data.ks[0] <= 40
+        && request.resource.data.ks[1] is int && request.resource.data.ks[1] >= 0 && request.resource.data.ks[1] <= 40
+        && request.resource.data.tags is list && request.resource.data.tags.size() <= 4
+        && request.resource.data.tags.hasOnly(['sleep','nervous','dark','body'])
+        && request.resource.data.note is string && request.resource.data.note.size() <= 300
+        && request.resource.data.mind in ['yes','try','talk']
+        && request.resource.data.at == request.time;
+      allow update: if false;
+    }
+
+    // 603 畢業旅行 導師的排房草稿與備註，只有張老師的帳號讀寫得到
+    match /tripRoom603T/{docId} {
+      allow read, write: if request.auth != null
+        && request.auth.uid == 'r3OqDYodicdzHkVlTis0QXjeTq83';
+    }
   }
 }

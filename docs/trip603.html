@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>畢業旅行同房意願調查｜六年三班</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#E8EEF5; --card:#FFFFFF; --sunk:#F2F6FB;
+  --ink:#17283C; --soft:#4C5F76; --line:#C6D3E1;
+  --navy:#1F4E79; --navy-ink:#FFFFFF; --head:#DCE6F1; --pick:#E4EEF9;
+  --brass:#B9832B; --brass-bg:#FFF4DC; --brass-line:#E7C684; --brass-ink:#6B4710;
+  --bad:#B3261E; --bad-bg:#FCEBE9; --ok:#1B6E48; --ok-bg:#E2F3EA;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"PingFang TC","Noto Sans TC","Heiti TC","Microsoft JhengHei",sans-serif;
+  font-size:18px; line-height:1.7; -webkit-text-size-adjust:100%}
+button,input,textarea{font:inherit; color:inherit}
+button{cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent}
+[hidden]{display:none !important}
+:focus-visible{outline:3px solid var(--navy); outline-offset:2px}
+h1,h2{margin:0; color:var(--navy); text-wrap:balance}
+.app{max-width:820px; margin:0 auto; padding:20px 16px max(40px, env(safe-area-inset-bottom))}
+
+/* 頁首：房卡 */
+.top{display:flex; gap:18px; align-items:center; padding:6px 2px 18px}
+.tag{flex:none; width:64px; height:92px}
+.top h1{font-size:clamp(23px,4.6vw,31px); line-height:1.35; letter-spacing:.02em}
+.top p{margin:4px 0 0; color:var(--soft); font-size:16px}
+
+.sec{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 22px 22px; margin-bottom:14px}
+.sec h2{font-size:20px; line-height:1.5}
+.sec h2 small{font-weight:500; font-size:16px; color:var(--soft); white-space:nowrap}
+.sec p.help{margin:4px 0 0; color:var(--soft); font-size:16px}
+.letter{margin:0}
+.lab{display:block; font-weight:600; margin:18px 0 8px}
+.lab:first-of-type{margin-top:12px}
+
+.seats{display:grid; gap:8px; grid-template-columns:repeat(auto-fill,minmax(56px,1fr))}
+.seats button,.choice button{border:1.5px solid var(--line); background:var(--card); border-radius:10px; min-height:50px; font-weight:600; font-variant-numeric:tabular-nums}
+[aria-checked="true"]{background:var(--navy) !important; border-color:var(--navy) !important; color:var(--navy-ink)}
+.choice{display:flex; gap:10px; flex-wrap:wrap}
+.choice button{padding:10px 22px; min-width:104px}
+.choice.col{flex-direction:column}
+.choice.col button{text-align:left; width:100%; min-height:56px}
+.chips button{border-radius:999px; min-width:0; padding:8px 18px}
+
+input[type=text],textarea{width:100%; border:1.5px solid var(--line); border-radius:10px; background:var(--card); padding:11px 14px; min-height:52px; font-size:19px}
+input::placeholder,textarea::placeholder{color:#8496AA}
+textarea{min-height:112px; resize:vertical; line-height:1.6; display:block; margin-top:14px}
+.count{font-size:14px; color:var(--soft); text-align:right; margin:4px 0 0; font-variant-numeric:tabular-nums}
+.msg{font-size:15.5px; margin:7px 0 0; color:var(--soft)}
+.msg.bad{color:var(--bad); font-weight:600}
+.msg.ok{color:var(--ok)}
+.err-in{border-color:var(--bad) !important; background:var(--bad-bg) !important}
+
+/* 志願表：和紙本同一張表 */
+.wish{width:100%; border-collapse:collapse; margin-top:12px}
+.wish th{background:var(--head); text-align:left; padding:9px 12px; font-weight:700; border:1px solid var(--line); font-size:16px}
+.wish td{border:1px solid var(--line); padding:10px 12px; vertical-align:top}
+.wish td:first-child{width:124px; white-space:nowrap; font-weight:600; vertical-align:middle}
+.wish .s{width:132px}
+.two{display:grid; gap:12px; grid-template-columns:1fr; margin-top:12px}
+.pair{display:grid; grid-template-columns:1fr 132px; gap:10px}
+.pair .msg{grid-column:1/-1; margin-top:0}
+@media (max-width:600px){
+  .sec{padding:18px 16px 20px}
+  .wish thead{display:none}
+  .wish,.wish tbody,.wish tr,.wish td{display:block; width:auto !important}
+  .wish tr{border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-bottom:10px}
+  .wish td{border:0; padding:8px 12px}
+  .wish td:first-child{background:var(--head)}
+  .wish td:last-child{padding-bottom:12px}
+  .pair{grid-template-columns:1fr 112px}
+}
+.notice{background:var(--brass-bg); border:1px solid var(--brass-line); color:var(--brass-ink); border-radius:10px; padding:11px 15px; font-size:16.5px; margin:12px 0 0}
+
+.rules{margin:10px 0 0; padding-left:1.3em}
+.rules li{margin:4px 0}
+.agree{display:flex; gap:12px; align-items:center; width:100%; text-align:left; border:1.5px solid var(--line); border-radius:10px; background:var(--card); padding:10px 16px; min-height:56px; margin-top:14px; font-weight:600}
+.agree i{flex:none; width:26px; height:26px; border:2px solid var(--soft); border-radius:6px; display:grid; place-items:center; font-style:normal; font-size:18px; line-height:1}
+.agree[aria-checked="true"] i{border-color:#fff}
+.agree[aria-checked="true"] i::after{content:"✓"}
+
+.btn{border:1.5px solid transparent; border-radius:12px; min-height:58px; padding:12px 26px; font-weight:700; font-size:19px; background:var(--navy); color:var(--navy-ink)}
+.btn.wide{width:100%}
+.btn.ghost{background:transparent; border-color:var(--line); color:var(--ink)}
+.btn:disabled{opacity:.5; cursor:default}
+.foot{margin-top:18px}
+.foot .msg{text-align:center; margin-top:12px}
+.row{display:flex; gap:12px; flex-wrap:wrap}
+.row .btn{flex:1 1 190px}
+
+/* 檢查與完成 */
+.sum{display:grid; grid-template-columns:auto 1fr; gap:0; margin:14px 0 0; border-top:1px solid var(--line)}
+.sum dt,.sum dd{margin:0; padding:10px 0; border-bottom:1px solid var(--line)}
+.sum dt{color:var(--soft); padding-right:22px; white-space:nowrap}
+.sum dd{font-weight:600; overflow-wrap:anywhere; white-space:pre-wrap}
+.sum dd.none{font-weight:400; color:var(--soft)}
+.done{text-align:center; padding:46px 22px}
+.done svg{width:78px; height:112px; margin:0 auto 16px; display:block}
+.done h2{font-size:27px}
+.done p{margin:10px auto 26px; max-width:24em}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <svg class="tag" viewBox="0 0 64 92" aria-hidden="true">
+      <path d="M12 2h40a10 10 0 0 1 10 10v68a10 10 0 0 1-10 10H12A10 10 0 0 1 2 80V12A10 10 0 0 1 12 2Z" fill="#1F4E79"/>
+      <circle cx="32" cy="15" r="6" fill="#E8EEF5"/>
+      <text x="32" y="60" text-anchor="middle" font-family="'PingFang TC','Helvetica Neue',Arial,sans-serif" font-weight="700" font-size="24" fill="#fff">603</text>
+      <path d="M14 72h36" stroke="#E7C684" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <div><h1>畢業旅行　同房意願調查表</h1><p id="due"></p></div>
+  </header>
+  <main id="main"></main>
+</div>
+<script>
+"use strict";
+/* ============================================================
+   設定：換年度、換班只改這裡
+   ============================================================ */
+var CFG = {
+  cls: "六年三班",
+  due: "11 月 25 日",
+  seats: 25,                                   /* 座號按鈕 1～25；超過的按「其他」自己打 */
+  col: "tripRoom603",
+  project: "chinese-50d0c",
+  key: "AIzaSyAFh8Dmf25j1D9rCpBpCpcxKLVBNsAF4m4"
+};
+var TAGS = [["sleep","晚上睡覺習慣"],["nervous","容易緊張"],["dark","怕黑"],["body","身體不舒服需要照顧"]];
+var MINDS = [["yes","願意"],["try","有點緊張，但我會試試看"],["talk","需要和老師聊聊"]];
+var OFFLINE = /[?&]offline/.test(location.search);
+
+/* ---------- 姓名遮罩：只留第一個字和最後一個字 ---------- */
+//@mask-begin
+/* 「中間空白」「*」「○」「Ｏ」這些寫法都當成遮住的字。回傳 {v, why} */
+function maskName(raw){
+  var s = String(raw==null?"":raw).normalize("NFC").trim();
+  if(!s) return {v:"", why:"empty"};
+  var hidden = /[\s　*＊○〇◯●Ｏ＿_\-－—–．.·・•?？xX×ＸOo0０]/;
+  var c = Array.from(s).filter(function(ch){ return !hidden.test(ch); });
+  /* 英文名字裡的 o、x 不能當遮罩，整串都是英文就照字母取頭尾 */
+  if(/^[A-Za-z\s.'\-]+$/.test(s)) c = Array.from(s.replace(/[^A-Za-z]/g,""));
+  if(c.length < 2) return {v:"", why:"short"};
+  return {v:c[0]+"*"+c[c.length-1], why:""};
+}
+//@mask-end
+
+var $main = document.getElementById("main");
+document.getElementById("due").textContent = CFG.cls + "．請在 " + CFG.due + "前填完";
+var F;
+function blank(){
+  return {seat:0, name:"", sex:"", wn:["","",""], ws:[0,0,0], kn:["",""], ks:[0,0], tags:[], note:"", mind:"", ok:false, other:false};
+}
+F = blank();
+
+function el(tag, attrs, kids){
+  var e=document.createElement(tag), k;
+  for(k in (attrs||{})){
+    var v=attrs[k];
+    if(v==null || v===false) continue;
+    if(k==="class") e.className=v;
+    else if(k==="text") e.textContent=v;
+    else if(k.slice(0,2)==="on") e[k]=v;
+    else e.setAttribute(k, v===true?"":v);
+  }
+  [].concat(kids==null?[]:kids).forEach(function(c){
+    if(c==null||c===false) return;
+    e.appendChild(typeof c==="object" ? c : document.createTextNode(String(c)));
+  });
+  return e;
+}
+function digits(s){
+  s = String(s).replace(/[０-９]/g,function(d){ return String.fromCharCode(d.charCodeAt(0)-65248); }).replace(/\D/g,"");
+  var n = parseInt(s,10); return n>=1 && n<=40 ? n : 0;
+}
+
+/* ---------- 單選按鈕群 ---------- */
+function radios(cls, list, get, set, label){
+  var box=el("div",{class:cls, role:"radiogroup", "aria-label":label});
+  function paint(){ [].forEach.call(box.children,function(b){ b.setAttribute("aria-checked", String(String(get())===b.dataset.v)); }); }
+  list.forEach(function(x){
+    box.appendChild(el("button",{type:"button", role:"radio", "data-v":x[0], text:x[1], onclick:function(){ set(x[0]); paint(); refresh(); }}));
+  });
+  paint(); return box;
+}
+
+/* ---------- 姓名欄：離開欄位時才遮，注音選字途中不會被打斷 ---------- */
+var FIELDS = [];
+function nameField(get, set, opt){
+  var msg=el("p",{class:"msg", hidden:true, role:"status"});
+  var inp=el("input",{type:"text", autocomplete:"off", autocorrect:"off", autocapitalize:"off", spellcheck:"false", maxlength:"12",
+    placeholder:"例如：王*明", "aria-label":opt.label, name:"n"+Math.random().toString(36).slice(2)});
+  inp.value=get();
+  function say(t,k){ msg.textContent=t; msg.className="msg"+(k?" "+k:""); msg.hidden=!t; inp.classList.toggle("err-in",k==="bad"); }
+  function commit(){
+    var raw=inp.value, r=maskName(raw), t="", k="";
+    if(r.why==="empty") set("");
+    else if(r.why==="short"){ set(""); t="要寫姓和最後一個字，中間用 * 代替，例如：王*明"; k="bad"; }
+    else{
+      if(r.v!==raw.trim()){ t="已經幫你把中間的字遮起來"; k="ok"; }
+      inp.value=r.v; set(r.v);
+    }
+    /* 訊息晚一點才出現：離開欄位的那一下版面如果往下跳，手指正在按的按鈕會跑掉 */
+    setTimeout(function(){ say(t,k); refresh(true); },200);
+  }
+  inp.addEventListener("blur",commit);
+  inp.addEventListener("keydown",function(e){ if(e.key==="Enter" && !e.isComposing) inp.blur(); });
+  var f={inp:inp, msg:msg, say:say, bad:function(){ return !!inp.value.trim() && !get(); }};
+  FIELDS.push(f);
+  return f;
+}
+function seatField(get,set,label){
+  var inp=el("input",{type:"text", inputmode:"numeric", autocomplete:"off", maxlength:"2", placeholder:"座號", "aria-label":label, name:"s"+Math.random().toString(36).slice(2)});
+  inp.value=get()||"";
+  inp.addEventListener("input",function(){ set(digits(inp.value)); });
+  inp.addEventListener("blur",function(){ inp.value=get()||""; setTimeout(function(){ refresh(true); },200); });
+  return inp;
+}
+
+/* ---------- 填寫畫面 ---------- */
+var noticeW, noticeK, foot, btnCheck;
+function viewForm(){
+  FIELDS=[];
+  var out=[];
+
+  out.push(el("section",{class:"sec"},[
+    el("p",{class:"letter", text:"親愛的同學：畢業旅行的房間需要考慮人數、安全與照顧，所以老師無法保證每個人都和最好的朋友同房。請你認真填寫下面的志願，老師會盡量參考，也請你多多體諒。"}),
+    el("p",{class:"notice", text:"姓名都不要寫全名，中間的字空著或用 * 代替，例如「王*明」。填的時候把平板轉向自己，不要看別人的。"})
+  ]));
+
+  /* 基本資料 */
+  var me=el("section",{class:"sec"},[el("h2",{text:"我是誰"})]);
+  me.appendChild(el("span",{class:"lab", text:"座號"}));
+  var list=[]; for(var i=1;i<=CFG.seats;i++) list.push([i,String(i)]);
+  var grid=radios("seats",list.concat([["x","其他"]]),function(){ return F.other?"x":F.seat; },function(v){
+    if(v==="x"){ F.other=true; F.seat=0; oth.hidden=false; oth.focus(); }
+    else{ F.other=false; F.seat=v; oth.hidden=true; oth.value=""; }
+  },"座號");
+  me.appendChild(grid);
+  var oth=seatField(function(){ return F.other?F.seat:0; },function(v){ if(F.other) F.seat=v; },"輸入我的座號");
+  oth.style.cssText="max-width:150px;margin-top:10px"; oth.hidden=!F.other; me.appendChild(oth);
+  var nf=nameField(function(){ return F.name; },function(v){ F.name=v; },{label:"我的姓名"});
+  me.appendChild(el("span",{class:"lab", text:"姓名（不要全名）"})); me.appendChild(nf.inp); me.appendChild(nf.msg);
+  me.appendChild(el("span",{class:"lab", text:"性別"}));
+  me.appendChild(radios("choice",[["M","男生"],["F","女生"]],function(){ return F.sex; },function(v){ F.sex=v; },"性別"));
+  out.push(me);
+
+  /* 一 */
+  var s1=el("section",{class:"sec"},[el("h2",{},["一、我希望同房的同學 ",el("small",{text:"（請寫 3 位，同性別，依希望程度排序）"})]),
+    el("p",{class:"help",text:"知道座號就一起填，老師比較不會認錯人。不知道可以空著。"})]);
+  var tb=el("tbody");
+  [0,1,2].forEach(function(i){
+    var f=nameField(function(){ return F.wn[i]; },function(v){ F.wn[i]=v; },{label:"第 "+(i+1)+" 志願姓名"});
+    tb.appendChild(el("tr",{},[el("td",{text:"第 "+(i+1)+" 志願"}),el("td",{},[f.inp,f.msg]),
+      el("td",{class:"s"},seatField(function(){ return F.ws[i]; },function(v){ F.ws[i]=v; },"第 "+(i+1)+" 志願座號"))]));
+  });
+  s1.appendChild(el("table",{class:"wish"},[el("thead",{},el("tr",{},[el("th",{text:"志願"}),el("th",{text:"同學姓名（不要全名）"}),el("th",{text:"座號"})])),tb]));
+  noticeW=el("p",{class:"notice",hidden:true,role:"status"}); s1.appendChild(noticeW);
+  out.push(s1);
+
+  /* 二 */
+  var s2=el("section",{class:"sec"},[el("h2",{},["二、我也可以接受和下面這些同學同房 ",el("small",{text:"（選填，可寫 1～2 位）"})])]);
+  var two=el("div",{class:"two"});
+  [0,1].forEach(function(i){
+    var f=nameField(function(){ return F.kn[i]; },function(v){ F.kn[i]=v; },{label:"也可以接受的同學 "+(i+1)+" 姓名"});
+    two.appendChild(el("div",{class:"pair"},[f.inp,seatField(function(){ return F.ks[i]; },function(v){ F.ks[i]=v; },"也可以接受的同學 "+(i+1)+" 座號"),f.msg]));
+  });
+  s2.appendChild(two); noticeK=el("p",{class:"notice",hidden:true,role:"status"}); s2.appendChild(noticeK);
+  out.push(s2);
+
+  /* 三 */
+  var s3=el("section",{class:"sec"},[el("h2",{},["三、有沒有特別需要讓老師知道的事？ ",el("small",{text:"（選填）"})]),
+    el("p",{class:"help",text:"可以按下面的例子，也可以自己寫。只有老師看得到。"})]);
+  var chips=el("div",{class:"choice chips",style:"margin-top:12px"});
+  TAGS.forEach(function(t){
+    var b=el("button",{type:"button", role:"checkbox", "aria-checked":String(F.tags.indexOf(t[0])>=0), text:t[1]});
+    b.onclick=function(){
+      var k=F.tags.indexOf(t[0]); if(k<0) F.tags.push(t[0]); else F.tags.splice(k,1);
+      b.setAttribute("aria-checked",String(k<0));
+    };
+    chips.appendChild(b);
+  });
+  s3.appendChild(chips);
+  var ta=el("textarea",{maxlength:"300", autocomplete:"off", placeholder:"想讓老師知道的事……", "aria-label":"想讓老師知道的事"}); ta.value=F.note;
+  var cnt=el("p",{class:"count"}); function cc(){ cnt.textContent=Array.from(ta.value).length+" / 300 字"; }
+  ta.addEventListener("input",function(){ F.note=ta.value; cc(); }); cc();
+  s3.appendChild(ta); s3.appendChild(cnt);
+  out.push(s3);
+
+  /* 四 */
+  var s4=el("section",{class:"sec"},[el("h2",{text:"四、我願意嘗試認識新朋友嗎？"})]);
+  var r4=radios("choice col",MINDS,function(){ return F.mind; },function(v){ F.mind=v; },"我願意嘗試認識新朋友嗎");
+  r4.style.marginTop="12px"; s4.appendChild(r4);
+  out.push(s4);
+
+  /* 五 */
+  var ag=el("button",{type:"button",class:"agree",role:"checkbox","aria-checked":String(F.ok)},[el("i",{"aria-hidden":"true"}),"我看完了，我會遵守約定"]);
+  ag.onclick=function(){ F.ok=!F.ok; ag.setAttribute("aria-checked",String(F.ok)); refresh(); };
+  out.push(el("section",{class:"sec"},[el("h2",{text:"五、填寫約定"}),
+    el("ul",{class:"rules"},["志願只寫給老師看，請不要和同學討論或互相約定。","填寫的志願，老師會盡量參考，但無法保證全部達成。","老師會讓每位同學至少和一位志願中的同學同房或鄰房。"].map(function(t){ return el("li",{text:t}); })), ag]));
+
+  btnCheck=el("button",{type:"button",class:"btn wide",text:"寫好了，檢查一次",onclick:toReview});
+  foot=el("p",{class:"msg",role:"alert"});
+  out.push(el("div",{class:"foot"},[btnCheck,foot]));
+  $main.replaceChildren.apply($main,out);
+  refresh();
+}
+
+/* ---------- 檢查 ---------- */
+function slots(){
+  var a=[];
+  [0,1,2].forEach(function(i){ a.push({t:"第 "+(i+1)+" 志願",n:F.wn[i],s:F.ws[i],w:1}); });
+  [0,1].forEach(function(i){ a.push({t:"也可以接受的第 "+(i+1)+" 位",n:F.kn[i],s:F.ks[i],w:0}); });
+  return a;
+}
+/* 兩格是不是同一個人：有座號比座號；只要有一邊沒座號就比姓名 */
+function same(a,b){ if(a.s&&b.s) return a.s===b.s; return !!a.n && a.n===b.n; }
+function problems(){
+  var a=slots(), out={w:[],k:[]}, me={n:F.name,s:F.seat};
+  a.forEach(function(x,i){
+    if(!x.n&&!x.s) return;
+    var box=x.w?out.w:out.k;
+    if(x.s&&F.seat&&x.s===F.seat) box.push(x.t+"寫到自己的座號了。");
+    else if(!x.s && x.n && x.n===me.n) box.push(x.t+"和你自己的名字一樣。如果是另一位同學，請補上座號。");
+    for(var j=0;j<i;j++) if((a[j].n||a[j].s)&&same(a[j],x)){ box.push(x.t+"和"+a[j].t+"寫到同一個人。"+(a[j].s&&x.s?"":"如果是不同人，兩格都要補上座號。")); break; }
+  });
+  return out;
+}
+function refresh(keep){
+  if(!noticeW) return;
+  var p=problems();
+  noticeW.hidden=!p.w.length; noticeW.textContent=p.w.join(" ");
+  noticeK.hidden=!p.k.length; noticeK.textContent=p.k.join(" ");
+  if(foot&&!keep) foot.textContent="";
+}
+function missing(){
+  var m=[];
+  if(!F.seat) m.push("座號"); if(!F.name) m.push("姓名"); if(!F.sex) m.push("性別"); if(!F.mind) m.push("第四題"); if(!F.ok) m.push("第五題的約定");
+  return m;
+}
+function toReview(){
+  if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  var badF=FIELDS.filter(function(f){ return f.bad(); })[0];
+  if(badF){ foot.className="msg bad"; foot.textContent="有一格姓名還沒寫完整。"; badF.inp.focus(); return; }
+  var m=missing();
+  if(m.length){ foot.className="msg bad"; foot.textContent="還沒填："+m.join("、"); return; }
+  var p=problems();
+  if(p.w.length||p.k.length){ foot.className="msg bad"; foot.textContent=p.w.concat(p.k)[0]; return; }
+  viewReview();
+}
+function who(n,s){ return (s?s+" 號 ":"")+(n||""); }
+function viewReview(){
+  noticeW=null;
+  var dl=el("dl",{class:"sum"});
+  function add(k,v){ dl.appendChild(el("dt",{text:k})); dl.appendChild(el("dd",{class:v?"":"none",text:v||"沒有寫"})); }
+  add("我是",who(F.name,F.seat)+"（"+(F.sex==="M"?"男生":"女生")+"）");
+  [0,1,2].forEach(function(i){ add("第 "+(i+1)+" 志願",who(F.wn[i],F.ws[i])); });
+  add("也可以接受",[0,1].map(function(i){ return who(F.kn[i],F.ks[i]); }).filter(Boolean).join("、"));
+  add("想讓老師知道",F.tags.map(function(t){ return TAGS.filter(function(x){ return x[0]===t; })[0][1]; }).concat(F.note.trim()?[F.note.trim()]:[]).join("、"));
+  add("認識新朋友",MINDS.filter(function(x){ return x[0]===F.mind; })[0][1]);
+  var n=[0,1,2].filter(function(i){ return F.wn[i]||F.ws[i]; }).length;
+  var kids=[el("h2",{text:"送出前再看一次"}),dl];
+  if(n<3) kids.push(el("p",{class:"notice",text:n?"志願只寫了 "+n+" 位，可以回去再想想。真的想不到也沒關係，直接送出就好。":"還沒有寫志願，可以回去再想想。真的想不到也沒關係，直接送出，老師會幫你安排。"}));
+  var msg=el("p",{class:"msg bad",role:"alert"});
+  var back=el("button",{type:"button",class:"btn ghost",text:"回去修改",onclick:function(){ viewForm(); scrollTo(0,0); }});
+  var go=el("button",{type:"button",class:"btn",text:"確定送出"});
+  go.onclick=async function(){
+    go.disabled=back.disabled=true; go.textContent="送出中…"; msg.textContent="";
+    var r=await send();
+    if(r.ok){ viewDone(); return; }
+    go.disabled=back.disabled=false; go.textContent="再送一次"; msg.textContent=r.why;
+  };
+  kids.push(el("div",{class:"row",style:"margin-top:20px"},[back,go]),msg);
+  $main.replaceChildren(el("section",{class:"sec"},kids)); scrollTo(0,0);
+}
+function viewDone(){
+  var seat=F.seat; F=blank();                      /* 送出後畫面和記憶體都清掉，平板是共用的 */
+  var svg='<svg viewBox="0 0 64 92" aria-hidden="true"><path d="M12 2h40a10 10 0 0 1 10 10v68a10 10 0 0 1-10 10H12A10 10 0 0 1 2 80V12A10 10 0 0 1 12 2Z" fill="#1F4E79"/><circle cx="32" cy="15" r="6" fill="#fff"/><path d="M19 54l9 9 18-20" fill="none" stroke="#E7C684" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var d=el("section",{class:"sec done"}); d.innerHTML=svg;
+  d.appendChild(el("h2",{text:seat+" 號，老師收到了"}));
+  d.appendChild(el("p",{text:"剛剛寫的內容已經從這台平板清掉。想改的話再填一次就好，老師會看最新的那一份。"}));
+  d.appendChild(el("button",{type:"button",class:"btn",text:"換下一位同學填",onclick:function(){ F=blank(); viewForm(); scrollTo(0,0); }}));
+  $main.replaceChildren(d); scrollTo(0,0);
+}
+
+/* ---------- 送到 Firestore（直接打 REST，不載入外部程式） ---------- */
+function S(v){ return {stringValue:v}; } function I(v){ return {integerValue:String(v)}; }
+function L(a,f){ return {arrayValue:{values:a.map(f)}}; }
+function payload(){
+  var id="", abc="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", r=crypto.getRandomValues(new Uint8Array(20));
+  for(var i=0;i<20;i++) id+=abc[r[i]%62];
+  var root="projects/"+CFG.project+"/databases/(default)";
+  return {url:"https://firestore.googleapis.com/v1/"+root+"/documents:commit?key="+CFG.key, body:{writes:[{
+    update:{name:root+"/documents/"+CFG.col+"/"+id, fields:{
+      seat:I(F.seat), name:S(F.name), sex:S(F.sex),
+      wn:L(F.wn,S), ws:L(F.ws,I), kn:L(F.kn,S), ks:L(F.ks,I),
+      tags:L(F.tags,S), note:S(Array.from(F.note.trim()).slice(0,300).join("")), mind:S(F.mind)
+    }},
+    updateTransforms:[{fieldPath:"at",setToServerValue:"REQUEST_TIME"}],
+    currentDocument:{exists:false}
+  }]}};
+}
+async function send(){
+  var p=payload();
+  window.__last=OFFLINE?p:null;
+  if(OFFLINE){ await new Promise(function(r){ setTimeout(r,300); }); return {ok:true}; }
+  var ac=new AbortController(), t=setTimeout(function(){ ac.abort(); },15000);
+  try{
+    var r=await fetch(p.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p.body),signal:ac.signal,referrerPolicy:"no-referrer"});
+    if(r.ok) return {ok:true};
+    if(r.status===403) return {ok:false,why:"雲端還沒開放或內容格式不對，請叫老師來看。（403）"};
+    return {ok:false,why:"沒有送成功，請再按一次。（"+r.status+"）"};
+  }catch(e){ return {ok:false,why:"網路不穩，沒有送出去。請再按一次，或請老師幫忙。"}; }
+  finally{ clearTimeout(t); }
+}
+addEventListener("pageshow",function(e){ if(e.persisted){ F=blank(); viewForm(); } });
+viewForm();
+</script>
+</body>
+</html>

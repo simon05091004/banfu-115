@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>畢旅同房志願彙整｜603 導師</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#E8EEF5; --card:#FFFFFF; --sunk:#F2F6FB;
+  --ink:#17283C; --soft:#4C5F76; --faint:#75879B; --line:#C6D3E1; --hair:#DDE6EF;
+  --navy:#1F4E79; --navy-ink:#FFFFFF; --head:#DCE6F1; --pick:#E4EEF9;
+  --brass-bg:#FFF1D2; --brass-line:#E3BE76; --brass-ink:#6B4710;
+  --bad:#B3261E; --bad-bg:#FCE9E7; --bad-line:#E9B3AE; --ok:#1B6E48; --ok-bg:#DFF2E8;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"PingFang TC","Noto Sans TC","Heiti TC","Microsoft JhengHei",sans-serif; font-size:16px; line-height:1.6}
+button,select,input,textarea{font:inherit; color:inherit}
+button{cursor:pointer; touch-action:manipulation}
+button:disabled{opacity:.45; cursor:default}
+[hidden]{display:none !important}
+:focus-visible{outline:3px solid var(--navy); outline-offset:2px}
+h1,h2,h3{margin:0; color:var(--navy); text-wrap:balance}
+.app{max-width:1240px; margin:0 auto; padding:0 20px 60px}
+.bar{display:flex; align-items:center; gap:14px; padding:18px 0 14px; flex-wrap:wrap}
+.tag{flex:none; width:36px; height:52px}
+.brand{margin-right:auto}
+.brand h1{font-size:24px; line-height:1.3}
+.brand p{margin:0; color:var(--soft); font-size:14px}
+.acts{display:flex; gap:8px; flex-wrap:wrap}
+.btn{border:1.5px solid var(--line); background:var(--card); border-radius:9px; min-height:42px; padding:6px 16px; font-weight:600}
+.btn.pri{background:var(--navy); border-color:var(--navy); color:var(--navy-ink)}
+.btn.sm{min-height:34px; padding:2px 12px; font-size:14.5px}
+.btn.danger{color:var(--bad); border-color:var(--bad-line)}
+.card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-bottom:14px}
+.card h2{font-size:18px}
+.sub{color:var(--soft); font-size:14.5px; margin:4px 0 0}
+.gate{max-width:420px; margin:40px auto}
+.gate label{display:block; margin:14px 0 4px; font-weight:600}
+.gate input,.in{width:100%; border:1.5px solid var(--line); border-radius:9px; background:#fff; padding:8px 12px; min-height:42px}
+.gate .btn{width:100%; margin-top:16px}
+.err{color:var(--bad); font-weight:600; min-height:1.6em; margin:10px 0 0}
+.note{background:var(--brass-bg); border:1px solid var(--brass-line); color:var(--brass-ink); border-radius:10px; padding:10px 15px; margin-bottom:14px; overflow-wrap:anywhere}
+.note code{font-family:ui-monospace,Menlo,monospace; background:#fff; padding:1px 6px; border-radius:4px}
+
+/* 數字列 */
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:14px}
+.kpi{background:var(--card); padding:12px 16px}
+.kpi b{display:block; font-size:27px; line-height:1.2; color:var(--navy); font-variant-numeric:tabular-nums}
+.kpi b small{font-size:15px; color:var(--soft); font-weight:500}
+.kpi span{font-size:14px; color:var(--soft)}
+.kpi.hot b{color:var(--bad)}
+.tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px}
+.tabs button{border:1.5px solid var(--line); background:var(--card); border-radius:9px; min-height:46px; padding:6px 20px; font-weight:700}
+.tabs button[aria-selected="true"]{background:var(--navy); border-color:var(--navy); color:var(--navy-ink)}
+
+/* 表格 */
+.scroll{overflow-x:auto; margin:12px -20px -18px; padding:0 20px 18px}
+table{border-collapse:collapse; width:100%; font-size:15px}
+th,td{border:1px solid var(--hair); padding:7px 10px; text-align:left; vertical-align:top}
+thead th{background:var(--head); color:var(--navy); font-weight:700; white-space:nowrap; border-color:var(--line)}
+tr.grp th{background:var(--sunk); color:var(--navy); font-size:14.5px}
+td.c,th.c{text-align:center}
+.num{font-variant-numeric:tabular-nums}
+.who{border:0; background:none; padding:2px 0; font-weight:700; color:var(--navy); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line); white-space:nowrap; text-align:left}
+.p{white-space:nowrap}
+.p i{font-style:normal; color:var(--soft); font-variant-numeric:tabular-nums; margin-right:4px}
+.p.mu{background:var(--ok-bg); border-radius:6px; padding:2px 7px; margin:0 -3px; font-weight:600}
+.p.mu::after{content:" 互選"; color:var(--ok); font-size:13px; font-weight:700}
+.p.q{background:var(--brass-bg); color:var(--brass-ink); border-radius:6px; padding:2px 7px; margin:0 -3px}
+.list{display:flex; flex-wrap:wrap; gap:2px 14px}
+.w3l span{white-space:nowrap}
+.w3l>span{display:flex; gap:8px; line-height:1.75}
+.w3l>span>i{font-style:normal; color:var(--faint); font-size:13px; width:9px; flex:none}
+.w3l .p{margin:0} .w3l .p.mu::after{content:none}
+.dim{color:var(--faint)}
+.flags{display:flex; flex-wrap:wrap; gap:5px}
+.fl{font-size:13.5px; font-weight:600; border-radius:6px; padding:1px 8px; background:var(--sunk); color:var(--soft); white-space:nowrap}
+.fl.hot{background:var(--bad-bg); color:var(--bad)}
+.fl.mid{background:var(--brass-bg); color:var(--brass-ink)}
+.need{white-space:pre-wrap; overflow-wrap:anywhere; min-width:190px}
+td .flags{min-width:130px}
+.mind.talk{color:var(--bad); font-weight:700}
+.mind.try{color:var(--brass-ink); font-weight:600}
+td textarea{width:100%; min-width:170px; min-height:44px; border:1px solid var(--line); border-radius:7px; padding:5px 8px; resize:vertical; background:var(--sunk); display:block; line-height:1.5}
+.talked{display:flex; gap:6px; align-items:center; font-size:14px; margin-top:5px; white-space:nowrap}
+.talked input{width:18px; height:18px; accent-color:var(--navy)}
+.seatlist{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
+.seatlist span{border:1px dashed var(--faint); border-radius:7px; padding:1px 10px; font-variant-numeric:tabular-nums; color:var(--soft)}
+.fixes{margin:10px 0 0; padding:0; list-style:none}
+.fixes li{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; padding:8px 0; border-top:1px solid var(--hair)}
+.fixes li span{flex:1 1 320px}
+select{border:1.5px solid var(--line); border-radius:8px; background:#fff; min-height:38px; padding:3px 10px; max-width:100%}
+
+.lst th:nth-child(5){width:17%} .lst th:nth-child(6){width:1%} .lst th:nth-child(8){width:22%}
+
+/* 對照表 */
+.mx{width:auto; font-size:14px}
+.mx th,.mx td{padding:0; width:38px; height:34px; text-align:center; vertical-align:middle}
+.mx thead th{height:auto; padding:6px 3px; font-size:12.5px; line-height:1.3; font-weight:600}
+.mx tbody th{width:auto; padding:0 10px; text-align:left; white-space:nowrap; background:var(--sunk); font-weight:600}
+.mx td.self{background:repeating-linear-gradient(135deg,var(--hair) 0 3px,transparent 3px 7px)}
+.mx td.w1{background:#1F4E79; color:#fff; font-weight:700}
+.mx td.w2{background:#4E84B5; color:#fff; font-weight:700}
+.mx td.w3{background:#A9C8E4; font-weight:700}
+.mx td.k{background:var(--sunk); color:var(--soft)}
+.mx td.mu{box-shadow:inset 0 0 0 3px #2BA36B}
+.legend{display:flex; flex-wrap:wrap; gap:6px 18px; font-size:14px; color:var(--soft); margin-top:10px; align-items:center}
+.legend i{display:inline-block; width:18px; height:18px; border-radius:4px; margin-right:6px; vertical-align:-3px}
+
+/* 房間 */
+.ctl{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:end}
+.ctl label{font-size:14px; font-weight:600; color:var(--soft); display:block}
+.ctl .in{width:190px; margin-top:2px; min-height:42px}
+.rooms{display:grid; grid-template-columns:repeat(auto-fill,minmax(258px,1fr)); gap:12px; margin-top:12px}
+.room{border:1.5px solid var(--line); border-radius:11px; background:var(--card); overflow:hidden; display:flex; flex-direction:column}
+.room h3{display:flex; justify-content:space-between; background:var(--head); padding:7px 13px; font-size:15.5px}
+.room h3 small{font-weight:500; color:var(--soft); font-variant-numeric:tabular-nums}
+.room.warn{border-color:var(--bad)}
+.bed{display:flex; width:100%; gap:10px; align-items:center; border:0; border-top:1px solid var(--hair); background:none; padding:8px 13px; text-align:left; min-height:50px}
+.bed:first-of-type{border-top:0}
+.bed .nm{font-weight:700; white-space:nowrap; min-width:88px}
+.bed .nm i{font-style:normal; font-weight:500; color:var(--soft); margin-right:6px; font-variant-numeric:tabular-nums}
+.bed .st{font-size:13.5px; margin-left:auto; text-align:right; line-height:1.4; color:var(--soft)}
+.bed .st b{color:var(--ok)} .bed .st u{text-decoration:none; color:var(--brass-ink); font-weight:600} .bed .st s{text-decoration:none; color:var(--bad); font-weight:700}
+.bed.sel{background:var(--pick); box-shadow:inset 4px 0 0 var(--navy)}
+.bed.empty{color:var(--faint); justify-content:center; border-top-style:dashed}
+.room p.w{margin:0; padding:6px 13px; background:var(--bad-bg); color:var(--bad); font-size:14px; font-weight:600}
+.tray{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+.tray .bed{width:auto; border:1.5px dashed var(--faint); border-radius:9px}
+.result{display:grid; gap:6px; margin-top:12px}
+.result p{margin:0}
+.result b{font-variant-numeric:tabular-nums}
+.pairs{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+.pairs span{background:var(--bad-bg); color:var(--bad); border-radius:8px; padding:3px 6px 3px 12px; font-weight:600}
+.pairs button{border:0; background:none; color:inherit; padding:2px 8px; font-weight:700}
+
+dialog{border:1px solid var(--line); border-radius:14px; padding:22px 24px; width:min(680px,calc(100vw - 32px)); max-height:calc(100vh - 48px); color:inherit; overflow:auto}
+dialog::backdrop{background:rgba(16,32,52,.45)}
+.dl{display:grid; grid-template-columns:auto 1fr; margin:12px 0; border-top:1px solid var(--hair)}
+.dl dt,.dl dd{margin:0; padding:8px 0; border-bottom:1px solid var(--hair)}
+.dl dt{color:var(--soft); padding-right:20px; white-space:nowrap}
+.dl dd{white-space:pre-wrap; overflow-wrap:anywhere}
+.ver{border-top:1px solid var(--hair); padding:8px 0; display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; font-size:14.5px}
+.ver span{flex:1 1 240px}
+.toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:var(--ink); color:#fff; padding:10px 20px; border-radius:999px; z-index:9; font-size:15px}
+.ph{display:none}
+details.set{margin-bottom:14px}
+details.set summary{cursor:pointer; font-weight:600; color:var(--navy)}
+
+@media print{
+  @page{size:A4 landscape; margin:9mm}
+  body{background:#fff; font-size:11px; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .app{max-width:none; padding:0}
+  .bar,.kpis,.tabs,.noprint,#note,details.set{display:none !important}
+  .ph{display:block; margin-bottom:6px; font-size:11px}
+  .ph strong{font-size:16px; color:var(--navy); display:block}
+  .card{border:0; padding:0; margin:0 0 8px; border-radius:0}
+  .scroll{overflow:visible; margin:6px 0 0; padding:0}
+  table{font-size:10.5px} th,td{padding:3px 5px} thead{display:table-header-group} tr{break-inside:avoid}
+  td textarea{border:0; background:none; padding:0; min-height:0; resize:none; min-width:110px}
+  .who{text-decoration:none; padding:0}
+  .need{min-width:110px}
+  .talked{display:none} .talked.on{display:block}
+  .talked.on input{display:none}
+  .rooms{grid-template-columns:repeat(4,1fr); gap:7px} .room{break-inside:avoid} .bed{min-height:0; padding:4px 9px} .bed.sel{background:none; box-shadow:none}
+  .mx{font-size:10.5px} .mx th,.mx td{width:30px; height:22px; padding:0} .mx thead th{font-size:9.5px; padding:3px 2px} .mx tbody th{padding:0 6px} .mxwrap{break-inside:avoid}
+  tr.grp th{font-size:11px; padding:2px 5px} .scroll th,.scroll td{line-height:1.5}
+  .card h2{font-size:13px} .fl{font-size:9.5px; padding:0 5px} .flags{gap:3px}
+  .p.mu,.p.q{padding:0 4px; margin:0 -2px} .p.mu::after{font-size:9px}
+  .w3l>span{line-height:1.45} .w3l>span>i{font-size:9.5px}
+  .lst td{padding:2px 5px} td .flags{min-width:0} .lst th:nth-child(5){width:16%} .lst th:nth-child(3){width:24%} .lst th:nth-child(8){width:24%}
+  .room h3{font-size:12px; padding:4px 9px} .room h3 small,.bed .st{font-size:9.5px} .bed .nm{min-width:70px} .room p.w{font-size:10px; padding:3px 9px} .tray .bed{padding:2px 8px} .ctl h2{font-size:13px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <svg class="tag" viewBox="0 0 64 92" aria-hidden="true"><path d="M12 2h40a10 10 0 0 1 10 10v68a10 10 0 0 1-10 10H12A10 10 0 0 1 2 80V12A10 10 0 0 1 12 2Z" fill="#1F4E79"/><circle cx="32" cy="15" r="6" fill="#E8EEF5"/><text x="32" y="60" text-anchor="middle" font-family="'PingFang TC','Helvetica Neue',Arial,sans-serif" font-weight="700" font-size="24" fill="#fff">603</text><path d="M14 72h36" stroke="#E7C684" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <div class="brand"><h1>畢旅同房志願彙整</h1><p id="sub">六年三班導師</p></div>
+    <div class="acts" id="acts"></div>
+  </header>
+  <div id="note"></div>
+  <section id="gate" class="card gate" hidden>
+    <h2>老師登入</h2>
+    <p class="sub">用其他檢核頁同一組老師帳號。這裡有學生的個人狀況，用完請登出。</p>
+    <label for="em">帳號</label><input id="em" type="email" autocomplete="username">
+    <label for="pw">密碼</label><input id="pw" type="password" autocomplete="current-password">
+    <p class="err" id="err" role="alert"></p>
+    <button class="btn pri" id="signin">登入</button>
+  </section>
+  <main id="board" hidden>
+    <div class="ph" id="ph"></div>
+    <div class="kpis" id="kpis"></div>
+    <details class="set" id="setbox"></details>
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <div id="out"></div>
+  </main>
+</div>
+<dialog id="dlg"></dialog>
+<script>
+"use strict";
+/* ============================================================
+   設定：換年度、換班只改這裡（要和 trip603.html 一致）
+   ============================================================ */
+var CFG = {
+  cls: "六年三班", title: "畢業旅行同房意願", file: "603畢旅同房", seats: 25, perRoom: 4,
+  col: "tripRoom603", tcol: "tripRoom603T",
+  firebase: {
+    apiKey: "AIzaSyAFh8Dmf25j1D9rCpBpCpcxKLVBNsAF4m4", authDomain: "chinese-50d0c.firebaseapp.com", projectId: "chinese-50d0c",
+    storageBucket: "chinese-50d0c.firebasestorage.app", messagingSenderId: "1044608618028", appId: "1:1044608618028:web:d95f2811e0dd61bbe30b89"
+  }
+};
+var TAG = {sleep:"晚上睡覺習慣", nervous:"容易緊張", dark:"怕黑", body:"身體不舒服需要照顧"};
+var MIND = {yes:"願意", "try":"有點緊張，但會試試看", talk:"需要和老師聊聊"};
+var SX = {M:"男", F:"女"};
+var DEMO = /[?&]demo/.test(location.search);
+
+var $=function(i){ return document.getElementById(i); };
+function el(tag, attrs, kids){
+  var e=document.createElement(tag), k;
+  for(k in (attrs||{})){
+    var v=attrs[k];
+    if(v==null || v===false) continue;
+    if(k==="class") e.className=v;
+    else if(k==="text") e.textContent=v;
+    else if(k.slice(0,2)==="on") e[k]=v;
+    else e.setAttribute(k, v===true?"":v);
+  }
+  [].concat(kids==null?[]:kids).forEach(function(c){
+    if(c==null||c===false) return;
+    e.appendChild(typeof c==="object" ? c : document.createTextNode(String(c)));
+  });
+  return e;
+}
+function toast(m){ var t=el("div",{class:"toast",text:m,role:"status"}); document.body.appendChild(t); setTimeout(function(){ t.remove(); },2600); }
+function pad(n){ return String(n).padStart(2,"0"); }
+function stamp(d){ return d ? (d.getMonth()+1)+"/"+d.getDate()+" "+pad(d.getHours())+":"+pad(d.getMinutes()) : ""; }
+
+//@core-begin
+/* ============================================================
+   資料整理（不碰畫面，可以單獨測）
+   ============================================================ */
+function blankT(){ return {boys:"", girls:"", per:{M:"",F:""}, use:{}, seatFix:{}, fix:{}, notes:{}, talked:{}, rooms:{M:null,F:null}, avoid:[]}; }
+/* "1-13, 15、17" → [1..13,15,17] */
+function parseSeats(s){
+  var out=[];
+  String(s||"").replace(/[０-９]/g,function(d){ return String.fromCharCode(d.charCodeAt(0)-65248); }).split(/[,，、;；\s]+/).forEach(function(x){
+    var m=x.match(/^(\d+)\s*[-~～–—－]\s*(\d+)$/);
+    if(m){ for(var i=+m[1];i<=+m[2]&&i<=40;i++) if(i>=1&&out.indexOf(i)<0) out.push(i); }
+    else if(/^\d+$/.test(x)&&+x>=1&&+x<=40&&out.indexOf(+x)<0) out.push(+x);
+  });
+  return out.sort(function(a,b){ return a-b; });
+}
+function parseSizes(s,n,per){
+  var a=(String(s||"").match(/\d+/g)||[]).map(Number).filter(function(x){ return x>0&&x<=20; });
+  if(a.length||!n) return a;
+  var k=Math.ceil(n/per), out=[];
+  for(var i=0;i<k;i++) out.push(Math.floor(n/k)+(i<n%k?1:0));
+  return out;
+}
+function sig(s){ return JSON.stringify([s.name,s.sex,s.wn,s.ws,s.kn,s.ks,(s.tags||[]).slice().sort(),s.note,s.mind]); }
+
+/* subs：雲端每一份填答；T：老師的設定。回傳整理好的 {P:{座號:人}, seats:[座號], issues:[]} */
+function build(subs,T,cfg){
+  var P={}, by={}, boys=parseSeats(T.boys), girls=parseSeats(T.girls), seats;
+  subs.forEach(function(s){
+    var seat=T.seatFix[s.id]||s.seat;
+    (by[seat]=by[seat]||[]).push(s);
+  });
+  var base = (boys.length||girls.length) ? boys.concat(girls) : Array.from({length:cfg.seats},function(_,i){ return i+1; });
+  seats=base.concat(Object.keys(by).map(Number)).filter(function(x,i,a){ return a.indexOf(x)===i; }).sort(function(a,b){ return a-b; });
+  seats.forEach(function(n){
+    var all=(by[n]||[]).slice().sort(function(a,b){ return (b.at?+b.at:Infinity)-(a.at?+a.at:Infinity); }), seen={}, uniq=[];
+    all.forEach(function(s){ var k=sig(s); if(!seen[k]){ seen[k]=1; uniq.push(s); } });
+    var cur=uniq.filter(function(s){ return s.id===T.use[n]; })[0]||uniq[0]||null;
+    var lst=boys.indexOf(n)>=0?"M":girls.indexOf(n)>=0?"F":"";
+    P[n]={seat:n, sub:cur, all:all, uniq:uniq, name:cur?cur.name:"", sex:cur?cur.sex:lst, lstSex:lst, listed:base.indexOf(n)>=0,
+      w:[], k:[], inW:[], inK:[], flags:[], nm2:uniq.map(function(s){ return s.name; }).filter(function(x,i,a){ return a.indexOf(x)===i; }).length>1};
+  });
+  /* 還沒填的人：同學寫志願時如果附了座號，就先借那個名字 */
+  var tally={};
+  seats.forEach(function(n){
+    var s=P[n].sub; if(!s) return;
+    s.wn.concat(s.kn).forEach(function(nm,i){
+      var st=s.ws.concat(s.ks)[i];
+      if(nm&&st&&P[st]&&!P[st].sub){ tally[st]=tally[st]||{}; tally[st][nm]=(tally[st][nm]||0)+1; }
+    });
+  });
+  Object.keys(tally).forEach(function(n){
+    P[n].name=Object.keys(tally[n]).sort(function(a,b){ return tally[n][b]-tally[n][a]; })[0]; P[n].guess=true;
+    if(!P[n].sex){ var fans=seats.filter(function(m){ var s=P[m].sub; return s&&s.ws.concat(s.ks).indexOf(+n)>=0; }); var sx=fans.map(function(m){ return P[m].sex; }); if(sx.length&&sx.every(function(x){ return x===sx[0]; })) P[n].sexGuess=sx[0]; }
+  });
+  /* 把每一格志願對到座號 */
+  function resolve(me,slot,nm,st){
+    var r={slot:slot, n:nm, s:st, to:0, st:"none", cand:[]};
+    if(!nm&&!st) return r;
+    var f=T.fix[me.sub.id+":"+slot];
+    if(f===-1){ r.st="ignored"; return r; }
+    if(f&&P[f]){ r.to=f; r.st=f===me.seat?"self":"ok"; r.fixed=true; return r; }
+    var ppl=seats.map(function(x){ return P[x]; }).filter(function(q){ return q.seat!==me.seat; });
+    var hit=nm?ppl.filter(function(q){ return q.name===nm; }):[], samesex=hit.filter(function(q){ return !q.sex||q.sex===me.sex; });
+    if(st){
+      if(st===me.seat){ r.st="self"; r.cand=samesex; return r; }
+      if(!P[st]){ r.st="noseat"; r.cand=samesex; return r; }
+      if(nm&&P[st].name&&!P[st].guess&&P[st].name!==nm){ r.st="conflict"; r.cand=[P[st]].concat(hit); return r; }
+      r.to=st;
+    } else if(samesex.length===1) r.to=samesex[0].seat;
+    else if(samesex.length>1){ r.st="ambig"; r.cand=samesex; return r; }
+    else if(hit.length){ r.st="sex"; r.cand=hit; return r; }
+    else{ r.st=nm===me.name?"self":"unknown"; return r; }
+    r.st=(P[r.to].sex&&P[r.to].sex!==me.sex)?"sex":"ok";
+    if(r.st==="sex") r.cand=[P[r.to]];
+    if(r.st!=="ok") r.to=0;
+    return r;
+  }
+  var issues=[];
+  seats.forEach(function(n){
+    var me=P[n], s=me.sub; if(!s) return;
+    me.w=[0,1,2].map(function(i){ return resolve(me,"w"+i,s.wn[i],s.ws[i]); });
+    me.k=[0,1].map(function(i){ return resolve(me,"k"+i,s.kn[i],s.ks[i]); });
+    var got={};
+    me.w.concat(me.k).forEach(function(r){
+      if(r.to){ if(got[r.to]){ r.st="dup"; r.to=0; } else got[r.to]=1; }
+      if(["ok","none","ignored"].indexOf(r.st)<0) issues.push({me:me,r:r});
+    });
+    me.w.forEach(function(r,i){ if(r.to) P[r.to].inW.push({from:n,rank:i+1}); });
+    me.k.forEach(function(r){ if(r.to) P[r.to].inK.push(n); });
+  });
+  seats.forEach(function(n){
+    var me=P[n]; me.mutual=[];
+    if(!me.sub) return;
+    me.w.forEach(function(r){ if(r.to&&me.inW.some(function(x){ return x.from===r.to; })){ r.mu=true; me.mutual.push(r.to); } });
+  });
+  /* 老師要留意 */
+  var doneN=seats.filter(function(n){ return P[n].sub; }).length;
+  seats.forEach(function(n){
+    var me=P[n], s=me.sub, F=me.flags;
+    function add(t,k){ F.push({t:t,k:k||""}); }
+    if(!s){ add("還沒填","mid"); return; }
+    if(s.mind==="talk") add(T.talked[n]?"已聊過":"想和老師聊聊",T.talked[n]?"":"hot");
+    if(s.tags.indexOf("body")>=0) add("身體需要照顧","hot");
+    if(doneN>=2&&!me.inW.length) add("還沒有人寫到","hot");
+    var nw=me.w.filter(function(r){ return r.st!=="none"; }).length;
+    if(nw<3) add(nw?"志願只寫 "+nw+" 位":"沒有寫志願","mid");
+    else if(me.w.some(function(r){ return r.to; })&&!me.mutual.length) add("志願沒有互選","mid");
+    if(me.w.concat(me.k).some(function(r){ return ["ok","none","ignored"].indexOf(r.st)<0; })) add("有名字要確認","mid");
+    if(me.nm2) add("同座號有不同姓名","mid"); else if(me.uniq.length>1) add("改過 "+(me.uniq.length-1)+" 次");
+    if(me.lstSex&&s.sex!==me.lstSex) add("性別和座號名單不同","mid");
+    if(!me.listed) add("座號不在名單","mid");
+  });
+  return {P:P, seats:seats, issues:issues, done:doneN, missing:seats.filter(function(n){ return !P[n].sub; })};
+}
+
+/* ---------- 排房 ---------- */
+function groupOf(D,sx){ return D.seats.filter(function(n){ var p=D.P[n]; return (p.sex||p.sexGuess||"")===sx; }); }
+function cleanRooms(rooms,G,sizes){
+  var seen={};
+  return sizes.map(function(_,i){ return ((rooms&&rooms[i])||[]).filter(function(n){ if(seen[n]||G.indexOf(n)<0) return false; seen[n]=1; return true; }); });
+}
+/* 每個人的志願達成情形：同房的志願序、鄰房的志願序 */
+function status(D,rooms){
+  var at={}, out={};
+  rooms.forEach(function(r,i){ r.forEach(function(n){ at[n]=i; }); });
+  Object.keys(at).forEach(function(n){
+    var p=D.P[n], o={same:[],next:[],acc:[],has:false};
+    p.w.forEach(function(r,i){
+      if(!r.to) return; o.has=true;
+      if(at[r.to]===undefined) return;
+      var d=Math.abs(at[r.to]-at[n]);
+      if(d===0) o.same.push(i+1); else if(d===1) o.next.push(i+1);
+    });
+    p.k.forEach(function(r){ if(r.to&&at[r.to]===at[n]) o.acc.push(r.to); });
+    o.lv=!o.has?"none":o.same.length?"same":o.next.length?"next":"miss";
+    out[n]=o;
+  });
+  return out;
+}
+function arrange(D,sx,sizes,T,rnd){
+  var G=groupOf(D,sx), R=rnd||Math.random, total=sizes.reduce(function(a,b){ return a+b; },0), n=Math.max(total,0);
+  if(!G.length||!n) return sizes.map(function(){ return []; });
+  var idx={}; G.forEach(function(s,i){ idx[s]=i; });
+  var m=G.length, W=[], wl=[], bad=[], i, j;
+  for(i=0;i<m;i++){ W.push(new Array(m).fill(0)); wl.push([]); bad.push({}); }
+  G.forEach(function(s,a){
+    var p=D.P[s];
+    p.w.forEach(function(r,k){ if(r.to&&idx[r.to]!==undefined){ W[a][idx[r.to]]+=[10,8,6][k]; wl[a].push(idx[r.to]); } });
+    p.k.forEach(function(r){ if(r.to&&idx[r.to]!==undefined) W[a][idx[r.to]]+=3; });
+  });
+  T.avoid.forEach(function(x){ var a=idx[x[0]], b=idx[x[1]]; if(a!==undefined&&b!==undefined){ bad[a][b]=bad[b][a]=1; } });
+  var roomOf=[]; sizes.forEach(function(k,r){ for(var q=0;q<k;q++) roomOf.push(r); });
+  function score(S){
+    var at=new Array(m).fill(-9), cnt=new Array(sizes.length).fill(0), sc=0, a, b;
+    for(var q=0;q<n;q++) if(S[q]>=0){ at[S[q]]=roomOf[q]; cnt[roomOf[q]]++; }
+    for(a=0;a<m;a++){
+      if(at[a]<0) continue;
+      var lv=0;
+      for(b=0;b<wl[a].length;b++){ if(at[wl[a][b]]<0) continue; var d=Math.abs(at[wl[a][b]]-at[a]); if(d===0){ lv=2; break; } if(d===1) lv=1; }
+      if(wl[a].length) sc+=lv===2?90:lv===1?40:0;
+      for(b=0;b<m;b++) if(a!==b&&at[b]===at[a]){ sc+=W[a][b]; if(bad[a][b]) sc-=600; }
+    }
+    for(q=0;q<cnt.length;q++) if(cnt[q]===1&&sizes[q]>1) sc-=120;
+    return sc;
+  }
+  var best=null, bs=-Infinity;
+  for(var t=0;t<36;t++){
+    var pool=G.map(function(_,x){ return x; }), S=[];
+    for(i=pool.length-1;i>0;i--){ j=Math.floor(R()*(i+1)); var tmp=pool[i]; pool[i]=pool[j]; pool[j]=tmp; }
+    for(i=0;i<n;i++) S.push(i<pool.length?pool[i]:-1);
+    for(i=n-1;i>0;i--){ j=Math.floor(R()*(i+1)); tmp=S[i]; S[i]=S[j]; S[j]=tmp; }
+    var cur=score(S), temp=40;
+    for(var it=0;it<2200;it++){
+      i=Math.floor(R()*n); j=Math.floor(R()*n);
+      if(roomOf[i]===roomOf[j]||(S[i]<0&&S[j]<0)) continue;
+      tmp=S[i]; S[i]=S[j]; S[j]=tmp;
+      var ns=score(S);
+      if(ns>=cur||R()<Math.exp((ns-cur)/temp)) cur=ns; else{ tmp=S[i]; S[i]=S[j]; S[j]=tmp; }
+      temp=Math.max(.5,temp*.998);
+      if(cur>bs){ bs=cur; best=S.slice(); }
+    }
+  }
+  if(!best) best=G.slice(0,n).map(function(_,x){ return x; });
+  var out=sizes.map(function(){ return []; });
+  best.forEach(function(x,q){ if(x>=0) out[roomOf[q]].push(G[x]); });
+  return out.map(function(r){ return r.sort(function(a,b){ return a-b; }); });
+}
+//@core-end
+
+/* ============================================================
+   狀態與雲端
+   ============================================================ */
+var DB=null, AUTH=null, SUBS=[], T=blankT(), TOK=false, D=null, TAB=(location.search.match(/[?&]tab=(wish|list|room)/)||[])[1]||"wish", SORT="seat", SEL=0, UNSUB=null, saveTimer=0, LASTAT=null;
+function rebuild(){ D=build(SUBS,T,CFG); }
+function save(){
+  if(DEMO||!TOK) return;
+  clearTimeout(saveTimer); setSub("有變更，儲存中…");
+  saveTimer=setTimeout(flush,700);
+}
+async function flush(){
+  clearTimeout(saveTimer);
+  try{ await DB.collection(CFG.tcol).doc("state").set({json:JSON.stringify(T), at:firebase.firestore.FieldValue.serverTimestamp()}); setSub(); }
+  catch(e){ setSub("備註和排房沒有存成功，請檢查網路後再改一次。"); }
+}
+function setSub(m){ $("sub").textContent = m || (DEMO?"示範資料，不會存":CFG.cls+"導師．已填 "+D.done+" 人．"+(LASTAT?"更新到 "+stamp(LASTAT):"")); }
+addEventListener("beforeunload",function(e){ if(saveTimer&&$("sub").textContent.indexOf("儲存中")>=0){ flush(); e.preventDefault(); } });
+
+/* ---------- 小元件 ---------- */
+function nm(n){ var p=D.P[n]; return n+" "+((p&&p.name)||"（未填）"); }
+function who(n){
+  var p=D.P[n];
+  return el("button",{class:"who",type:"button",onclick:function(){ detail(n); }},[el("span",{class:"num",text:n+" "}), p.name||"（未填）"]);
+}
+function cellP(r){
+  if(r.st==="none") return el("span",{class:"dim",text:"—"});
+  if(r.st==="ignored") return el("span",{class:"dim",text:(r.s?r.s+" ":"")+r.n+"（不算）"});
+  if(r.to) return el("span",{class:"p"+(r.mu?" mu":"")},[el("i",{text:r.to}), D.P[r.to].name||r.n||"（未填）"]);
+  return el("span",{class:"p q",title:why(r)},[r.s?el("i",{text:r.s}):null, r.n||"", " ？"]);
+}
+function why(r){
+  return {ambig:"有 "+r.cand.length+" 位同學的名字都是這樣寫", sex:"對到的同學性別不同", unknown:"找不到這個名字，可能那位同學還沒填", conflict:"座號和姓名對不起來",
+    noseat:"沒有這個座號", self:"寫到自己", dup:"和前面的志願是同一個人"}[r.st]||"";
+}
+function slotName(s){ return s[0]==="w"?"第 "+(+s[1]+1)+" 志願":"也可以接受第 "+(+s[1]+1)+" 位"; }
+function fixSelect(me,r){
+  var sel=el("select",{"aria-label":nm(me.seat)+" "+slotName(r.slot)+" 指定座號"});
+  sel.appendChild(el("option",{value:"",text:"選是哪一位…"}));
+  var first=r.cand.map(function(p){ return p.seat; }), rest=D.seats.filter(function(n){ return n!==me.seat&&first.indexOf(n)<0&&(!D.P[n].sex||D.P[n].sex===me.sex); });
+  first.filter(function(x,i,a){ return a.indexOf(x)===i; }).concat(rest).forEach(function(n){ sel.appendChild(el("option",{value:n,text:nm(n)+(D.P[n].sex?"（"+SX[D.P[n].sex]+"）":"")})); });
+  sel.appendChild(el("option",{value:"-1",text:"這格不算"}));
+  var f=T.fix[me.sub.id+":"+r.slot]; if(f) sel.value=String(f); else if(r.to) sel.value=String(r.to);
+  sel.onchange=function(){ if(sel.value==="") delete T.fix[me.sub.id+":"+r.slot]; else T.fix[me.sub.id+":"+r.slot]=+sel.value; save(); render(); if($("dlg").open) detail(me.seat); };
+  return sel;
+}
+function needText(s){ return s.tags.map(function(t){ return TAG[t]||t; }).join("、")+(s.tags.length&&s.note?"\n":"")+(s.note||""); }
+function flagBox(p){ return el("div",{class:"flags"},p.flags.map(function(f){ return el("span",{class:"fl "+f.k,text:f.t}); })); }
+function inWText(p){ return p.inW.slice().sort(function(a,b){ return a.rank-b.rank||a.from-b.from; }); }
+
+/* ---------- 上方 ---------- */
+function renderTop(){
+  var talk=D.seats.filter(function(n){ var s=D.P[n].sub; return s&&s.mind==="talk"&&!T.talked[n]; }).length;
+  var need=D.seats.filter(function(n){ var s=D.P[n].sub; return s&&(s.tags.length||s.note); }).length;
+  var lonely=D.done>=2?D.seats.filter(function(n){ return D.P[n].sub&&!D.P[n].inW.length; }).length:0;
+  function k(v,small,label,hot){ return el("div",{class:"kpi"+(hot?" hot":"")},[el("b",{},[String(v),small?el("small",{text:" "+small}):null]),el("span",{text:label})]); }
+  $("kpis").replaceChildren(
+    k(D.done,"／ "+D.seats.length+" 人","已經填好"), k(talk,"人","想和老師聊聊，還沒聊",talk>0), k(need,"人","有特別需要讓老師知道"),
+    k(lonely,"人","還沒有人寫到",lonely>0), k(D.issues.length,"格","名字要老師確認",D.issues.length>0));
+  /* 名單設定 */
+  var b=el("input",{class:"in",value:T.boys,placeholder:"例如 1-13",id:"setB"}), g=el("input",{class:"in",value:T.girls,placeholder:"例如 14-25",id:"setG"});
+  function ch(){ T.boys=b.value.trim(); T.girls=g.value.trim(); save(); render(); }
+  b.onchange=ch; g.onchange=ch;
+  var open=$("setbox").open;
+  $("setbox").replaceChildren(el("summary",{text:"班級座號設定"+(T.boys||T.girls?"":"（還沒設定，先當作 1～"+CFG.seats+" 號）")}),
+    el("div",{class:"card",style:"margin-top:10px"},[el("div",{class:"ctl"},[el("div",{},[el("label",{for:"setB",text:"男生座號"}),b]),el("div",{},[el("label",{for:"setG",text:"女生座號"}),g])]),
+      el("p",{class:"sub",text:"填了以後，還沒填表的人也能分男女排進房間，也能檢查學生有沒有選錯性別。可以寫 1-13 或 1、2、5。"})]));
+  $("setbox").open=open;
+  var tabs=[["wish","志願彙整"],["list","個別學生狀況一覽"],["room","試排房間"]];
+  $("tabs").replaceChildren.apply($("tabs"),tabs.map(function(t){ return el("button",{type:"button",role:"tab","aria-selected":String(TAB===t[0]),text:t[1],onclick:function(){ TAB=t[0]; SEL=0; render(); }}); }));
+  $("ph").replaceChildren(el("strong",{text:CFG.cls+" "+CFG.title+"｜"+tabs.filter(function(t){ return t[0]===TAB; })[0][1]}), "已填 "+D.done+"／"+D.seats.length+" 人　列印 "+stamp(new Date())+"　內含學生個人狀況，僅供導師排房參考，請勿張貼或轉傳");
+}
+
+/* ---------- 分頁一：志願彙整 ---------- */
+function viewWish(){
+  var out=[];
+  if(D.issues.length){
+    out.push(el("section",{class:"card noprint"},[el("h2",{text:"這 "+D.issues.length+" 格要請老師確認"}),el("p",{class:"sub",text:"確認前先不算進志願。選好會記住，學生重填就要再確認一次。"}),
+      el("ul",{class:"fixes"},D.issues.map(function(x){
+        return el("li",{},[el("span",{},[who(x.me.seat),"　"+slotName(x.r.slot)+"寫「"+(x.r.s?x.r.s+" 號 ":"")+(x.r.n||"")+"」："+why(x.r)]),fixSelect(x.me,x.r)]);
+      }))]));
+  }
+  if(D.missing.length) out.push(el("section",{class:"card noprint"},[el("h2",{text:"還沒填的座號"}),el("div",{class:"seatlist"},D.missing.map(function(n){ return el("span",{text:nm(n).replace("（未填）","").trim()}); }))]));
+  var tb=el("tbody");
+  ["M","F",""].forEach(function(sx){
+    var g=D.seats.filter(function(n){ return D.P[n].sub&&D.P[n].sex===sx; }); if(!g.length) return;
+    tb.appendChild(el("tr",{class:"grp"},el("th",{colspan:7,text:(sx==="M"?"男生":sx==="F"?"女生":"")+" "+g.length+" 人"})));
+    g.forEach(function(n){
+      var p=D.P[n];
+      tb.appendChild(el("tr",{},[el("td",{},who(n))].concat(p.w.map(function(r){ return el("td",{},cellP(r)); }),[
+        el("td",{},el("div",{class:"list"},p.k.filter(function(r){ return r.st!=="none"; }).map(cellP))),
+        el("td",{class:"c num",text:p.inW.length}),
+        el("td",{},el("div",{class:"list"},inWText(p).map(function(x){ return el("span",{class:"p"},[el("i",{text:x.from}),D.P[x.from].name+"（"+x.rank+"）"]); })))
+      ])));
+    });
+  });
+  out.push(el("section",{class:"card"},[el("h2",{text:"志願彙整"}),el("p",{class:"sub noprint",text:"綠底是互相寫到對方；黃底是還沒對到人。最後一欄括號是對方把他寫在第幾志願。"}),
+    D.done?el("div",{class:"scroll"},el("table",{},[el("thead",{},el("tr",{},["座號姓名","第 1 志願","第 2 志願","第 3 志願","也可以接受","被寫次數","寫他的同學"].map(function(t){ return el("th",{text:t}); }))),tb])):el("p",{class:"sub",text:"還沒有人填。"})]));
+  ["M","F"].forEach(function(sx){
+    var g=groupOf(D,sx); if(g.length<2||!g.some(function(n){ return D.P[n].sub; })) return;
+    var rows=g.map(function(a){
+      var p=D.P[a], m={}; p.w.forEach(function(r,i){ if(r.to) m[r.to]=["w"+(i+1),String(i+1),r.mu]; }); p.k.forEach(function(r){ if(r.to) m[r.to]=["k","可"]; });
+      return el("tr",{},[el("th",{},[el("span",{class:"num",text:a+" "}),p.name||"（未填）"])].concat(g.map(function(b){
+        if(a===b) return el("td",{class:"self"});
+        var x=m[b]; return x?el("td",{class:x[0]+(x[2]?" mu":""),text:x[1],title:nm(a)+" → "+nm(b)}):el("td");
+      })));
+    });
+    out.push(el("section",{class:"card mxwrap"},[el("h2",{text:(sx==="M"?"男生":"女生")+"志願對照表"}),el("p",{class:"sub noprint",text:"橫的看是他寫了誰，直的看是誰寫了他。"}),
+      el("div",{class:"scroll"},el("table",{class:"mx"},[el("thead",{},el("tr",{},[el("th",{text:"寫的人"})].concat(g.map(function(b){ return el("th",{},[String(b),el("br"),D.P[b].name||""]); })))),el("tbody",{},rows)])),
+      el("div",{class:"legend noprint",style:"margin-top:22px"},[["#1F4E79","第 1 志願"],["#4E84B5","第 2 志願"],["#A9C8E4","第 3 志願"],["#F2F6FB","可以接受"]].map(function(x){ return el("span",{},[el("i",{style:"background:"+x[0]+";border:1px solid #C6D3E1"}),x[1]]); }).concat([el("span",{},[el("i",{style:"box-shadow:inset 0 0 0 3px #2BA36B"}),"互選"])]))]));
+  });
+  return out;
+}
+
+/* ---------- 分頁二：個別學生狀況 ---------- */
+function weight(p){ return p.flags.reduce(function(a,f){ return a+(f.k==="hot"?10:f.k==="mid"?2:0); },0)+(p.sub&&(p.sub.tags.length||p.sub.note)?3:0); }
+function viewList(){
+  var g=D.seats.slice();
+  if(SORT==="care") g.sort(function(a,b){ return weight(D.P[b])-weight(D.P[a])||a-b; });
+  var tb=el("tbody",{},g.map(function(n){
+    var p=D.P[n], s=p.sub;
+    var ta=el("textarea",{"aria-label":nm(n)+" 導師備註",rows:1}); ta.value=T.notes[n]||"";
+    function fit(){ ta.style.height="auto"; ta.style.height=Math.max(44,ta.scrollHeight+2)+"px"; }
+    ta.oninput=function(){ fit(); if(ta.value.trim()) T.notes[n]=ta.value; else delete T.notes[n]; save(); };
+    if(ta.value) requestAnimationFrame(fit);
+    var ck=el("input",{type:"checkbox"}); ck.checked=!!T.talked[n];
+    ck.onchange=function(){ if(ck.checked) T.talked[n]=true; else delete T.talked[n]; save(); render(); };
+    return el("tr",{},[
+      el("td",{},who(n)), el("td",{class:"c",text:SX[p.sex]||""}),
+      el("td",{class:"need"+(s&&(s.tags.length||s.note)?"":" dim"),text:s?(needText(s)||"—"):"—"}),
+      el("td",{},s?el("span",{class:"mind "+s.mind,text:MIND[s.mind]||""}):el("span",{class:"dim",text:"—"})),
+      el("td",{},flagBox(p)),
+      el("td",{},s?el("div",{class:"w3l"},p.w.map(function(r,i){ return el("span",{},[el("i",{text:i+1}),cellP(r)]); })):el("span",{class:"dim",text:"—"})),
+      el("td",{class:"c num",text:p.inW.length}),
+      el("td",{},[ta,T.talked[n]||(s&&(s.mind!=="yes"||s.tags.length||s.note||p.flags.some(function(f){ return f.k==="hot"; })))?el("label",{class:"talked"+(T.talked[n]?" on":"")},[ck,T.talked[n]?"已聊過":"聊過了打勾"]):null])
+    ]);
+  }));
+  return [el("section",{class:"card"},[
+    el("div",{class:"ctl noprint",style:"justify-content:space-between"},[el("div",{},[el("h2",{text:"個別學生狀況一覽表"}),el("p",{class:"sub",text:"按姓名可以看完整內容、改座號或刪除。志願綠底是互選。備註會自動存，只有你看得到。"})]),
+      el("div",{class:"acts"},[["seat","照座號"],["care","需要留意的在前面"]].map(function(x){ return el("button",{class:"btn sm"+(SORT===x[0]?" pri":""),type:"button",text:x[1],onclick:function(){ SORT=x[0]; render(); }}); }))]),
+    el("div",{class:"scroll"},el("table",{class:"lst"},[el("thead",{},el("tr",{},["座號姓名","性別","特別需要讓老師知道的事","認識新朋友","老師要留意","志願","被寫次數","導師備註"].map(function(t){ return el("th",{text:t}); }))),tb]))
+  ])];
+}
+
+/* ---------- 分頁三：試排 ---------- */
+function roomsOf(sx){ var G=groupOf(D,sx), sizes=parseSizes(T.per[sx],G.length,CFG.perRoom); return {G:G,sizes:sizes,rooms:cleanRooms(T.rooms[sx],G,sizes),made:!!T.rooms[sx]}; }
+function sexOf(n){ var p=D.P[n]; return p.sex||p.sexGuess||""; }
+function moveTo(sx,n,room){
+  var R=roomsOf(sx), rooms=R.rooms.map(function(r){ return r.filter(function(x){ return x!==n; }); });
+  if(room>=0) rooms[room].push(n);
+  T.rooms[sx]=rooms; SEL=0; save(); render();
+}
+function tapSeat(sx,n){
+  if(!SEL||sexOf(SEL)!==sx){ SEL=n; render(); return; }
+  if(SEL===n){ SEL=0; render(); return; }
+  var R=roomsOf(sx), rooms=R.rooms.map(function(r){ return r.slice(); }), a=null, b=null;
+  rooms.forEach(function(r,i){ var x=r.indexOf(SEL), y=r.indexOf(n); if(x>=0) a=[i,x]; if(y>=0) b=[i,y]; });
+  if(a&&b&&a[0]===b[0]){ SEL=n; render(); return; }
+  if(a) rooms[a[0]][a[1]]=n;
+  if(b) rooms[b[0]][b[1]]=SEL;
+  T.rooms[sx]=rooms; SEL=0; save(); render();
+}
+function bed(sx,n,st){
+  var p=D.P[n], k=[];
+  if(st){
+    if(st.same.length) k.push(el("b",{text:"同房志願 "+st.same.join("、")}));
+    else if(st.next.length) k.push(el("u",{text:"鄰房志願 "+st.next.join("、")}));
+    else if(st.has) k.push(el("s",{text:"志願都沒有"}));
+    else k.push(p.sub?"沒寫志願":"還沒填");
+  } else if(!p.sub) k.push("還沒填");
+  var care=p.sub?p.sub.tags.map(function(t){ return {sleep:"睡眠",nervous:"緊張",dark:"怕黑",body:"身體"}[t]; }).filter(Boolean):[];
+  if(p.sub&&p.sub.mind==="talk") care.push("想聊");
+  if(care.length){ if(k.length) k.push(el("br")); k.push(care.join("．")); }
+  return el("button",{type:"button",class:"bed"+(SEL===n?" sel":""),"aria-pressed":String(SEL===n),onclick:function(){ tapSeat(sx,n); }},[el("span",{class:"nm"},[el("i",{text:n}),p.name||"（未填）"]),el("span",{class:"st"},k)]);
+}
+function avoidHits(room){ return T.avoid.filter(function(x){ return room.indexOf(x[0])>=0&&room.indexOf(x[1])>=0; }); }
+function viewRoom(){
+  var out=[], sum={same:0,next:0,miss:[],none:0,un:0,tot:0}, secs=[];
+  ["M","F"].forEach(function(sx){
+    var R=roomsOf(sx); if(!R.G.length) return;
+    var st=status(D,R.rooms), placed={}; R.rooms.forEach(function(r){ r.forEach(function(n){ placed[n]=1; }); });
+    var left=R.G.filter(function(n){ return !placed[n]; }), beds=R.sizes.reduce(function(a,b){ return a+b; },0);
+    sum.tot+=R.G.length; sum.un+=left.length;
+    Object.keys(st).forEach(function(n){ var v=st[n].lv; if(v==="miss") sum.miss.push(+n); else sum[v]++; });
+    var inp=el("input",{class:"in",value:T.per[sx],placeholder:parseSizes("",R.G.length,CFG.perRoom).join("、"),id:"per"+sx});
+    inp.onchange=function(){ T.per[sx]=inp.value.trim(); save(); render(); };
+    var nmx=sx==="M"?"男生":"女生";
+    var kids=[el("div",{class:"ctl"},[el("h2",{text:nmx+" "+R.G.length+" 人",style:"margin-right:auto"}),
+      el("div",{class:"noprint"},[el("label",{for:"per"+sx,text:"每間住幾人（用頓號隔開）"}),inp]),
+      el("button",{class:"btn pri noprint",type:"button",text:R.made?"重新試排"+nmx:"依志願試排"+nmx,onclick:function(){
+        if(R.made&&!confirm(nmx+"現在的安排會被蓋掉，要重新試排嗎？")) return;
+        T.rooms[sx]=arrange(D,sx,R.sizes,T); SEL=0; save(); render();
+      }})])];
+    if(beds<R.G.length) kids.push(el("p",{class:"note noprint",style:"margin:12px 0 0",text:"床位 "+beds+" 個，少 "+(R.G.length-beds)+" 個。"}));
+    if(left.length) kids.push(el("p",{class:"sub noprint",style:"margin-top:12px",text:"還沒排的 "+left.length+" 人"}),el("div",{class:"tray"},left.map(function(n){ return bed(sx,n,null); })));
+    kids.push(el("div",{class:"rooms"},R.rooms.map(function(r,i){
+      var over=r.length>R.sizes[i], hit=avoidHits(r), kid=[el("h3",{},[nmx+" "+(i+1)+" 房",el("small",{text:r.length+"／"+R.sizes[i]+" 人"})])];
+      r.forEach(function(n){ kid.push(bed(sx,n,st[n])); });
+      for(var q=r.length;q<R.sizes[i];q++) kid.push(el("button",{type:"button",class:"bed empty",disabled:!(SEL&&sexOf(SEL)===sx),text:SEL&&sexOf(SEL)===sx?"放到這裡":"空床",onclick:function(){ moveTo(sx,SEL,i); }}));
+      if(hit.length) kid.push(el("p",{class:"w",text:"不要同房："+hit.map(function(x){ return nm(x[0])+" 和 "+nm(x[1]); }).join("；")}));
+      if(over) kid.push(el("p",{class:"w",text:"超過床位"}));
+      return el("div",{class:"room"+(hit.length||over?" warn":"")},kid);
+    })));
+    if(SEL&&sexOf(SEL)===sx&&!left.some(function(n){ return n===SEL; })) kids.push(el("button",{class:"btn sm noprint",type:"button",style:"margin-top:12px",text:"把 "+nm(SEL)+" 先移出房間",onclick:function(){ moveTo(sx,SEL,-1); }}));
+    secs.push(el("section",{class:"card"},kids));
+  });
+  var noSex=D.seats.filter(function(n){ return !sexOf(n); });
+  var head=[el("h2",{class:"noprint",text:"試排結果"})];
+  if(sum.tot&&sum.un===sum.tot) head.push(el("p",{style:"margin:6px 0 0",text:"還沒排。先確認每間住幾人，再按「依志願試排」。"}));
+  else if(sum.tot){
+    var r=el("div",{class:"result"});
+    r.appendChild(el("p",{},["和志願同房 ",el("b",{text:sum.same+" 人"}),"；鄰房 ",el("b",{text:sum.next+" 人"}),"；志願都沒有 ",el("b",{style:sum.miss.length?"color:var(--bad)":"",text:sum.miss.length+" 人"}),sum.un?"；還沒排 "+sum.un+" 人":"",sum.none?"；沒有志願可以算的 "+sum.none+" 人":"","。"]));
+    if(sum.miss.length) r.appendChild(el("p",{style:"color:var(--bad);font-weight:600",text:"調查表答應每個人至少和一位志願同學同房或鄰房，這幾位還沒做到："+sum.miss.map(nm).join("、")}));
+    else if(sum.same+sum.next&&!sum.un) r.appendChild(el("p",{style:"color:var(--ok);font-weight:600",text:"有寫志願的同學，每一位都至少和一位志願同學同房或鄰房。"}));
+    head.push(r);
+  }
+  head.push(el("p",{class:"sub noprint",text:"試排只照志願和「不要同房」算，個別狀況請老師自己判斷。點一個人再點另一個人就互換，點空床就移過去。房號相鄰當作鄰房。"}));
+  if(noSex.length) head.push(el("p",{class:"note noprint",style:"margin:12px 0 0",text:"這幾號還不知道男女，先沒有排："+noSex.join("、")+"。在上面「班級座號設定」填好就會出現。"}));
+  out.push(el("section",{class:"card"},head));
+  /* 不要同房 */
+  var a=el("select",{"aria-label":"不要同房的第一位"}), b=el("select",{"aria-label":"不要同房的第二位"});
+  [a,b].forEach(function(s){ s.appendChild(el("option",{value:"",text:"選同學"})); D.seats.forEach(function(n){ if(sexOf(n)) s.appendChild(el("option",{value:n,text:nm(n)+"（"+SX[sexOf(n)]+"）"})); }); });
+  out.push(el("section",{class:"card noprint"},[el("h2",{text:"不要排在同一間"}),el("p",{class:"sub",text:"只有你看得到，試排會避開。"}),
+    el("div",{class:"ctl",style:"margin-top:10px"},[a,b,el("button",{class:"btn sm",type:"button",text:"加入",onclick:function(){
+      var x=+a.value,y=+b.value; if(!x||!y||x===y){ toast("要選兩位不同的同學"); return; }
+      if(sexOf(x)!==sexOf(y)){ toast("男女本來就不同房，不用加"); return; }
+      if(T.avoid.some(function(z){ return z.indexOf(x)>=0&&z.indexOf(y)>=0; })) return;
+      T.avoid.push([x,y]); save(); render();
+    }})]),
+    T.avoid.length?el("div",{class:"pairs"},T.avoid.map(function(z,i){ return el("span",{},[nm(z[0])+" ／ "+nm(z[1]),el("button",{type:"button","aria-label":"移除","text":"✕",onclick:function(){ T.avoid.splice(i,1); save(); render(); }})]); })):null]));
+  return out.concat(secs);
+}
+
+/* ---------- 單一學生 ---------- */
+function detail(n){
+  var p=D.P[n], s=p.sub, d=$("dlg"), kids=[el("div",{class:"ctl",style:"justify-content:space-between;align-items:center"},[el("h2",{text:nm(n)+(p.sex?"（"+SX[p.sex]+"）":"")}),el("button",{class:"btn sm",type:"button",text:"關閉",onclick:function(){ d.close(); }})])];
+  if(!s) kids.push(el("p",{class:"sub",text:"還沒填。"+(p.guess?"姓名是從同學寫的志願借來的。":"")}));
+  else{
+    kids.push(flagBox(p));
+    var dl=el("dl",{class:"dl"});
+    function add(k,v){ dl.appendChild(el("dt",{text:k})); dl.appendChild(el("dd",{},v)); }
+    p.w.concat(p.k).forEach(function(r){ if(r.st==="none"&&r.slot[0]==="k") return; add(slotName(r.slot), r.st==="none"?"沒有寫":el("div",{class:"ctl",style:"align-items:center"},[el("span",{text:"寫「"+(r.s?r.s+" 號 ":"")+(r.n||"")+"」"}),fixSelect(p,r)])); });
+    add("特別需要",needText(s)||"沒有寫"); add("認識新朋友",MIND[s.mind]||"");
+    add("誰寫了他",p.inW.length?inWText(p).map(function(x){ return nm(x.from)+"（第 "+x.rank+" 志願）"; }).join("、"):"還沒有");
+    if(p.inK.length) add("可以接受他的",p.inK.map(nm).join("、"));
+    kids.push(dl);
+    kids.push(el("h3",{text:"填答紀錄",style:"font-size:16px;margin-top:6px"}));
+    p.all.forEach(function(v){
+      var mv=el("select",{"aria-label":"改成別的座號"}); mv.appendChild(el("option",{value:"",text:"改座號…"}));
+      for(var i=1;i<=40;i++) if(i!==n) mv.appendChild(el("option",{value:i,text:"改成 "+i+" 號"}));
+      mv.onchange=function(){ if(!mv.value) return; if(+mv.value===v.seat) delete T.seatFix[v.id]; else T.seatFix[v.id]=+mv.value; delete T.use[n]; save(); d.close(); render(); toast("已改到 "+mv.value+" 號"); };
+      kids.push(el("div",{class:"ver"},[el("span",{text:(stamp(v.at)||"剛剛")+"　"+v.name+(v.id===s.id?"　← 目前採用":"")+(v.seat!==n?"（學生填 "+v.seat+" 號）":"")}),
+        v.id!==s.id&&p.uniq.length>1?el("button",{class:"btn sm",type:"button",text:"改用這份",onclick:function(){ T.use[n]=v.id; save(); render(); detail(n); }}):null, mv,
+        el("button",{class:"btn sm danger",type:"button",text:"刪除",onclick:async function(){
+          if(!confirm("要刪除 "+nm(n)+" "+(stamp(v.at)||"")+" 這一份嗎？刪了不能復原。")) return;
+          if(DEMO){ SUBS=SUBS.filter(function(x){ return x.id!==v.id; }); d.close(); render(); return; }
+          try{ await DB.collection(CFG.col).doc(v.id).delete(); d.close(); toast("已刪除"); }catch(e){ toast("刪除失敗，請再試一次"); }
+        }})]));
+    });
+  }
+  d.replaceChildren.apply(d,kids); if(!d.open) d.showModal();
+}
+
+/* ---------- 畫面 ---------- */
+function render(){
+  rebuild(); renderTop();
+  $("out").replaceChildren.apply($("out"), TAB==="wish"?viewWish():TAB==="list"?viewList():viewRoom());
+  if($("sub").textContent.indexOf("儲存中")<0) setSub();
+}
+function acts(){
+  $("acts").replaceChildren.apply($("acts"),[
+    el("button",{class:"btn",type:"button",text:"匯出 Excel",onclick:exportXlsx}),
+    el("button",{class:"btn",type:"button",text:"列印這一頁",onclick:function(){ window.print(); }})
+  ].concat(DEMO?[]:[el("button",{class:"btn",type:"button",text:"登出",onclick:async function(){ if(saveTimer) await flush(); if(UNSUB) UNSUB(); AUTH.signOut(); }})]));
+}
+
+/* ============================================================
+   Excel（純 JS，不載入外部套件）
+   ============================================================ */
+var CRCT=(function(){ var t=new Uint32Array(256); for(var n=0;n<256;n++){ var c=n; for(var k=0;k<8;k++) c=c&1?0xEDB88320^(c>>>1):c>>>1; t[n]=c>>>0; } return t; })();
+function crc32(u){ var c=0xFFFFFFFF; for(var i=0;i<u.length;i++) c=CRCT[(c^u[i])&255]^(c>>>8); return (c^0xFFFFFFFF)>>>0; }
+function zipStore(files){
+  var enc=new TextEncoder(), chunks=[], dir=[], now=new Date(), off=0;
+  var dt=(now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1), dd=((now.getFullYear()-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
+  files.forEach(function(f){
+    var name=enc.encode(f[0]), data=enc.encode(f[1]), crc=crc32(data), h=new Uint8Array(30+name.length), v=new DataView(h.buffer);
+    v.setUint32(0,0x04034b50,true); v.setUint16(4,20,true); v.setUint16(6,0x0800,true); v.setUint16(10,dt,true); v.setUint16(12,dd,true);
+    v.setUint32(14,crc,true); v.setUint32(18,data.length,true); v.setUint32(22,data.length,true); v.setUint16(26,name.length,true); h.set(name,30);
+    chunks.push(h,data); dir.push([name,crc,data.length,off]); off+=h.length+data.length;
+  });
+  var cd=off;
+  dir.forEach(function(c){
+    var h=new Uint8Array(46+c[0].length), v=new DataView(h.buffer);
+    v.setUint32(0,0x02014b50,true); v.setUint16(4,20,true); v.setUint16(6,20,true); v.setUint16(8,0x0800,true); v.setUint16(12,dt,true); v.setUint16(14,dd,true);
+    v.setUint32(16,c[1],true); v.setUint32(20,c[2],true); v.setUint32(24,c[2],true); v.setUint16(28,c[0].length,true); v.setUint32(42,c[3],true); h.set(c[0],46);
+    chunks.push(h); off+=h.length;
+  });
+  var e=new Uint8Array(22), ev=new DataView(e.buffer);
+  ev.setUint32(0,0x06054b50,true); ev.setUint16(8,dir.length,true); ev.setUint16(10,dir.length,true); ev.setUint32(12,off-cd,true); ev.setUint32(16,cd,true);
+  chunks.push(e); off+=22;
+  var out=new Uint8Array(off), p=0; chunks.forEach(function(c){ out.set(c,p); p+=c.length; });
+  return out;
+}
+function xe(s){ return String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function col(n){ var s=""; n++; while(n>0){ var r=(n-1)%26; s=String.fromCharCode(65+r)+s; n=(n-1-r)/26; } return s; }
+/* 樣式：1 標題 2 說明 3 表頭 4 文字 5 置中 6 紅字 */
+var STY='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="5"><font><sz val="11"/><name val="Microsoft JhengHei"/></font><font><b/><sz val="15"/><color rgb="FF1F4E79"/><name val="Microsoft JhengHei"/></font><font><sz val="10"/><color rgb="FF4C5F76"/><name val="Microsoft JhengHei"/></font><font><b/><sz val="11"/><color rgb="FF1F4E79"/><name val="Microsoft JhengHei"/></font><font><b/><sz val="11"/><color rgb="FFB3261E"/><name val="Microsoft JhengHei"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFDCE6F1"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFC6D3E1"/></left><right style="thin"><color rgb="FFC6D3E1"/></right><top style="thin"><color rgb="FFC6D3E1"/></top><bottom style="thin"><color rgb="FFC6D3E1"/></bottom><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="7"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf><xf numFmtId="0" fontId="4" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf></cellXfs></styleSheet>';
+function sheetXml(sh){
+  var x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr><sheetViews><sheetView workbookViewId="0" showGridLines="0"><pane ySplit="3" topLeftCell="A4" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>';
+  sh.cols.forEach(function(c,i){ x+='<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+c[1]+'" customWidth="1"/>'; });
+  x+="</cols><sheetData>";
+  var rows=[[{v:sh.title,s:1}],[{v:sh.sub,s:2}],sh.cols.map(function(c){ return {v:c[0],s:3}; })].concat(sh.rows);
+  rows.forEach(function(row,ri){
+    x+='<row r="'+(ri+1)+'">';
+    row.forEach(function(c,ci){
+      var o=(c!==null&&typeof c==="object")?c:{v:c,s:sh.cols[ci][2]||4}, ref=col(ci)+(ri+1);
+      if(o.v===""||o.v==null) x+='<c r="'+ref+'" s="'+o.s+'"/>';
+      else if(typeof o.v==="number") x+='<c r="'+ref+'" s="'+o.s+'"><v>'+o.v+'</v></c>';
+      else x+='<c r="'+ref+'" s="'+o.s+'" t="inlineStr"><is><t xml:space="preserve">'+xe(o.v)+'</t></is></c>';
+    });
+    x+="</row>";
+  });
+  return x+'</sheetData><mergeCells count="2"><mergeCell ref="A1:'+col(sh.cols.length-1)+'1"/><mergeCell ref="A2:'+col(sh.cols.length-1)+'2"/></mergeCells><pageMargins left="0.4" right="0.4" top="0.5" bottom="0.5" header="0.3" footer="0.3"/><pageSetup paperSize="9" orientation="landscape" fitToWidth="1" fitToHeight="0"/></worksheet>';
+}
+function txt(r){ if(r.st==="none") return ""; if(r.st==="ignored") return (r.n||r.s)+"（不算）"; if(r.to) return r.to+" "+(D.P[r.to].name||r.n||"")+(r.mu?"（互選）":""); return {v:(r.s?r.s+" ":"")+(r.n||"")+"（待確認："+why(r)+"）",s:6}; }
+function sheets(){
+  var info="已填 "+D.done+"／"+D.seats.length+" 人　匯出 "+stamp(new Date())+"　內含學生個人狀況，僅供導師排房參考，請勿張貼或轉傳";
+  var roomName={}, stt={};
+  ["M","F"].forEach(function(sx){ var R=roomsOf(sx), st=status(D,R.rooms); R.rooms.forEach(function(r,i){ r.forEach(function(n){ roomName[n]=(sx==="M"?"男生 ":"女生 ")+(i+1)+" 房"; stt[n]=st[n]; }); }); });
+  var a={name:"志願彙整",title:CFG.cls+" "+CFG.title+"｜志願彙整",sub:info,cols:[["座號",7,5],["姓名",10,5],["性別",7,5],["第 1 志願",18],["第 2 志願",18],["第 3 志願",18],["也可以接受 1",16],["也可以接受 2",16],["被寫次數",10,5],["寫他的同學（志願序）",34],["互選的同學",20],["填寫時間",14,5]],rows:D.seats.map(function(n){
+    var p=D.P[n], s=p.sub;
+    if(!s) return [n,p.name||"",SX[p.sex]||"",{v:"還沒填",s:6},"","","","",p.inW.length,inWText(p).map(function(x){ return nm(x.from)+"（"+x.rank+"）"; }).join("、"),"",""];
+    return [n,p.name,SX[p.sex]||""].concat(p.w.map(txt),p.k.map(txt),[p.inW.length,inWText(p).map(function(x){ return nm(x.from)+"（"+x.rank+"）"; }).join("、"),p.mutual.map(nm).join("、"),stamp(s.at)]);
+  })};
+  var b={name:"個別學生狀況",title:CFG.cls+" "+CFG.title+"｜個別學生狀況一覽表",sub:info,cols:[["座號",7,5],["姓名",10,5],["性別",7,5],["特別需要（勾選）",24],["特別需要（學生自己寫的）",40],["認識新朋友",20],["老師要留意",26],["被寫次數",10,5],["互選的同學",20],["房間",12,5],["導師備註",34],["已聊過",9,5]],rows:D.seats.map(function(n){
+    var p=D.P[n], s=p.sub, hot=p.flags.some(function(f){ return f.k==="hot"; });
+    return [n,p.name||"",SX[p.sex]||"",s?s.tags.map(function(t){ return TAG[t]||t; }).join("、"):"",s?s.note:"",s?(s.mind==="talk"?{v:MIND.talk,s:6}:MIND[s.mind]):"",
+      {v:p.flags.map(function(f){ return f.t; }).join("、"),s:hot?6:4},p.inW.length,p.mutual.map(nm).join("、"),roomName[n]||"",T.notes[n]||"",T.talked[n]?"✓":""];
+  })};
+  var rows=[];
+  ["M","F"].forEach(function(sx){ roomsOf(sx).rooms.forEach(function(r){ r.forEach(function(n){ var o=stt[n], p=D.P[n];
+    rows.push([roomName[n],n,p.name||"",o.same.length?"第 "+o.same.join("、")+" 志願":"",o.next.length?"第 "+o.next.join("、")+" 志願":"",o.lv==="miss"?{v:"志願都沒有",s:6}:o.lv==="none"?(p.sub?"沒有志願可算":"還沒填"):o.lv==="same"?"同房":"鄰房",p.sub?needText(p.sub).replace(/\n/g,"；"):"",T.notes[n]||""]); }); }); });
+  var c={name:"房間試排",title:CFG.cls+" "+CFG.title+"｜房間試排",sub:info,cols:[["房間",13,5],["座號",7,5],["姓名",10,5],["同房的志願",18],["鄰房的志願",18],["達成情形",14,5],["特別需要",40],["導師備註",30]],rows:rows};
+  return [a,b].concat(rows.length?[c]:[]);
+}
+function buildXlsx(list){
+  var ns='http://schemas.openxmlformats.org/', ct='application/vnd.openxmlformats-officedocument.spreadsheetml.', h='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+  return zipStore([
+    ["[Content_Types].xml",h+'<Types xmlns="'+ns+'package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="'+ct+'sheet.main+xml"/>'+list.map(function(_,i){ return '<Override PartName="/xl/worksheets/sheet'+(i+1)+'.xml" ContentType="'+ct+'worksheet+xml"/>'; }).join("")+'<Override PartName="/xl/styles.xml" ContentType="'+ct+'styles+xml"/></Types>'],
+    ["_rels/.rels",h+'<Relationships xmlns="'+ns+'package/2006/relationships"><Relationship Id="rId1" Type="'+ns+'officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+    ["xl/workbook.xml",h+'<workbook xmlns="'+ns+'spreadsheetml/2006/main" xmlns:r="'+ns+'officeDocument/2006/relationships"><sheets>'+list.map(function(s,i){ return '<sheet name="'+xe(s.name)+'" sheetId="'+(i+1)+'" r:id="rId'+(i+1)+'"/>'; }).join("")+'</sheets></workbook>'],
+    ["xl/_rels/workbook.xml.rels",h+'<Relationships xmlns="'+ns+'package/2006/relationships">'+list.map(function(_,i){ return '<Relationship Id="rId'+(i+1)+'" Type="'+ns+'officeDocument/2006/relationships/worksheet" Target="worksheets/sheet'+(i+1)+'.xml"/>'; }).join("")+'<Relationship Id="rId'+(list.length+1)+'" Type="'+ns+'officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
+    ["xl/styles.xml",STY]
+  ].concat(list.map(function(s,i){ return ["xl/worksheets/sheet"+(i+1)+".xml",sheetXml(s)]; })));
+}
+function exportXlsx(){
+  var u=buildXlsx(sheets()), n=new Date(), url=URL.createObjectURL(new Blob([u],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+  var a=el("a",{href:url,download:CFG.file+"_"+n.getFullYear()+pad(n.getMonth()+1)+pad(n.getDate())+".xlsx"}); document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); },2000); toast("已下載 "+a.download);
+}
+
+/* ============================================================
+   啟動
+   ============================================================ */
+function loadScript(src){ return new Promise(function(res,rej){ var s=document.createElement("script"); s.src=src; s.onload=res; s.onerror=function(){ rej(new Error(src)); }; document.head.appendChild(s); }); }
+function note(kids){ $("note").replaceChildren(); if(kids) $("note").appendChild(el("div",{class:"note",role:"alert"},kids)); }
+function norm(id,d){
+  function arr(a,n,z){ a=Array.isArray(a)?a.slice(0,n):[]; while(a.length<n) a.push(z); return a; }
+  return {id:id, seat:+d.seat||0, name:String(d.name||""), sex:d.sex==="F"?"F":"M", wn:arr(d.wn,3,"").map(String), ws:arr(d.ws,3,0).map(Number), kn:arr(d.kn,2,"").map(String), ks:arr(d.ks,2,0).map(Number),
+    tags:Array.isArray(d.tags)?d.tags.map(String):[], note:String(d.note||""), mind:String(d.mind||""), at:d.at&&d.at.toDate?d.at.toDate():null};
+}
+function denied(u){
+  note(["這個帳號讀不到資料。可能是雲端規則還沒發布，或規則裡的 UID 不是這個帳號。這個帳號的 UID 是 ",el("code",{text:u.uid}),"，要和規則裡的一樣。"]);
+  $("sub").textContent=CFG.cls+"導師．讀取被拒";
+}
+async function start(u){
+  TOK=false; T=blankT(); SUBS=[];
+  try{
+    var s=await DB.collection(CFG.tcol).doc("state").get();
+    if(s.exists) T=Object.assign(blankT(),JSON.parse(s.data().json||"{}"));
+    TOK=true;
+  }catch(e){ if(e&&e.code==="permission-denied"){ denied(u); $("board").hidden=true; return; } note(["讀不到之前的備註和排房，先不會存檔。請重新整理頁面。"]); }
+  UNSUB=DB.collection(CFG.col).onSnapshot(function(q){
+    SUBS=[]; q.forEach(function(d){ SUBS.push(norm(d.id,d.data())); });
+    LASTAT=new Date(); $("board").hidden=false;
+    var f=document.activeElement, typing=f&&/^(TEXTAREA|INPUT|SELECT)$/.test(f.tagName)&&$("board").contains(f);
+    if(typing){ rebuild(); setSub("有新的填答，離開輸入格就會更新"); f.addEventListener("blur",function(){ setTimeout(render,50); },{once:true}); }
+    else render();
+  },function(e){ if(e&&e.code==="permission-denied") denied(u); else note(["連線中斷，請重新整理頁面。"]); });
+}
+async function boot(){
+  try{
+    var B="https://www.gstatic.com/firebasejs/10.12.2/";
+    await loadScript(B+"firebase-app-compat.js"); await loadScript(B+"firebase-auth-compat.js"); await loadScript(B+"firebase-firestore-compat.js");
+    firebase.initializeApp(CFG.firebase); DB=firebase.firestore(); AUTH=firebase.auth();
+  }catch(e){ $("gate").hidden=false; $("err").textContent="載入不到 Firebase 元件，請檢查網路。"; return; }
+  AUTH.onAuthStateChanged(function(u){
+    $("gate").hidden=!!u; note();
+    if(u){ rebuild(); acts(); start(u); }
+    else{ if(UNSUB){ UNSUB(); UNSUB=null; } SUBS=[]; T=blankT(); TOK=false; $("board").hidden=true; $("acts").replaceChildren(); $("out").replaceChildren(); if($("dlg").open) $("dlg").close(); $("dlg").replaceChildren(); $("sub").textContent=CFG.cls+"導師"; }
+  });
+}
+$("signin").onclick=async function(){
+  var em=$("em").value.trim(), pw=$("pw").value;
+  if(!em||!pw){ $("err").textContent="帳號和密碼都要填。"; return; }
+  $("err").textContent=""; this.disabled=true;
+  try{ await AUTH.signInWithEmailAndPassword(em,pw); $("pw").value=""; }
+  catch(e){ $("err").textContent={"auth/invalid-email":"帳號格式不對。","auth/invalid-credential":"帳號或密碼不對。","auth/wrong-password":"帳號或密碼不對。","auth/user-not-found":"帳號或密碼不對。","auth/too-many-requests":"嘗試太多次，請等幾分鐘再試。","auth/network-request-failed":"連不到網路。"}[e&&e.code]||"登入失敗，請再試一次。"; }
+  this.disabled=false;
+};
+$("pw").addEventListener("keydown",function(e){ if(e.key==="Enter") $("signin").click(); });
+
+/* ---------- 示範資料（網址加 ?demo） ---------- */
+function demo(){
+  var N="王*廷 陳*安 林*佑 張*翔 李*恩 黃*睿 吳*宇 劉*辰 蔡*軒 楊*傑 許*哲 鄭*豪 謝*凱 郭*妤 洪*晴 陳*安 曾*涵 廖*彤 賴*萱 徐*恩 周*庭 葉*妍 蘇*甯 莊*瑜 江*潔".split(" ");
+  function s(seat,w,k,o){
+    o=o||{};
+    function nmz(x){ return x?(typeof x==="string"?x:N[x-1]):""; } function st(x){ return typeof x==="number"?x:0; }
+    var ws=w.concat([0,0,0]).slice(0,3), ks=k.concat([0,0]).slice(0,2);
+    return {id:"d"+seat+(o.v||""), seat:seat, name:o.name||N[seat-1], sex:seat<=13?"M":"F", wn:ws.map(nmz), ws:ws.map(st), kn:ks.map(nmz), ks:ks.map(st), tags:o.tags||[], note:o.note||"", mind:o.mind||"yes", at:new Date(2026,10,24,9,o.m||seat)};
+  }
+  SUBS=[
+    s(1,[2,3,4],[5]), s(2,[1,"林*佑",6],[],{tags:["dark"],note:"晚上要開小夜燈才睡得著"}), s(3,[1,4,2],[7]), s(4,[3,1,5],[]), s(5,[6,7,4],[8],{mind:"try"}),
+    s(6,[5,7,8],[]), s(7,[6,5,8],[9]), s(8,[9,7,6],[10],{tags:["sleep"],note:"會打呼，怕吵到別人"}), s(9,[8,10,11],[]), s(10,[9,11,"謝*凱"],[]),
+    s(11,[10,9,3],[1],{mind:"talk",tags:["nervous"],note:"上次露營睡不著，想先和老師講"}), s(13,[1,2],[],{mind:"try"}),
+    s(14,[15,"陳*安",17],[18]), s(15,[14,16,17],[]), s(16,[15,14,19],[],{tags:["body"],note:"氣喘，會帶藥"}), s(17,[18,14,15],[16]), s(18,[17,19,20],[]),
+    s(19,[20,18,21],[]), s(20,[19,21,"徐*恩"],[],{mind:"try"}), s(21,[22,20,19],[23]), s(22,[21,23,24],[]), s(23,[22,24,21],[],{tags:["nervous","dark"]}),
+    s(24,[23,22,14],[]), s(24,[22,23,14],[],{v:"b",m:50}), s(25,[14,15,"李*恩"],[],{mind:"talk",note:"我不知道要寫誰"})
+  ];
+  T.boys="1-13"; T.girls="14-25"; TOK=false;
+  $("board").hidden=false; acts(); render();
+}
+if(DEMO) demo(); else boot();
+</script>
+</body>
+</html>
